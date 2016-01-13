@@ -21,6 +21,7 @@ from .log import log
 from lxml import etree
 import io
 import os
+import sys
 
 
 NSMAP = dict(xi='http://www.w3.org/2001/XInclude',
@@ -31,6 +32,10 @@ __all__=('NSMAP', 'buildcompounds', 'process_index')
 
 def buildcompounds(xf, doc, source=None):
     """Build the output tree
+
+    :param xf: context manager
+    :param doc: element tree
+    :param source: filename
     """
     try:
         log.debug(">>> buildcompounds: %s, %r", doc, source)
@@ -68,34 +73,46 @@ def buildcompounds(xf, doc, source=None):
         #pdb.post_mortem()
         log.warn(err)
 
-def iter_sections(xf, doc, source=None):
 
+def iter_sections(xf, doc, source=None):
+    """Iterate over all sections
+
+    :param xf: context manager
+    :param doc: element tree
+    :param source: filename
+    """
     log.debug(">>> iter_sections: %s, %r", doc, source)
     for item in doc.iter('section'):
         buildcompounds(xf, item, source)
 
 
-def process_index(indexfile, output=None):
+def process_index(indexfile, output=None, format=False):
     """Process the index file, converted from RST to XML
 
     :param indexfile:
-    :return:
+    :param format: format output file?
+    :return: None
     """
+    def indent(output):
+        os.rename(output, "%s.tmp" % output)
+        xml = etree.parse("%s.tmp" % output)
+        xml.write(output,
+                  encoding="utf-8",
+                  pretty_print=True,
+                  )
+        log.info("Writing to %r", output)
+        os.remove("%s.tmp" % output)
+        xml.docinfo.URL = output
+        return xml
+
     log.info("Reading indexfile %r", indexfile)
     xml = etree.parse(indexfile)
     document = xml.getroot()
 
-    if output is None or not output:
-        f = io.BytesIO()
-    else:
-        f = output
-
-    with etree.xmlfile(f) as xf:
+    with etree.xmlfile(output) as xf:
         with xf.element('root'):
             iter_sections(xf, document, indexfile)
 
-    if output is None or not output:
-        doc = f.getvalue().decode('utf-8')
-        print(doc)
-    else:
-        log.info("Writing to %r", output)
+    xml = indent(output)
+    return xml
+

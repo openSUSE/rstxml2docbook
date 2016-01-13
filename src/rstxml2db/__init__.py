@@ -21,7 +21,7 @@ from .log import log, setloglevel
 from .treebuilder import process_index
 
 __version__ = "0.0.1"
-
+_booktree = '.booktree.xml'
 
 def main(cliargs=None):
     """Entry point for the application script
@@ -39,7 +39,13 @@ def main(cliargs=None):
                         version='%(prog)s ' + __version__
                         )
     parser.add_argument('-o', '--output',
-                        help='save to a given file',
+                        default=_booktree,
+                        help='save book tree to a given file (default %(default)r)',
+                        )
+    parser.add_argument('-d', '--output-dir',
+                        dest='outputdir',
+                        default='out',
+                        help='save XML files given directory (default %(default)r)',
                         )
 
     parser.add_argument('indexfile',
@@ -50,5 +56,7 @@ def main(cliargs=None):
     # init log module
     setloglevel(args.verbose)
 
-    log.debug(args)
-    return process_index(args.indexfile, args.output)
+    log.info(args)
+    index = process_index(args.indexfile, args.output)
+    
+
