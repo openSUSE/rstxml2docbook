@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2015 SUSE Linux GmbH
+# Copyright (c) 2016 SUSE Linux GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of version 3 of the GNU General Public License as
@@ -17,28 +17,38 @@
 # you may find current contact information at www.suse.com
 
 import argparse
+from .log import log, setloglevel
+from .treebuilder import process_index
 
 __version__ = "0.0.1"
 
 
 def main(cliargs=None):
-   """Entry point for the application script
+    """Entry point for the application script
 
     :param list cliargs: Arguments to parse or None (=use sys.argv)
-   """
-   parser = argparse.ArgumentParser()
+    :return: True or False
+    """
+    parser = argparse.ArgumentParser()
 
-   parser.add_argument('-v', '--verbose', action='count',
-                       help="Increase verbosity level")
+    parser.add_argument('-v', '--verbose', action='count',
+                        help="Increase verbosity level")
 
-   parser.add_argument('--version',
-                       action='version',
-                       version='%(prog)s ' + __version__
-                       )
+    parser.add_argument('--version',
+                        action='version',
+                        version='%(prog)s ' + __version__
+                        )
+    parser.add_argument('-o', '--output',
+                        help='save to a given file',
+                        )
 
-   parser.add_argument('indexfile',
-                       help='index file (XML) which refer all other files')
+    parser.add_argument('indexfile',
+                        help='index file (XML) which refer all other files')
 
-   args = parser.parse_args(args=cliargs)
+    args = parser.parse_args(args=cliargs)
 
-   print(args)
+    # init log module
+    setloglevel(args.verbose)
+
+    log.debug(args)
+    return process_index(args.indexfile, args.output)
