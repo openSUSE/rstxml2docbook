@@ -1,0 +1,9 @@
+
+graft man
+prune man/build
+
+include ChangeLog
+include README*
+include src/rstxml2db/rstxml2db.xsl
+
+global-exclude *.py[cod] __pycache__ *.so *.dylib
