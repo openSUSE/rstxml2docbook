@@ -97,7 +97,7 @@
     <xsl:apply-templates/>
   </xsl:template>
 
-  <xsl:template match="document/section">
+  <!--<xsl:template match="document/section">
     <xsl:variable name="name">
       <xsl:call-template name="create.structural.name"/>
     </xsl:variable>
@@ -110,7 +110,7 @@
       </xsl:if>
       <xsl:apply-templates/>
     </xsl:element>
-  </xsl:template>
+  </xsl:template>-->
 
   <xsl:template match="section[@names='abstract']">
     <abstract>
@@ -124,6 +124,19 @@
     </xsl:variable>
 
     <xsl:element name="{$name}">
+      <xsl:if test="@ids">
+        <xsl:attribute name="id">
+          <xsl:choose>
+            <!-- Use the 2nd argument in @ids -->
+            <xsl:when test="contains(@ids, ' ')">
+              <xsl:value-of select="substring-after(@ids, ' ')"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="@ids"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
+      </xsl:if>
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
@@ -133,6 +146,10 @@
   </xsl:template>
 
   <xsl:template match="section[@names='contents']">
+    <xsl:apply-templates mode="xinclude"/>
+  </xsl:template>
+
+  <xsl:template match="compound[@classes='toctree-wrapper']">
     <xsl:apply-templates mode="xinclude"/>
   </xsl:template>
 
@@ -146,6 +163,18 @@
 
   <!-- =================================================================== -->
   <xsl:template match="literal_block[@language='shell' or @language='console']">
+    <screen>
+      <xsl:apply-templates/>
+    </screen>
+  </xsl:template>
+
+  <xsl:template match="literal_block[@language]">
+    <screen language="{@language}">
+      <xsl:apply-templates/>
+    </screen>
+  </xsl:template>
+
+  <xsl:template match="literal_block">
     <screen>
       <xsl:apply-templates/>
     </screen>
@@ -170,9 +199,62 @@
     </para>
   </xsl:template>
 
+  <xsl:template match="bullet_list[@bullet='-' or @bullet='*']">
+    <itemizedlist>
+      <xsl:apply-templates/>
+    </itemizedlist>
+  </xsl:template>
 
+  <xsl:template match="list_item">
+    <listitem>
+      <xsl:apply-templates/>
+    </listitem>
+  </xsl:template>
+
+  <xsl:template match="enumerated_list">
+    <procedure>
+      <xsl:apply-templates/>
+    </procedure>
+  </xsl:template>
+
+  <xsl:template match="enumerated_list/list_item">
+    <step>
+      <xsl:apply-templates/>
+    </step>
+  </xsl:template>
+
+  <xsl:template match="definition_list">
+    <variablelist>
+      <term>
+        <xsl:apply-templates select="definition_list_item"/>
+      </term>
+    </variablelist>
+  </xsl:template>
+
+  <xsl:template match="definition_list_item">
+    <varlistentry>
+      <xsl:apply-templates/>
+      <xsl:apply-templates select="../definition"/>
+    </varlistentry>
+  </xsl:template>
+
+  <xsl:template match="definition_list_item/term">
+    <term>
+      <xsl:apply-templates/>
+    </term>
+  </xsl:template>
+
+  <xsl:template match="definition">
+    <listitem>
+      <xsl:apply-templates/>
+    </listitem>
+  </xsl:template>
 
   <!-- =================================================================== -->
+  <xsl:template match="emphasis">
+    <xsl:copy-of select="."/>
+  </xsl:template>
+
   <xsl:template match="emphasis[@classes='guilabel']">
     <guilabel>
       <xsl:apply-templates/>
@@ -191,6 +273,12 @@
     </command>
   </xsl:template>
 
+  <xsl:template match="strong">
+    <emphasis role="bold">
+      <xsl:apply-templates/>
+    </emphasis>
+  </xsl:template>
+
   <xsl:template match="literal">
     <xsl:copy-of select="."/>
   </xsl:template>
@@ -206,7 +294,7 @@
       <xsl:value-of select="."/>
     </ulink>
   </xsl:template>
-  
+
   <xsl:template match="reference[@refid]">
     <xref linkend="{@refid}"/>
   </xsl:template>
