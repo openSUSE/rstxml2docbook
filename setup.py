@@ -53,9 +53,9 @@ setupdict = dict(
    # If there are data files included in your packages that need to be
    # installed, specify them here.  If using Python 2.6 or less, then these
    # have to be included in MANIFEST.in as well.
-   #package_data={
-   #     '': ['template/*'],
-   #},
+   package_data={
+        '': ['src/rstxml2db/*.xsl'],
+   },
    entry_points={
         'console_scripts': [
             'rstxml2db=rstxml2db:main',
