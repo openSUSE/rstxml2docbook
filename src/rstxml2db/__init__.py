@@ -16,12 +16,21 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-import argparse
 from .log import log, setloglevel
 from .treebuilder import process_index
+from .xslt import transform
 
+import argparse
+from itertools import chain
+from lxml import etree
+import os
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+__all__ = ('__version__', 'main', )
 __version__ = "0.0.1"
 _booktree = '.booktree.xml'
+_xsltfile = os.path.join(HERE, 'rstxml2db.xsl')
+
 
 def main(cliargs=None):
     """Entry point for the application script
@@ -38,7 +47,7 @@ def main(cliargs=None):
                         action='version',
                         version='%(prog)s ' + __version__
                         )
-    parser.add_argument('-o', '--output',
+    parser.add_argument('-t', '--booktree',
                         default=_booktree,
                         help='save book tree to a given file (default %(default)r)',
                         )
@@ -52,11 +61,39 @@ def main(cliargs=None):
                         help='index file (XML) which refer all other files')
 
     args = parser.parse_args(args=cliargs)
+    log.info(args)
 
     # init log module
     setloglevel(args.verbose)
 
-    log.info(args)
-    index = process_index(args.indexfile, args.output)
-    
+    if args.booktree == _booktree:
+        args.booktree = os.path.join(os.path.dirname(args.indexfile), args.booktree)
+        log.info("Using booktree %r", args.booktree)
 
+    if not os.path.exists(args.outputdir):
+        log.info("Creating output dir %r", args.outputdir)
+        os.makedirs(args.outputdir)
+
+    index = process_index(args.indexfile, args.booktree)
+    log.info('')
+
+    xslt = etree.XSLT(etree.parse(_xsltfile))
+
+    for inputfile in index.iter('ref'):
+        href = inputfile.attrib.get('href')
+        infile = os.path.join(os.path.dirname(args.indexfile), href)
+        outfile = os.path.join(args.outputdir, href)
+        log.info("Using %r -> %r", infile, outfile)
+
+        # Also create output structure
+        os.makedirs(os.path.dirname(outfile), exist_ok=True)
+
+        # TODO: also process **params
+        result, errors = transform(xslt, infile, os.path.abspath(args.booktree))
+        result.write(outfile,
+                     encoding='utf-8',
+                     pretty_print=True,
+                     )
+        log.info("Writing transformation results to %r", outfile)
+        for entry in errors:
+            print(entry)

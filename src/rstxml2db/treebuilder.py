@@ -38,7 +38,7 @@ def buildcompounds(xf, doc, source=None, level=0):
     :param source: filename
     """
     try:
-        log.debug(">>> buildcompounds: %s, %r", doc, source)
+        log.debug("   buildcompounds: %s, %r", doc, source)
         try:
             dirname = os.path.dirname(source)
             # source = os.path.basename(source)
@@ -82,7 +82,7 @@ def iter_sections(xf, doc, source=None, level=0):
     :param doc: element tree
     :param source: filename
     """
-    log.debug(">>> iter_sections: %s, %r", doc, source)
+    log.debug("   iter_sections: %s, %r", doc, source)
     for item in doc.iter('section'):
         buildcompounds(xf, item, source, level)
 
@@ -111,9 +111,10 @@ def process_index(indexfile, output=None, format=False):
     document = xml.getroot()
 
     with etree.xmlfile(output) as xf:
-        with xf.element('root'):
+        with xf.element('ref', href=os.path.basename(indexfile)):
             iter_sections(xf, document, indexfile)
 
     xml = indent(output)
+    log.info('Finished creating booktree file')
     return xml
 

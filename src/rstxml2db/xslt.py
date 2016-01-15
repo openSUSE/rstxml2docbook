@@ -16,20 +16,24 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+from .log import log
+
 from lxml import etree
 
 __all__ = ('transform', )
 
-def transform(xsltfile, xmlfile, indexfile, **params):
+
+def transform(xslt, xmlfile, indexfile, **params):
     """Transforms one RSTXML file into DocBook
 
-    :param xsltfile: XSLT stylesheet
+    :param xslt: XSLT node from `etree.XSLT`
     :param xmlfile: the RSTXML file to transform
-    :param indexfile: the indexfile name
+    :param indexnode: all nodes of the indexfile name
     :param params: parameters for XSLT
     """
-    xsltroot = etree.parse(xsltfile)
-    trans = etree.XSLT(xsltroot)
+    log.info("transform: %s, %r, %r, %s", xslt, xmlfile, indexfile, params)
     xmlroot = etree.parse(xmlfile)
-    t = trans(xmlroot)
-    return t, trans.error_log
+    t = xslt(xmlroot,
+             indexfile=etree.XSLT.strparam(indexfile),
+             **params)
+    return t, xslt.error_log
