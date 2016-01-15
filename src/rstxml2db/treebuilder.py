@@ -30,7 +30,7 @@ NSMAP = dict(xi='http://www.w3.org/2001/XInclude',
 __all__=('NSMAP', 'buildcompounds', 'process_index')
 
 
-def buildcompounds(xf, doc, source=None):
+def buildcompounds(xf, doc, source=None, level=0):
     """Build the output tree
 
     :param xf: context manager
@@ -48,7 +48,8 @@ def buildcompounds(xf, doc, source=None):
             # dirname = os.path.dirname(doc.getroottree().docinfo.URL)
             dirname = ''
 
-        with xf.element('section', id=doc.attrib.get('ids')):
+        with xf.element('section', id=doc.attrib.get('ids'),
+                                   level=str(level)):
             if doc.find('title') is not None:
                 xf.write(doc.find('title'))
 
@@ -63,7 +64,7 @@ def buildcompounds(xf, doc, source=None):
                             log.info("Trying to load %r", d)
                             xml = etree.parse(d)
                             document = xml.getroot()
-                            iter_sections(xf, document, d)
+                            iter_sections(xf, document, d, level+1)
                             xml = None
                             document = None
 
@@ -74,7 +75,7 @@ def buildcompounds(xf, doc, source=None):
         log.warn(err)
 
 
-def iter_sections(xf, doc, source=None):
+def iter_sections(xf, doc, source=None, level=0):
     """Iterate over all sections
 
     :param xf: context manager
@@ -83,7 +84,7 @@ def iter_sections(xf, doc, source=None):
     """
     log.debug(">>> iter_sections: %s, %r", doc, source)
     for item in doc.iter('section'):
-        buildcompounds(xf, item, source)
+        buildcompounds(xf, item, source, level)
 
 
 def process_index(indexfile, output=None, format=False):
