@@ -18,15 +18,18 @@
 
 from lxml import etree
 
+__all__ = ('transform', )
 
-def transform(xsltfile, xmlfile, indexfile):
+def transform(xsltfile, xmlfile, indexfile, **params):
     """Transforms one RSTXML file into DocBook
 
     :param xsltfile: XSLT stylesheet
     :param xmlfile: the RSTXML file to transform
-    :param indexfile
+    :param indexfile: the indexfile name
+    :param params: parameters for XSLT
     """
     xsltroot = etree.parse(xsltfile)
     trans = etree.XSLT(xsltroot)
     xmlroot = etree.parse(xmlfile)
-    return trans(xmlroot)
+    t = trans(xmlroot)
+    return t, trans.error_log
