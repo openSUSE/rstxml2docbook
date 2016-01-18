@@ -29,7 +29,7 @@ Options
 -v, --verbose                  Increase verbosity (can be repeated)
 -t <file>, --booktree <file>   Save book tree structure in separate file
 -d <dir>, --output-dir <dir>   Save XML files into <dir> directory
-INDEXFILE                      Index file (XML) which refer all other files
+<INDEXFILE>                    Index file (XML) which refer all other files
 
 
 See also
