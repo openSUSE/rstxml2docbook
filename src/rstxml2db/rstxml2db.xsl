@@ -23,6 +23,8 @@
   xmlns:exsl="http://exslt.org/common"
   exclude-result-prefixes="exsl">
 
+  <xsl:output indent="yes"/>
+
   <xsl:key name="id" match="*" use="@ids"/>
 
   <xsl:param name="xml.ext">.xml</xsl:param>
@@ -91,6 +93,10 @@
   <!-- Ignored elements                                                    -->
   <xsl:template match="section[@names='search\ in\ this\ guide']"/>
 
+  <xsl:template match="comment"/>
+  <xsl:template match="index"/>
+  <xsl:template match="target"/>
+
 
   <!-- =================================================================== -->
   <xsl:template match="document">
@@ -157,7 +163,12 @@
 
   <xsl:template match="list_item[@classes='toctree-l1']" mode="xinclude">
     <xsl:variable name="xiref" select="concat(*/reference/@refuri, $xml.ext)"/>
-    <xi:include href="{$xiref}" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <!--<xi:include href="{$xiref}" xmlns:xi="http://www.w3.org/2001/XInclude"/>-->
+    <xsl:element name="xi:include" namespace="http://www.w3.org/2001/XInclude">
+      <xsl:attribute name="href">
+        <xsl:value-of select="$xiref"/>
+      </xsl:attribute>
+    </xsl:element>
     <xsl:text>&#10;</xsl:text>
   </xsl:template>
 
@@ -173,6 +184,8 @@
       <xsl:apply-templates/>
     </screen>
   </xsl:template>
+
+  <xsl:template match="line_block[line[normalize-space(.)='']]"/>
 
   <xsl:template match="literal_block">
     <screen>
@@ -225,9 +238,7 @@
 
   <xsl:template match="definition_list">
     <variablelist>
-      <term>
-        <xsl:apply-templates select="definition_list_item"/>
-      </term>
+      <xsl:apply-templates select="definition_list_item"/>
     </variablelist>
   </xsl:template>
 
@@ -249,6 +260,91 @@
       <xsl:apply-templates/>
     </listitem>
   </xsl:template>
+
+  <!-- =================================================================== -->
+  <xsl:template match="glossary">
+    <!--<glossary>
+      <xsl:copy-of select="ancestor::title"/>-->
+      <xsl:apply-templates/>
+    <!--</glossary>-->
+  </xsl:template>
+
+  <xsl:template match="definition_list[@classes='glossary']">
+    <glosslist>
+      <xsl:apply-templates select="definition_list_item"/>
+    </glosslist>
+  </xsl:template>
+
+  <xsl:template match="definition_list[@classes='glossary']/definition_list_item">
+    <glossentry>
+      <xsl:apply-templates/>
+    </glossentry>
+  </xsl:template>
+
+  <xsl:template match="definition_list[@classes='glossary']/definition_list_item/term">
+    <glossterm>
+      <xsl:apply-templates/>
+    </glossterm>
+  </xsl:template>
+
+  <xsl:template match="definition_list[@classes='glossary']/definition_list_item/definition">
+    <glossdef>
+      <xsl:apply-templates/>
+    </glossdef>
+  </xsl:template>
+
+
+  <!-- =================================================================== -->
+  <xsl:template match="table">
+    <xsl:apply-templates select="." mode="table"/>
+  </xsl:template>
+
+  <xsl:template match="node() | @*" mode="table">
+    <xsl:copy>
+      <xsl:apply-templates select="@* | node()" mode="table"/>
+    </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="colspec" mode="table">
+    <colspec>
+      <xsl:copy-of select="@*"/>
+    </colspec>
+  </xsl:template>
+
+  <xsl:template match="paragraph" mode="table">
+    <para>
+      <xsl:apply-templates/>
+    </para>
+  </xsl:template>
+
+
+  <!-- =================================================================== -->
+  <xsl:template match="figure">
+    <figure>
+      <xsl:if test="following-sibling::paragraph[strong]">
+        <xsl:variable name="title">
+          <xsl:value-of select="substring-after('Figure', following-sibling::paragraph[1]/strong)"/>
+        </xsl:variable>
+        <title><xsl:value-of select="$title"/></title>
+      </xsl:if>
+      <xsl:apply-templates/>
+    </figure>
+  </xsl:template>
+
+  <xsl:template match="image">
+    <xsl:variable name="uri" select="@uri"/>
+    <mediaobject>
+      <imageobject role="fo">
+        <imagedata fileref="{$uri}" width="{@width}"/>
+      </imageobject>
+      <imageobject role="html">
+        <imagedata fileref="{$uri}" width="{@width}"/>
+      </imageobject>
+    </mediaobject>
+  </xsl:template>
+
+  <xsl:template match="paragraph[strong][preceding-sibling::figure]"/>
+
 
   <!-- =================================================================== -->
   <xsl:template match="emphasis">
@@ -297,6 +393,12 @@
 
   <xsl:template match="reference[@refid]">
     <xref linkend="{@refid}"/>
+  </xsl:template>
+
+  <xsl:template match="title_reference">
+    <literal>
+      <xsl:apply-templates/>
+    </literal>
   </xsl:template>
 
 </xsl:stylesheet>
