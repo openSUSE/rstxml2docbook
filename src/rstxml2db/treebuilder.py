@@ -48,6 +48,8 @@ def buildcompounds(xf, doc, source=None, level=0):
             # dirname = os.path.dirname(doc.getroottree().docinfo.URL)
             dirname = ''
 
+        level = int(doc.xpath("count(ancestor::section)")) + level
+
         with xf.element('section', id=doc.attrib.get('ids'),
                                    level=str(level)):
             if doc.find('title') is not None:
