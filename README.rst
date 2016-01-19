@@ -1,7 +1,28 @@
 README
 ******
 
-The `rstxml2db` script converts RST XML files back to DocBook XML.
+The :program:`rstxml2db` script converts RST XML files back to DocBook XML.
+
+Installation
+============
+
+To install :program:`rstxml2db`, use one of the following methods:
+
+1. Create a Python 3 environment::
+
+    $ pyvenv .env
+
+2. Update `pip` and `setuptools`::
+
+    $ pip install -U pip setuptools
+
+3. Install the package::
+
+    $ pip install git+https://github.com/tomschr/rstxml2docbook.git@develop
+
+After the installation in your Python virtual environment, two executable
+scripts are available: :program:`rstxml2db` and :program:`rstxml2docbook`.
+Both are the same, it's just for convenience.
 
 
 Building the Intermediate XML Files
@@ -22,7 +43,7 @@ Building the DocBook Files
 ==========================
 
 After you have created the intermediate XML files, it's now the time to
-use the `rstxml2db` script. The script reads in all XML files and
+use the :program:`rstxml2db` script. The script reads in all XML files and
 creates DocBook files, for example::
 
    $ rstxml2db xml/index.xml 
