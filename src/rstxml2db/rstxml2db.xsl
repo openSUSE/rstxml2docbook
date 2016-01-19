@@ -11,7 +11,7 @@
      RST XML file, converted with sphinx-build using option -b xml
 
    Output:
-     DocBook document
+     DocBook 4 document
 
    Author:
      Thomas Schraitle <toms AT opensuse.org>
@@ -70,6 +70,7 @@
       <xsl:when test="$level = 6">sect5</xsl:when>
       <xsl:otherwise>
         <xsl:message>ERROR: Level too big!</xsl:message>
+        <xsl:text>topic</xsl:text>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -94,19 +95,19 @@
     <xsl:param name="node" select="."/>
 
     <xsl:choose>
-      <xsl:when test="$node/preceding-sibling::*/target[last()]">
-        <xsl:value-of select="$node/preceding-sibling::*/target[last()]/@refid"/>
-      </xsl:when>
-      <xsl:when test="$node/preceding-sibling::*[self::target]">
-        <xsl:value-of select="$node/preceding-sibling::*[self::target]/@refid"/>
-      </xsl:when>
-      <xsl:when test="contains($node/@ids, ' ')">
-        <xsl:value-of select="substring-after($node/@ids, ' ')"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="$node/@ids"/>
-      </xsl:otherwise>
-    </xsl:choose>
+        <xsl:when test="$node/preceding-sibling::section[1]/*[last()][self::target]">
+          <xsl:value-of select="$node/preceding-sibling::section[1]/*[last()][self::target]/@refid"/>
+        </xsl:when>
+        <xsl:when test="$node/preceding-sibling::*[1][self::target]">
+          <xsl:value-of select="$node/preceding-sibling::*[1][self::target]/@refid"/>
+        </xsl:when>
+        <xsl:when test="contains($node/@ids, ' ')">
+          <xsl:value-of select="substring-after($node/@ids, ' ')"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$node/@ids"/>
+        </xsl:otherwise>
+      </xsl:choose>
   </xsl:template>
 
   <!-- =================================================================== -->
@@ -123,47 +124,39 @@
     <xsl:apply-templates/>
   </xsl:template>
 
-  <!--<xsl:template match="document/section">
-    <xsl:variable name="name">
-      <xsl:call-template name="create.structural.name"/>
-    </xsl:variable>
-
-    <xsl:element name="{$name}">
-      <xsl:if test="@ids">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@ids"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:apply-templates/>
-    </xsl:element>
-  </xsl:template>-->
-
   <xsl:template match="section[@names='abstract']">
-    <abstract>
-      <xsl:apply-templates/>
-    </abstract>
+    <xsl:param name="root"/>
+    <xsl:element name="{$root}info">
+      <abstract>
+        <xsl:apply-templates/>
+      </abstract>
+    </xsl:element>
   </xsl:template>
 
   <xsl:template match="section">
     <xsl:variable name="name">
       <xsl:call-template name="create.structural.name"/>
     </xsl:variable>
-    <xsl:variable name="id">
+    <xsl:variable name="idattr">
       <xsl:call-template name="get.target.id"/>
     </xsl:variable>
 
     <xsl:element name="{$name}">
       <xsl:if test="@ids">
         <xsl:attribute name="id">
-          <xsl:value-of select="$id"/>
+          <xsl:value-of select="$idattr"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:apply-templates/>
+      <xsl:apply-templates>
+        <xsl:with-param name="root" select="$name"/>
+      </xsl:apply-templates>
     </xsl:element>
   </xsl:template>
 
   <xsl:template match="section/title">
-    <xsl:copy-of select="."/>
+    <title>
+      <xsl:apply-templates/>
+    </title>
   </xsl:template>
 
   <xsl:template match="section[@names='contents']">
@@ -316,6 +309,8 @@
     </informaltable>
   </xsl:template>
 
+  <xsl:template match="@stub" mode="table"/>
+
   <xsl:template match="node() | @*" mode="table">
     <xsl:copy>
       <xsl:apply-templates select="@* | node()" mode="table"/>
@@ -324,7 +319,7 @@
 
   <xsl:template match="colspec" mode="table">
     <colspec>
-      <xsl:copy-of select="@*"/>
+      <xsl:apply-templates select="@*" mode="table"/>
     </colspec>
   </xsl:template>
 
@@ -334,7 +329,7 @@
     </para>
   </xsl:template>
 
-  <xsl:template match="literal_block" mode="table">
+  <xsl:template match="literal_block|definition_list|bullet_list" mode="table">
     <xsl:apply-templates select="."/>
   </xsl:template>
 
@@ -379,8 +374,24 @@
 
   <xsl:template match="emphasis[@classes='menuselection']">
     <menuchoice>
-      TODO
+      <xsl:call-template name="create.guimenu">
+        <xsl:with-param name="text" select="text()"/>
+      </xsl:call-template>
     </menuchoice>
+  </xsl:template>
+
+  <xsl:template name="create.guimenu">
+    <xsl:param name="text"/>
+    <xsl:param name="delimiter">&gt;</xsl:param>
+
+    <xsl:if test="$text != ''">
+      <guimenu>
+        <xsl:value-of select="normalize-space(substring-before(concat($text,$delimiter),$delimiter))"/>
+      </guimenu>
+      <xsl:call-template name="create.guimenu">
+        <xsl:with-param name="text" select="substring-after($text, $delimiter)"/>
+      </xsl:call-template>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="strong[@classes='command']">
@@ -396,7 +407,9 @@
   </xsl:template>
 
   <xsl:template match="literal">
-    <xsl:copy-of select="."/>
+    <literal>
+      <xsl:apply-templates/>
+    </literal>
   </xsl:template>
 
   <xsl:template match="literal_emphasis[contains(@classes, 'option')]">
