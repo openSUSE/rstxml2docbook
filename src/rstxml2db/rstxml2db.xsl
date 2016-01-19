@@ -24,6 +24,7 @@
   exclude-result-prefixes="exsl">
 
   <xsl:output indent="yes"/>
+  <xsl:strip-space elements="*"/>
 
   <xsl:key name="id" match="*" use="@ids"/>
 
@@ -89,6 +90,25 @@
     <xsl:value-of select="$name"/>
   </xsl:template>
 
+  <xsl:template name="get.target.id">
+    <xsl:param name="node" select="."/>
+
+    <xsl:choose>
+      <xsl:when test="$node/preceding-sibling::*/target[last()]">
+        <xsl:value-of select="$node/preceding-sibling::*/target[last()]/@refid"/>
+      </xsl:when>
+      <xsl:when test="$node/preceding-sibling::*[self::target]">
+        <xsl:value-of select="$node/preceding-sibling::*[self::target]/@refid"/>
+      </xsl:when>
+      <xsl:when test="contains($node/@ids, ' ')">
+        <xsl:value-of select="substring-after($node/@ids, ' ')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$node/@ids"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <!-- =================================================================== -->
   <!-- Ignored elements                                                    -->
   <xsl:template match="section[@names='search\ in\ this\ guide']"/>
@@ -128,19 +148,14 @@
     <xsl:variable name="name">
       <xsl:call-template name="create.structural.name"/>
     </xsl:variable>
+    <xsl:variable name="id">
+      <xsl:call-template name="get.target.id"/>
+    </xsl:variable>
 
     <xsl:element name="{$name}">
       <xsl:if test="@ids">
         <xsl:attribute name="id">
-          <xsl:choose>
-            <!-- Use the 2nd argument in @ids -->
-            <xsl:when test="contains(@ids, ' ')">
-              <xsl:value-of select="substring-after(@ids, ' ')"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="@ids"/>
-            </xsl:otherwise>
-          </xsl:choose>
+          <xsl:value-of select="$id"/>
         </xsl:attribute>
       </xsl:if>
       <xsl:apply-templates/>
@@ -296,7 +311,9 @@
 
   <!-- =================================================================== -->
   <xsl:template match="table">
-    <xsl:apply-templates select="." mode="table"/>
+    <informaltable>
+      <xsl:apply-templates mode="table"/>
+    </informaltable>
   </xsl:template>
 
   <xsl:template match="node() | @*" mode="table">
@@ -317,6 +334,9 @@
     </para>
   </xsl:template>
 
+  <xsl:template match="literal_block" mode="table">
+    <xsl:apply-templates select="."/>
+  </xsl:template>
 
   <!-- =================================================================== -->
   <xsl:template match="figure">
