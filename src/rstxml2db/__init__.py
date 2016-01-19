@@ -56,6 +56,11 @@ def main(cliargs=None):
                         default='out',
                         help='save XML files given directory (default %(default)r)',
                         )
+    parser.add_argument('-b', '--bigfile',
+                        dest='bigfile',
+                        default=None,
+                        help='Create one, big file',
+                        )
 
     parser.add_argument('indexfile',
                         help='index file (XML) which refer all other files')
@@ -86,7 +91,10 @@ def main(cliargs=None):
         log.info("Using %r -> %r", infile, outfile)
 
         # Also create output structure
-        os.makedirs(os.path.dirname(outfile), exist_ok=True)
+        try:
+            os.makedirs(os.path.dirname(outfile))
+        except OSError:
+            pass
 
         # TODO: also process **params
         result, errors = transform(xslt, infile, os.path.abspath(args.booktree))
@@ -97,3 +105,32 @@ def main(cliargs=None):
         log.info("Writing transformation results to %r", outfile)
         for entry in errors:
             print(entry)
+
+    if args.bigfile is not None:
+        indexfile = os.path.join(args.outputdir, os.path.basename(args.indexfile))
+        xml = etree.parse(indexfile)
+        # Resolve all XIncludes
+        xml.xinclude()
+        #xml.write(args.bigfile,
+        #          encoding='unicode',
+        #          pretty_print=True,
+        #          )
+        rootname = xml.getroot().tag
+        doctype="""<!DOCTYPE {} PUBLIC
+  "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://docbook.org/xml/4.5/docbookx.dtd"
+[
+   <!--
+    <!ENTITY % entities SYSTEM "entity-decl.ent">
+    %entities;
+    -->
+]>""".format(rootname)
+        with open(args.bigfile, 'w') as f:
+            log.info("Writing bigfile to %r", args.bigfile)
+            f.write(etree.tostring(xml,
+                                   encoding='unicode',
+                                   pretty_print=True,
+                                   doctype=doctype,
+                                   )
+            )
+
