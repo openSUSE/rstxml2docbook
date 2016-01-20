@@ -95,6 +95,12 @@
     <xsl:param name="node" select="."/>
 
     <xsl:choose>
+        <xsl:when test="$node/preceding-sibling::section[1]/section[1]/section[1]/*[last()][self::target]">
+          <xsl:value-of select="$node/preceding-sibling::section[1]/section[1]/section[1]/*[last()][self::target]/@refid"/>
+        </xsl:when>
+        <xsl:when test="$node/preceding-sibling::section[1]/section[1]/*[last()][self::target]">
+          <xsl:value-of select="$node/preceding-sibling::section[1]/section[1]/*[last()][self::target]/@refid"/>
+        </xsl:when>
         <xsl:when test="$node/preceding-sibling::section[1]/*[last()][self::target]">
           <xsl:value-of select="$node/preceding-sibling::section[1]/*[last()][self::target]/@refid"/>
         </xsl:when>
