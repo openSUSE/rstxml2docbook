@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "+//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML" "docutils.dtd">
+<document>
+  <title>Book title</title>
+  <section>
+    <title>Section Title</title>
+    <paragraph>one para</paragraph>
+    <paragraph>two para</paragraph>
+  </section>
+</document>
