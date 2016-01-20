@@ -1,0 +1,9 @@
+# Requirements file for pip
+# Use it with pip install -r test_requirements.txt
+
+-r requirements.txt
+wheel
+pytest
+flake8
+bumpversion
+prospector
