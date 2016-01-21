@@ -123,6 +123,7 @@
   <xsl:template match="comment"/>
   <xsl:template match="index"/>
   <xsl:template match="target"/>
+  <xsl:template match="substitution_definition"/>
 
 
   <!-- =================================================================== -->
@@ -193,7 +194,7 @@
     </screen>
   </xsl:template>
 
-  <xsl:template match="literal_block[@language]">
+  <xsl:template match="literal_block[@language]|block_quote/literal_block[@language]">
     <screen language="{@language}">
       <xsl:apply-templates/>
     </screen>
@@ -342,14 +343,25 @@
   <!-- =================================================================== -->
   <xsl:template match="figure">
     <figure>
-      <xsl:if test="following-sibling::paragraph[strong]">
-        <xsl:variable name="title">
-          <xsl:value-of select="substring-after('Figure', following-sibling::paragraph[1]/strong)"/>
-        </xsl:variable>
-        <title><xsl:value-of select="$title"/></title>
-      </xsl:if>
-      <xsl:apply-templates/>
+      <xsl:choose>
+        <xsl:when test="following-sibling::paragraph[strong]">
+          <xsl:variable name="title">
+            <xsl:value-of select="substring-after('Figure', following-sibling::paragraph[1]/strong)"/>
+          </xsl:variable>
+          <title><xsl:value-of select="$title"/></title>
+        </xsl:when>
+        <xsl:when test="caption">
+          <title>
+            <xsl:apply-templates select="caption"/>
+          </title>
+        </xsl:when>
+      </xsl:choose>
+      <xsl:apply-templates select="node()[not(self::caption)]"/>
     </figure>
+  </xsl:template>
+
+  <xsl:template match="caption|caption/strong">
+    <xsl:apply-templates/>
   </xsl:template>
 
   <xsl:template match="image">
