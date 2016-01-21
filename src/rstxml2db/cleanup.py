@@ -18,6 +18,22 @@
 
 from .log import log
 
+def finddoubleids(allids):
+    d = dict()
+    for i in allids:
+        idattr = i.attrib['id']
+        try:
+            d[idattr] += d.setdefault(idattr, 1)
+        except:
+            d[idattr] = 1
+    double = list() # [(i,k) for i,k in d.items() if k>1]
+    for i, k in d.items():
+        if k>1:
+            log.warn("Double ID found: %r", i)
+            double.append((i,k))
+
+    return double
+
 
 def cleanupxml(xml):
     """Cleanup step to remove all unresolved IDs
@@ -26,6 +42,8 @@ def cleanupxml(xml):
     """
     allxrefs = xml.xpath('//xref')
     allids = xml.xpath('//*[@id]')
+
+    double = finddoubleids(allids)
 
     linkends = set([i.attrib['linkend'] for i in allxrefs])
     # ids = set([i.attrib['id'] for i in allids])
