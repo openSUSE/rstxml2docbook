@@ -43,8 +43,6 @@ def cleanupxml(xml):
     allxrefs = xml.xpath('//xref')
     allids = xml.xpath('//*[@id]')
 
-    double = finddoubleids(allids)
-
     linkends = set([i.attrib['linkend'] for i in allxrefs])
     # ids = set([i.attrib['id'] for i in allids])
 
@@ -53,3 +51,6 @@ def cleanupxml(xml):
         if idattr not in linkends:
             log.info("Removing unused %r attribute", idattr)
             del item.attrib['id']
+
+    double = finddoubleids(xml.xpath('//*[@id]'))
+
