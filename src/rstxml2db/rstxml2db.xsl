@@ -187,6 +187,7 @@
     <xsl:text>&#10;</xsl:text>
   </xsl:template>
 
+
   <!-- =================================================================== -->
   <xsl:template match="block_quote">
     <xsl:apply-templates/>
@@ -280,6 +281,7 @@
     </listitem>
   </xsl:template>
 
+
   <!-- =================================================================== -->
   <xsl:template match="glossary">
     <!--<glossary>
@@ -315,9 +317,32 @@
 
   <!-- =================================================================== -->
   <xsl:template match="table">
-    <informaltable>
+    <xsl:variable name="title">
+      <xsl:if test="preceding-sibling::paragraph[1][strong]">
+        <xsl:apply-templates select="preceding-sibling::paragraph[1]/strong"/>
+      </xsl:if>
+    </xsl:variable>
+    <xsl:variable name="id">
+      <xsl:call-template name="get.target.id"/>
+    </xsl:variable>
+    <xsl:variable name="table">
+      <xsl:choose>
+        <xsl:when test="$title != ''">table</xsl:when>
+        <xsl:otherwise>informaltable</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <xsl:element name="{$table}">
+      <xsl:if test="$id != ''">
+        <xsl:attribute name="id">
+          <xsl:value-of select="$id"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="$title != ''">
+        <title><xsl:value-of select="$title"/></title>
+      </xsl:if>
       <xsl:apply-templates mode="table"/>
-    </informaltable>
+    </xsl:element>
   </xsl:template>
 
   <xsl:template match="@stub" mode="table"/>
