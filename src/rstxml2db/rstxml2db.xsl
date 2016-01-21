@@ -91,7 +91,7 @@
     <xsl:value-of select="$name"/>
   </xsl:template>
 
-  <xsl:template name="get.target.id">
+  <xsl:template name="get.target4section.id">
     <xsl:param name="node" select="."/>
 
     <xsl:choose>
@@ -103,6 +103,59 @@
         </xsl:when>
         <xsl:when test="$node/preceding-sibling::section[1]/*[last()][self::target]">
           <xsl:value-of select="$node/preceding-sibling::section[1]/*[last()][self::target]/@refid"/>
+        </xsl:when>
+        <xsl:when test="$node/preceding-sibling::*[1][self::target]">
+          <xsl:value-of select="$node/preceding-sibling::*[1][self::target]/@refid"/>
+        </xsl:when>
+        <xsl:when test="contains($node/@ids, ' ')">
+          <xsl:value-of select="substring-after($node/@ids, ' ')"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$node/@ids"/>
+        </xsl:otherwise>
+      </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="get.target4table.id">
+    <xsl:param name="node" select="."/>
+
+    <xsl:choose>
+        <!--<xsl:when test="$node/preceding-sibling::section[1]/section[1]/section[1]/*[last()][self::target]">
+          <xsl:value-of select="$node/preceding-sibling::section[1]/section[1]/section[1]/*[last()][self::target]/@refid"/>
+        </xsl:when>
+        <xsl:when test="$node/preceding-sibling::section[1]/section[1]/*[last()][self::target]">
+          <xsl:value-of select="$node/preceding-sibling::section[1]/section[1]/*[last()][self::target]/@refid"/>
+        </xsl:when>
+        <xsl:when test="$node/preceding-sibling::section[1]/*[last()][self::target]">
+          <xsl:value-of select="$node/preceding-sibling::section[1]/*[last()][self::target]/@refid"/>
+        </xsl:when>-->
+        <xsl:when test="$node/preceding-sibling::*[2][self::target]">
+          <xsl:value-of select="$node/preceding-sibling::*[2][self::target]/@refid"/>
+        </xsl:when>
+        <xsl:when test="$node/preceding-sibling::*[1][self::target]">
+          <xsl:value-of select="$node/preceding-sibling::*[1][self::target]/@refid"/>
+        </xsl:when>
+        <xsl:when test="contains($node/@ids, ' ')">
+          <xsl:value-of select="substring-after($node/@ids, ' ')"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$node/@ids"/>
+        </xsl:otherwise>
+      </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="get.target.id">
+    <xsl:param name="node" select="."/>
+
+    <xsl:choose>
+        <!--<xsl:when test="$node/preceding-sibling::*[1]/*[1]/*[1]/*[last()][self::target]">
+          <xsl:value-of select="$node/preceding-sibling::*[1]/*[1]/*[1]/*[last()][self::target]/@refid"/>
+        </xsl:when>-->
+        <!--<xsl:when test="$node/preceding-sibling::*[1]/*[1]/*[last()][self::target]">
+          <xsl:value-of select="$node/preceding-sibling::*[1]/*[1]/*[last()][self::target]/@refid"/>
+        </xsl:when>-->
+        <xsl:when test="$node/preceding-sibling::*[1]/*[last()][self::target]">
+          <xsl:value-of select="$node/preceding-sibling::*[1]/*[last()][self::target]/@refid"/>
         </xsl:when>
         <xsl:when test="$node/preceding-sibling::*[1][self::target]">
           <xsl:value-of select="$node/preceding-sibling::*[1][self::target]/@refid"/>
@@ -145,7 +198,7 @@
       <xsl:call-template name="create.structural.name"/>
     </xsl:variable>
     <xsl:variable name="idattr">
-      <xsl:call-template name="get.target.id"/>
+      <xsl:call-template name="get.target4section.id"/>
     </xsl:variable>
 
     <xsl:element name="{$name}">
@@ -251,7 +304,13 @@
   </xsl:template>
 
   <xsl:template match="enumerated_list/list_item">
+    <xsl:variable name="id">
+      <xsl:call-template name="get.target.id"/>
+    </xsl:variable>
     <step>
+      <xsl:if test="$id != ''">
+        <xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute>
+      </xsl:if>
       <xsl:apply-templates/>
     </step>
   </xsl:template>
@@ -323,7 +382,7 @@
       </xsl:if>
     </xsl:variable>
     <xsl:variable name="id">
-      <xsl:call-template name="get.target.id"/>
+      <xsl:call-template name="get.target4table.id"/>
     </xsl:variable>
     <xsl:variable name="table">
       <xsl:choose>
@@ -331,6 +390,12 @@
         <xsl:otherwise>informaltable</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
+
+    <!--<xsl:message>table:
+    title=<xsl:value-of select="$title"/>
+    id=<xsl:value-of select="$id"/>
+    type=<xsl:value-of select="$table"/>
+    </xsl:message>-->
 
     <xsl:element name="{$table}">
       <xsl:if test="$id != ''">
