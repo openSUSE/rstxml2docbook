@@ -169,6 +169,25 @@
       </xsl:choose>
   </xsl:template>
 
+  <!-- Taken from common/common.xsl of the DocBook stylesheets -->
+  <xsl:template name="filename-basename">
+    <!-- We assume all filenames are really URIs and use "/" -->
+    <xsl:param name="filename"/>
+    <xsl:param name="recurse" select="false()"/>
+
+    <xsl:choose>
+      <xsl:when test="substring-after($filename, '/') != ''">
+        <xsl:call-template name="filename-basename">
+          <xsl:with-param name="filename" select="substring-after($filename, '/')"/>
+          <xsl:with-param name="recurse" select="true()"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$filename"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <!-- =================================================================== -->
   <!-- Ignored elements                                                    -->
   <xsl:template match="section[@names='search\ in\ this\ guide']"/>
@@ -459,7 +478,11 @@
   </xsl:template>
 
   <xsl:template match="image">
-    <xsl:variable name="uri" select="@uri"/>
+    <xsl:variable name="uri">
+      <xsl:call-template name="filename-basename">
+        <xsl:with-param name="filename" select="@uri"></xsl:with-param>
+      </xsl:call-template>
+    </xsl:variable>
     <mediaobject>
       <imageobject role="fo">
         <imagedata fileref="{$uri}" width="{@width}"/>
