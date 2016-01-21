@@ -188,6 +188,10 @@
   </xsl:template>
 
   <!-- =================================================================== -->
+  <xsl:template match="block_quote">
+    <xsl:apply-templates/>
+  </xsl:template>
+
   <xsl:template match="literal_block[@language='shell' or @language='console']">
     <screen>
       <xsl:apply-templates/>
