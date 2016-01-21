@@ -18,6 +18,7 @@
 
 from .log import log
 
+
 def finddoubleids(allids):
     d = dict()
     for i in allids:
@@ -44,7 +45,6 @@ def cleanupxml(xml):
     allids = xml.xpath('//*[@id]')
 
     linkends = set([i.attrib['linkend'] for i in allxrefs])
-    # ids = set([i.attrib['id'] for i in allids])
 
     for item in allids:
         idattr = item.attrib['id']
