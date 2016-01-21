@@ -19,6 +19,7 @@
 from .log import log, setloglevel
 from .treebuilder import process_index
 from .xslt import transform
+from .cleanup import cleanupxml
 
 import argparse
 from itertools import chain
@@ -60,6 +61,13 @@ def main(cliargs=None):
                         dest='bigfile',
                         default=None,
                         help='Create one, big file',
+                        )
+    parser.add_argument('-k', '--keep-all-ids',
+                        dest='keepallids',
+                        action='store_false',
+                        default=True,
+                        help='By default, IDs in bigfile are removed '
+                             'if they are not referenced. This option keeps all IDs.',
                         )
 
     parser.add_argument('indexfile',
@@ -111,10 +119,11 @@ def main(cliargs=None):
         xml = etree.parse(indexfile)
         # Resolve all XIncludes
         xml.xinclude()
-        #xml.write(args.bigfile,
-        #          encoding='unicode',
-        #          pretty_print=True,
-        #          )
+
+        # Search for all <xref/>s and remove unused IDs
+        if args.keepallids:
+            cleanupxml(xml)
+
         rootname = xml.getroot().tag
         doctype="""<!DOCTYPE {} PUBLIC
   "-//OASIS//DTD DocBook XML V4.5//EN"
@@ -133,4 +142,3 @@ def main(cliargs=None):
                                    doctype=doctype,
                                    )
             )
-
