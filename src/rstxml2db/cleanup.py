@@ -41,7 +41,19 @@ def finddoubleids(allids):
     return double
 
 
-def cleanupxml(xml, finddoubleids=True):
+def allelementswithid(xml):
+    """Generator: yielding all elements with an 'id' attribute
+
+    :param xml: root tree or element
+    """
+    tree = xml.getroottree()  if hasattr(xml, 'getroottree') else xml
+
+    for item in tree.iter():
+        if item.attrib.get('id'):
+            yield item
+
+
+def cleanupxml(xml, usedoubleids=True):
     """Cleanup step to remove all IDs with no corresponding xref
 
     :param xml: :class:`lxml.etree._ElementTree`
@@ -51,11 +63,11 @@ def cleanupxml(xml, finddoubleids=True):
 
     linkends = set([i.attrib['linkend'] for i in xml.iter('xref')])
 
-    for item in xml.xpath("//*[@id]"):
+    for item in allelementswithid(xml): #.xpath("//*[@id]"):
         idattr = item.attrib['id']
         if idattr not in linkends:
             log.info("Removing unused %r attribute", idattr)
             del item.attrib['id']
 
-    if finddoubleids:
+    if usedoubleids:
         double = finddoubleids(xml.xpath("//*[@id]"))

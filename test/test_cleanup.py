@@ -1,6 +1,6 @@
 #
 
-from rstxml2db.cleanup import cleanupxml, finddoubleids
+from rstxml2db.cleanup import cleanupxml, finddoubleids, allelementswithid
 from py.path import local
 from lxml import etree
 
@@ -50,3 +50,23 @@ def test_finddoubleids():
                            )
     assert double == [('chapter', 2)]
 
+
+def test_allelementswithid():
+    xmlstr = """<book id="book">
+  <title>Test</title>
+  <chapter id="chapter">
+    <title>Test Chapter 1</title>
+    <para/>
+  </chapter>
+  <chapter id="chapter">
+    <title>Test Chapter 2</title>
+    <para/>
+  </chapter>
+</book>
+    """
+    xml = etree.fromstring(xmlstr)
+    xml = xml.getroottree()
+    ids = list(allelementswithid(xml))
+    print(ids)
+    assert len(ids) == 3
+    assert [item.tag for item in ids] == [ 'book', 'chapter', 'chapter' ]
