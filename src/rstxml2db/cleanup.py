@@ -17,9 +17,13 @@
 # you may find current contact information at www.suse.com
 
 from .log import log
-
+from itertools import chain
 
 def finddoubleids(allids):
+    """Find all double IDs
+
+    :param allids: list with :class:`etree.Element`
+    """
     d = dict()
     for i in allids:
         idattr = i.attrib['id']
@@ -36,21 +40,23 @@ def finddoubleids(allids):
     return double
 
 
-def cleanupxml(xml):
-    """Cleanup step to remove all unresolved IDs
+def cleanupxml(xml, finddoubleids=True):
+    """Cleanup step to remove all IDs with no corresponding xref
 
     :param xml: :class:`lxml.etree._ElementTree`
+    :param finddoubleids: boolean to execute additional check to find
+           double ids or not (default True)
     """
-    allxrefs = xml.xpath('//xref')
-    allids = xml.xpath('//*[@id]')
 
-    linkends = set([i.attrib['linkend'] for i in allxrefs])
+    linkends = set([i.attrib['linkend'] for i in xml.iter('xref')])
 
-    for item in allids:
+    # For some odd reason, iterfind doesn't take account the root element :(
+    # Therefore chaining it with explicitly .xpath() expression:
+    for item in chain(xml.xpath("/*[@id]"), xml.iterfind("*[@id]")):
         idattr = item.attrib['id']
         if idattr not in linkends:
             log.info("Removing unused %r attribute", idattr)
             del item.attrib['id']
 
-    double = finddoubleids(xml.xpath('//*[@id]'))
-
+    if finddoubleids:
+        double = finddoubleids(xml.iterfind("*[@id]"))
