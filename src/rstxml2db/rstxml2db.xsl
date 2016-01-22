@@ -63,11 +63,13 @@
     <xsl:choose>
       <xsl:when test="$level = 0">book</xsl:when>
       <xsl:when test="$level = 1">chapter</xsl:when>
-      <xsl:when test="$level = 2">sect1</xsl:when>
+      <xsl:when test="$level >= 2">section</xsl:when>
+      <!--
       <xsl:when test="$level = 3">sect2</xsl:when>
       <xsl:when test="$level = 4">sect3</xsl:when>
       <xsl:when test="$level = 5">sect4</xsl:when>
       <xsl:when test="$level = 6">sect5</xsl:when>
+      -->
       <xsl:otherwise>
         <xsl:message>ERROR: Level too big!</xsl:message>
         <xsl:text>topic</xsl:text>
