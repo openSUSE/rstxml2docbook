@@ -31,6 +31,9 @@
   <xsl:param name="xml.ext">.xml</xsl:param>
   <xsl:param name="indexfile" select="'.booktree.xml'"/>
 
+  <xsl:param name="productname"/>
+  <xsl:param name="productnumber"/>
+
   <xsl:variable name="index" select="document($indexfile, .)"/>
   <xsl:variable name="sections" select="$index//section"/>
   <xsl:variable name="indexids" select="$index//@id"/>
@@ -211,6 +214,14 @@
   <xsl:template match="section[@names='abstract']">
     <xsl:param name="root"/>
     <xsl:element name="{$root}info">
+      <xsl:if test="$root = 'book'">
+        <xsl:if test="$productname != ''">
+          <productname><xsl:value-of select="$productname"/></productname>
+        </xsl:if>
+        <xsl:if test="$productnumber != ''">
+          <productnumber><xsl:value-of select="$productnumber"/></productnumber>
+        </xsl:if>
+      </xsl:if>
       <abstract>
         <xsl:apply-templates/>
       </abstract>

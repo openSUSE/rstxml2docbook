@@ -69,11 +69,21 @@ def main(cliargs=None):
                         help='By default, IDs in bigfile are removed '
                              'if they are not referenced. This option keeps all IDs.',
                         )
+    parser.add_argument('-n', '--productname',
+                        default='',
+                        help='Name of the product',
+                        )
+    parser.add_argument('-p', '--productnumber',
+                        default='',
+                        help='Number/release etc. of the product',
+                        )
 
     parser.add_argument('indexfile',
                         help='index file (XML) which refer all other files')
 
     args = parser.parse_args(args=cliargs)
+    args.productname = etree.XSLT.strparam(args.productname)
+    args.productnumber = etree.XSLT.strparam(args.productnumber)
     log.info(args)
 
     # init log module
@@ -105,7 +115,12 @@ def main(cliargs=None):
             pass
 
         # TODO: also process **params
-        result, errors = transform(xslt, infile, os.path.abspath(args.booktree))
+        result, errors = transform(xslt,
+                                   infile,
+                                   os.path.abspath(args.booktree),
+                                   productname=args.productname,
+                                   productnumber=args.productnumber,
+                                   )
         result.write(outfile,
                      encoding='utf-8',
                      pretty_print=True,
