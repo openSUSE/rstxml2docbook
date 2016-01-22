@@ -33,11 +33,11 @@ _booktree = '.booktree.xml'
 _xsltfile = os.path.join(HERE, 'rstxml2db.xsl')
 
 
-def main(cliargs=None):
-    """Entry point for the application script
+def parsecli(cliargs=None):
+    """Parse CLI and return ArgumentParser result
 
     :param list cliargs: Arguments to parse or None (=use sys.argv)
-    :return: True or False
+    :return: `argparse` result
     """
     parser = argparse.ArgumentParser()
 
@@ -90,7 +90,15 @@ def main(cliargs=None):
     args.productnumber = etree.XSLT.strparam(args.productnumber)
     args.legalnotice = etree.XSLT.strparam(args.legalnotice)
     log.info(args)
+    return args
 
+
+def process(args):
+    """Process arguments from CLI parser
+
+    :param args: result from `argparse` parser
+    :return: True or False
+    """
     # init log module
     setloglevel(args.verbose)
 
@@ -163,3 +171,14 @@ def main(cliargs=None):
                                    doctype=doctype,
                                    )
             )
+
+
+def main(cliargs=None):
+    """Entry point for the application script
+
+    :param list cliargs: Arguments to parse or None (=use sys.argv)
+    :return: True or False
+    """
+    args = parsecli(cliargs)
+    return process(args)
+
