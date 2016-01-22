@@ -59,4 +59,6 @@ def cleanupxml(xml, finddoubleids=True):
             del item.attrib['id']
 
     if finddoubleids:
-        double = finddoubleids(xml.iterfind("*[@id]"))
+        double = finddoubleids(chain(xml.xpath("/*[@id]"),
+                                     xml.iterfind("*[@id]"))
+                               )
