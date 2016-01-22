@@ -33,6 +33,7 @@
 
   <xsl:param name="productname"/>
   <xsl:param name="productnumber"/>
+  <xsl:param name="legalnotice"/>
 
   <xsl:variable name="index" select="document($indexfile, .)"/>
   <xsl:variable name="sections" select="$index//section"/>
@@ -221,6 +222,13 @@
         <xsl:if test="$productnumber != ''">
           <productnumber><xsl:value-of select="$productnumber"/></productnumber>
         </xsl:if>
+      </xsl:if>
+      <xsl:if test="$legalnotice != ''">
+        <xsl:element name="xi:include" namespace="http://www.w3.org/2001/XInclude">
+          <xsl:attribute name="href">
+            <xsl:value-of select="$legalnotice"/>
+          </xsl:attribute>
+        </xsl:element>
       </xsl:if>
       <abstract>
         <xsl:apply-templates/>

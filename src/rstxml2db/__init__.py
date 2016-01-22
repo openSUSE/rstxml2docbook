@@ -77,6 +77,10 @@ def main(cliargs=None):
                         default='',
                         help='Number/release etc. of the product',
                         )
+    parser.add_argument('-l', '--legalnotice',
+                        default='',
+                        help='path to filename which contains <legalnotice> elements',
+                        )
 
     parser.add_argument('indexfile',
                         help='index file (XML) which refer all other files')
@@ -84,6 +88,7 @@ def main(cliargs=None):
     args = parser.parse_args(args=cliargs)
     args.productname = etree.XSLT.strparam(args.productname)
     args.productnumber = etree.XSLT.strparam(args.productnumber)
+    args.legalnotice = etree.XSLT.strparam(args.legalnotice)
     log.info(args)
 
     # init log module
@@ -120,6 +125,7 @@ def main(cliargs=None):
                                    os.path.abspath(args.booktree),
                                    productname=args.productname,
                                    productnumber=args.productnumber,
+                                   legalnotice=args.legalnotice,
                                    )
         result.write(outfile,
                      encoding='utf-8',
