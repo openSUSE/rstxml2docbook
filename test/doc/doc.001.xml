@@ -2,7 +2,7 @@
 <!DOCTYPE document PUBLIC "+//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML" "docutils.dtd">
 <document>
   <title>Book title</title>
-  <section>
+  <section ids="sect1" names="backup\ and\ restore\ a\ database">
     <title>Section Title</title>
     <paragraph>one para</paragraph>
     <paragraph>two para</paragraph>
