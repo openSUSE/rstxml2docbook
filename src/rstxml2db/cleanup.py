@@ -19,6 +19,7 @@
 from .log import log
 from itertools import chain
 
+
 def finddoubleids(allids):
     """Find all double IDs
 
@@ -50,15 +51,11 @@ def cleanupxml(xml, finddoubleids=True):
 
     linkends = set([i.attrib['linkend'] for i in xml.iter('xref')])
 
-    # For some odd reason, iterfind doesn't take account the root element :(
-    # Therefore chaining it with explicitly .xpath() expression:
-    for item in chain(xml.xpath("/*[@id]"), xml.iterfind("*[@id]")):
+    for item in xml.xpath("//*[@id]"):
         idattr = item.attrib['id']
         if idattr not in linkends:
             log.info("Removing unused %r attribute", idattr)
             del item.attrib['id']
 
     if finddoubleids:
-        double = finddoubleids(chain(xml.xpath("/*[@id]"),
-                                     xml.iterfind("*[@id]"))
-                               )
+        double = finddoubleids(xml.xpath("//*[@id]"))
