@@ -48,7 +48,7 @@ def buildcompounds(xf, doc, source=None, level=0):
             # dirname = os.path.dirname(doc.getroottree().docinfo.URL)
             dirname = ''
 
-        level = int(doc.xpath("count(ancestor::section)")) + level
+        level += int(doc.xpath("count(ancestor::section)"))
 
         with xf.element('section', id=doc.attrib.get('ids'),
                                    level=str(level)):
@@ -108,7 +108,7 @@ def process_index(indexfile, output=None, format=False):
         xml.docinfo.URL = output
         return xml
 
-    log.info("Reading indexfile %r", indexfile)
+    log.info("Reading index file %r", indexfile)
     xml = etree.parse(indexfile)
     document = xml.getroot()
 
