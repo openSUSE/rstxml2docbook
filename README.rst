@@ -1,6 +1,9 @@
 README
 ******
 
+.. image:: https://travis-ci.org/tomschr/rstxml2docbook.svg?branch=develop
+    :target: https://travis-ci.org/tomschr/rstxml2docbook
+
 The :program:`rstxml2db` script converts RST XML files back to DocBook XML.
 
 Installation
