@@ -25,7 +25,7 @@ import os
 NSMAP = dict(xi='http://www.w3.org/2001/XInclude',
              d='http://docbook.org/ns/docbook',
              )
-__all__=('NSMAP', 'buildcompounds', 'process_index', 'iter_sections')
+__all__ = ('NSMAP', 'buildcompounds', 'process_index', 'iter_sections')
 
 
 def buildcompounds(xf, doc, source=None, level=0):
@@ -48,8 +48,10 @@ def buildcompounds(xf, doc, source=None, level=0):
 
         level += int(doc.xpath("count(ancestor::section)"))
 
-        with xf.element('section', id=doc.attrib.get('ids'),
-                                   level=str(level)):
+        with xf.element('section',
+                        id=doc.attrib.get('ids'),
+                        level=str(level)
+                        ):
             if doc.find('title') is not None:
                 xf.write(doc.find('title'))
 
@@ -70,8 +72,6 @@ def buildcompounds(xf, doc, source=None, level=0):
 
                         ref = None
     except Exception as err:
-        #import pdb
-        #pdb.post_mortem()
         log.warning(err)
 
 
@@ -117,4 +117,3 @@ def process_index(indexfile, output=None):
     xml = indent(output)
     log.info('Finished creating booktree file')
     return xml
-

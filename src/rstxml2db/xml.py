@@ -44,7 +44,7 @@ def bigfile(args):
         cleanupxml(xml)
 
     rootname = xml.getroot().tag
-    doctype=r"""<!DOCTYPE {} PUBLIC
+    doctype = r"""<!DOCTYPE {} PUBLIC
 "-//OASIS//DTD DocBook XML V4.5//EN"
 "http://docbook.org/xml/4.5/docbookx.dtd"
 [
@@ -60,7 +60,7 @@ def bigfile(args):
                                pretty_print=True,
                                doctype=doctype,
                                )
-        )
+                )
 
 
 def process(args):

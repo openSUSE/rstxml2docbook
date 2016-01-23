@@ -31,10 +31,10 @@ def finddoubleids(allids):
             d[idattr] += d.setdefault(idattr, 1)
         except KeyError:
             d[idattr] = 1
-    double = list() # [(i,k) for i,k in d.items() if k>1]
+    double = list()  # [(i,k) for i,k in d.items() if k>1]
     for i, k in d.items():
-        if k>1:
-            double.append((i,k))
+        if k > 1:
+            double.append((i, k))
 
     return double
 
@@ -44,7 +44,7 @@ def allelementswithid(xml):
 
     :param xml: root tree or element
     """
-    tree = xml.getroottree()  if hasattr(xml, 'getroottree') else xml
+    tree = xml.getroottree() if hasattr(xml, 'getroottree') else xml
 
     for item in tree.iter():
         if item.attrib.get('id'):
@@ -61,7 +61,7 @@ def cleanupxml(xml, usedoubleids=True):
 
     linkends = set([i.attrib['linkend'] for i in xml.iter('xref')])
 
-    for item in allelementswithid(xml): #.xpath("//*[@id]"):
+    for item in allelementswithid(xml):
         idattr = item.attrib['id']
         if idattr not in linkends:
             log.info("Removing unused %r attribute", idattr)

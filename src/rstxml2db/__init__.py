@@ -120,4 +120,3 @@ def main(cliargs=None):
     except (FileNotFoundError, OSError) as err:
         log.error(err)
         sys.exit(20)
-
