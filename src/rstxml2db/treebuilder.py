@@ -19,9 +19,7 @@
 from .log import log
 
 from lxml import etree
-import io
 import os
-import sys
 
 
 NSMAP = dict(xi='http://www.w3.org/2001/XInclude',
@@ -74,7 +72,7 @@ def buildcompounds(xf, doc, source=None, level=0):
     except Exception as err:
         #import pdb
         #pdb.post_mortem()
-        log.warn(err)
+        log.warning(err)
 
 
 def iter_sections(xf, doc, source=None, level=0):
@@ -89,11 +87,11 @@ def iter_sections(xf, doc, source=None, level=0):
         buildcompounds(xf, item, source, level)
 
 
-def process_index(indexfile, output=None, format=False):
+def process_index(indexfile, output=None):
     """Process the index file, converted from RST to XML
 
-    :param indexfile:
-    :param format: format output file?
+    :param indexfile: main file
+    :param output: filename to save the result
     :return: None
     """
     def indent(output):

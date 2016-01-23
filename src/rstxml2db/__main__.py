@@ -17,8 +17,6 @@
 # you may find current contact information at www.suse.com
 
 from . import main
-from . import log
-from lxml import etree
 
 if __name__ == "__main__":
     main()

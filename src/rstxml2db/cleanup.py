@@ -29,12 +29,11 @@ def finddoubleids(allids):
         idattr = i.attrib['id']
         try:
             d[idattr] += d.setdefault(idattr, 1)
-        except:
+        except KeyError:
             d[idattr] = 1
     double = list() # [(i,k) for i,k in d.items() if k>1]
     for i, k in d.items():
         if k>1:
-            log.warn("Double ID found: %r", i)
             double.append((i,k))
 
     return double
@@ -70,3 +69,4 @@ def cleanupxml(xml, usedoubleids=True):
 
     if usedoubleids:
         double = finddoubleids(xml.xpath("//*[@id]"))
+        log.warning("Double ids found: %s", double)

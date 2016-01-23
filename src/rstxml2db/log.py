@@ -17,9 +17,7 @@
 # you may find current contact information at www.suse.com
 
 import logging
-import os
 import sys
-import traceback
 
 __all__ = ('log', 'setloglevel', 'LOGLEVELS', )
 

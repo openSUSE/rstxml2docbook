@@ -21,19 +21,17 @@
 
 
 from .core import BOOKTREE
-from .log import log, setloglevel
-from .xml import bigfile, process
-from .xslt import transform
-from .cleanup import cleanupxml
+from .log import log
+from .xml import process
 
 import argparse
 from lxml import etree
-import os
 import sys
 
 __all__ = ('__version__', 'main', 'parsecli')
 __version__ = "0.0.3"
 __author__ = "Thomas Schraitle <toms (AT) suse DOT de>"
+
 
 def parsecli(cliargs=None):
     """Parse CLI and return ArgumentParser result
