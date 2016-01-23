@@ -16,7 +16,9 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+import sys
 from . import main
 
+
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
