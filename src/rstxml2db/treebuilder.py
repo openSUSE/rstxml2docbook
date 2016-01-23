@@ -35,44 +35,43 @@ def buildcompounds(xf, doc, source=None, level=0):
     :param doc: element tree
     :param source: filename
     """
+
+    log.debug("   buildcompounds: %s, %r", doc, source)
     try:
-        log.debug("   buildcompounds: %s, %r", doc, source)
-        try:
-            dirname = os.path.dirname(source)
-            # source = os.path.basename(source)
-            log.debug("Using source %r and dirname %r", source, dirname)
-        except AttributeError:
-            # Fall back
-            # dirname = os.path.dirname(doc.getroottree().docinfo.URL)
-            dirname = ''
+        dirname = os.path.dirname(source)
+        # source = os.path.basename(source)
+        log.debug("Using source %r and dirname %r", source, dirname)
+    except AttributeError:
+        # Fall back
+        # dirname = os.path.dirname(doc.getroottree().docinfo.URL)
+        dirname = ''
 
-        level += int(doc.xpath("count(ancestor::section)"))
+    level += int(doc.xpath("count(ancestor::section)"))
 
-        with xf.element('section',
-                        id=doc.attrib.get('ids'),
-                        level=str(level)
-                        ):
-            if doc.find('title') is not None:
-                xf.write(doc.find('title'))
+    with xf.element('section',
+                    id=doc.attrib.get('ids'),
+                    level=str(level)
+                    ):
+        if doc.find('title') is not None:
+            xf.write(doc.find('title'))
 
-            for item in doc.iter('list_item'):
-                if item.attrib.get('classes') == 'toctree-l1':
-                    ref = item.xpath("*/reference[@internal='True']")[0]
-                    if ref is not None:
-                        href = "%s.xml" % ref.attrib.get('refuri')
+        for item in doc.iter('list_item'):
+            if item.attrib.get('classes') == 'toctree-l1':
+                ref = item.xpath("*/reference[@internal='True']")[0]
+                if ref is not None:
+                    href = "%s.xml" % ref.attrib.get('refuri')
 
-                        with xf.element('ref', href=href):
-                            d = os.path.join(dirname, href)
-                            log.info("Loading %r...", d)
-                            xml = etree.parse(d)
-                            document = xml.getroot()
-                            iter_sections(xf, document, d, level+1)
-                            xml = None
-                            document = None
+                    with xf.element('ref', href=href):
+                        d = os.path.join(dirname, href)
+                        log.info("Loading %r...", d)
+                        xml = etree.parse(d)
+                        document = xml.getroot()
+                        iter_sections(xf, document, d, level+1)
+                        xml = None
+                        document = None
 
-                        ref = None
-    except Exception as err:
-        log.warning(err)
+                    ref = None
+
 
 
 def iter_sections(xf, doc, source=None, level=0):
