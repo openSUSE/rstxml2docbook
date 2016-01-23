@@ -1,0 +1,22 @@
+# config file for automatic testing at travis-ci.org
+language: python
+python:
+    - "3.3"
+    - "3.4"
+    - "3.5"
+
+env:
+    global:
+        - LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
+
+# command to install dependencies
+install:
+    - pip install -r devel_requirements.txt
+
+# command to run tests
+script:
+    - py.test -v
+
+# after_success:
+#    codecov
+
