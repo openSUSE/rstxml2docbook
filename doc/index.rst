@@ -43,6 +43,8 @@ Options
 -l <LEGALNOTICE>, --legalnotice <LEGALNOTICE>
                                Path to filename which contains a `legalnotice`
                                element (also included into `book/bookinfo`)
+-p <PARAM>, --param <PARAM>    single XSLT parameter; use the syntax "NAME=VALUE",
+                               can be used multiple times
 <INDEXFILE>                    Index file (XML) which refer all other files
 
 

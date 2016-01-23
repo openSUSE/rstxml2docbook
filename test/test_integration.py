@@ -2,7 +2,6 @@
 
 from rstxml2db.core import BOOKTREE
 from rstxml2db.xml import process
-from argparse import Namespace
 
 from lxml import etree
 from py.path import local

@@ -26,6 +26,29 @@ from .core import BOOKTREE, OUTDIR
 from .log import log
 
 
+def prepareparams(params):
+    """Convert the list with "NAME=VALUE" entries into
+       a tuple with ('NAME', 'VALUE')
+
+       :param params: a list with "NAME=VALUE" entries
+       :return: a tuple with ('NAME', 'VALUE') entries
+    """
+
+    result = []
+    if params is None:
+        return result
+    for item in params:
+        try:
+            name, value = item.split('=')
+        except ValueError:
+            log.warning("Parameter %r doesn't adhere to the "
+                        "NAME=VALUE syntax. Skipping.",
+                        item)
+            continue
+        result.append((name.strip(), value.strip()))
+    return result
+
+
 def parsecli(cliargs=None):
     """Parse CLI and return ArgumentParser result
 
@@ -80,6 +103,12 @@ def parsecli(cliargs=None):
                         help='path to filename which contains a <legalnotice> '
                              'element  (included into `book/bookinfo`)',
                         )
+    parser.add_argument('-p', '--param',
+                        dest='params',
+                        action='append',
+                        help='single XSLT parameter; use the syntax "NAME=VALUE" '
+                             'Can be used multiple times',
+                        )
 
     parser.add_argument('indexfile',
                         help='index file (XML) which refer all other files '
@@ -91,6 +120,8 @@ def parsecli(cliargs=None):
     args.productname = etree.XSLT.strparam(args.productname)
     args.productnumber = etree.XSLT.strparam(args.productnumber)
     args.legalnotice = etree.XSLT.strparam(args.legalnotice)
+
+    args.params = prepareparams(args.params)
 
     log.info(args)
     return args

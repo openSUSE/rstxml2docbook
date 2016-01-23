@@ -107,6 +107,7 @@ def process(args):
                                    productname=args.productname,
                                    productnumber=args.productnumber,
                                    legalnotice=args.legalnotice,
+                                   **dict(args.params)
                                    )
         result.write(outfile,
                      encoding='utf-8',
