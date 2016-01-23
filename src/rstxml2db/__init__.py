@@ -32,7 +32,7 @@ import os
 import sys
 
 __all__ = ('__version__', 'main', 'parsecli')
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 __author__ = "Thomas Schraitle <toms (AT) suse DOT de>"
 
 def parsecli(cliargs=None):
