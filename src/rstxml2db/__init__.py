@@ -28,7 +28,7 @@ import os
 import sys
 
 __all__ = ('__version__', 'main', 'parsecli')
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 
 def parsecli(cliargs=None):
