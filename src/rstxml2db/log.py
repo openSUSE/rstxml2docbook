@@ -21,7 +21,7 @@ import os
 import sys
 import traceback
 
-__all__ = ('log', 'setloglevel', )
+__all__ = ('log', 'setloglevel', 'LOGLEVELS', )
 
 # TODO: Output a different format depending on logging level
 # See http://stackoverflow.com/questions/1343227/can-pythons-logging-format-be-modified-depending-on-the-message-log-level
@@ -34,7 +34,11 @@ _ch.setFormatter(_frmt)
 log.setLevel(logging.DEBUG)
 log.addHandler(_ch)
 
-LOGLEVELS = {None: logging.NOTSET, 0: logging.NOTSET, 1: logging.INFO, 2: logging.DEBUG}
+LOGLEVELS = {None: logging.NOTSET,
+             0: logging.NOTSET,
+             1: logging.INFO,
+             2: logging.DEBUG,
+             }
 
 
 def setloglevel(verbose):

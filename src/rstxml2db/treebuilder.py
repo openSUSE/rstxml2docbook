@@ -27,7 +27,7 @@ import sys
 NSMAP = dict(xi='http://www.w3.org/2001/XInclude',
              d='http://docbook.org/ns/docbook',
              )
-__all__=('NSMAP', 'buildcompounds', 'process_index')
+__all__=('NSMAP', 'buildcompounds', 'process_index', 'iter_sections')
 
 
 def buildcompounds(xf, doc, source=None, level=0):
@@ -63,7 +63,7 @@ def buildcompounds(xf, doc, source=None, level=0):
 
                         with xf.element('ref', href=href):
                             d = os.path.join(dirname, href)
-                            log.info("Trying to load %r", d)
+                            log.info("Loading %r...", d)
                             xml = etree.parse(d)
                             document = xml.getroot()
                             iter_sections(xf, document, d, level+1)
