@@ -7,7 +7,7 @@ from lxml import etree
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-def test_process_index(tmpdir):
+def test_process_index1(tmpdir):
     """
     """
     docname = 'doc.001.xml'
@@ -22,10 +22,23 @@ def test_process_index(tmpdir):
     assert xml.getroot().attrib['href'] == docname
 
 
-def test_process_index1(tmpdir):
+def test_process_index2(tmpdir):
     docname = 'doc.001.xml'
     doc = local(HERE) / 'doc' / docname
     doc.copy(tmpdir)
+    docfile = tmpdir / docname
+    treefile = tmpdir / 'tree.xml'
+    xml = process_index(str(docfile), str(treefile))
+    assert xml
+    assert os.path.exists(str(treefile))
+
+
+def test_process_with_out_dir(tmpdir):
+    docname = 'doc.001.xml'
+    doc = local(HERE) / 'doc' / docname
+    doc.copy(tmpdir)
+    # Create default output directory
+    tmpdir.mkdir('out')
     docfile = tmpdir / docname
     treefile = tmpdir / 'tree.xml'
     xml = process_index(str(docfile), str(treefile))
