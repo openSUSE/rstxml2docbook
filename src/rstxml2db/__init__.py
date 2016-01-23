@@ -16,6 +16,10 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+"""Converts RST XML (Sphinx/ReST) into DocBook XML
+"""
+
+
 from .core import BOOKTREE
 from .log import log, setloglevel
 from .xml import bigfile, process
@@ -29,7 +33,7 @@ import sys
 
 __all__ = ('__version__', 'main', 'parsecli')
 __version__ = "0.0.2"
-
+__author__ = "Thomas Schraitle <toms (AT) suse DOT de>"
 
 def parsecli(cliargs=None):
     """Parse CLI and return ArgumentParser result
@@ -37,10 +41,12 @@ def parsecli(cliargs=None):
     :param list cliargs: Arguments to parse or None (=use sys.argv)
     :return: `argparse` result
     """
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description=__doc__,
+                                     epilog="Version %s written by %s " % (__version__, __author__)
+                                     )
 
     parser.add_argument('-v', '--verbose', action='count',
-                        help="Increase verbosity level")
+                        help="increase verbosity level")
 
     parser.add_argument('--version',
                         action='version',
@@ -58,30 +64,36 @@ def parsecli(cliargs=None):
     parser.add_argument('-b', '--bigfile',
                         dest='bigfile',
                         default=None,
-                        help='Create one, big file',
+                        help='create a single DocBook XML file',
                         )
     parser.add_argument('-k', '--keep-all-ids',
                         dest='keepallids',
                         action='store_false',
                         default=True,
-                        help='By default, IDs in bigfile are removed '
-                             'if they are not referenced. This option keeps all IDs.',
+                        help='by default, IDs in bigfile are removed '
+                             'if they are not referenced. '
+                             'This option keeps all IDs. (default %(default)s)',
                         )
     parser.add_argument('-n', '--productname',
                         default='',
-                        help='Name of the product',
+                        help='name of the product '
+                             '(included into `book/bookinfo`)',
                         )
     parser.add_argument('-p', '--productnumber',
                         default='',
-                        help='Number/release etc. of the product',
+                        help='number/release etc. of the product '
+                             '(included into `book/bookinfo`)',
                         )
     parser.add_argument('-l', '--legalnotice',
                         default='',
-                        help='path to filename which contains <legalnotice> elements',
+                        help='path to filename which contains a <legalnotice> '
+                             'element  (included into `book/bookinfo`)',
                         )
 
     parser.add_argument('indexfile',
-                        help='index file (XML) which refer all other files')
+                        help='index file (XML) which refer all other files '
+                             '(usually something like \'index.xml\')'
+                        )
 
     args = parser.parse_args(args=cliargs)
     args.productname = etree.XSLT.strparam(args.productname)

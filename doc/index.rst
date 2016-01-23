@@ -28,8 +28,24 @@ Options
 -h, --help                     Prints the help text
 -v, --verbose                  Increase verbosity (can be repeated)
 -t <file>, --booktree <file>   Save book tree structure in separate file
+                               (default `.booktree.xml`)
 -d <dir>, --output-dir <dir>   Save XML files into <dir> directory
+                               (default `out`)
+-b <BIGFILE>, --bigfile <BIGFILE>
+                               Create a single DocBook XML file
+-k, --keep-all-ids             By default, IDs in bigfile are removed if they
+                               are not referenced. This option keeps all IDs.
+-n <PRODUCTNAME>, --productname <PRODUCTNAME>
+                               Name of the product (included into `book/bookinfo`)
+-p <PRODUCTNUMBER>, --productnumber <PRODUCTNUMBER>
+                               Number/release etc. of the product (also
+                               included into `book/bookinfo`)
+-l <LEGALNOTICE>, --legalnotice <LEGALNOTICE>
+                               Path to filename which contains a `legalnotice`
+                               element (also included into `book/bookinfo`)
 <INDEXFILE>                    Index file (XML) which refer all other files
+
+
 
 
 See also
@@ -41,4 +57,4 @@ See also
 Author
 ------
 
-Thomas Schraitle <toms AT suse.de>
+Thomas Schraitle <toms AT suse.de> for SUSE Linux GmbH
