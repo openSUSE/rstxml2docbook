@@ -16,9 +16,9 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-import os
-
 __all__ = ('BOOKTREE', 'XSLTRST2DB')
+
+import os
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 BOOKTREE = '.booktree.xml'
