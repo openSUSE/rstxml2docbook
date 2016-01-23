@@ -6,6 +6,7 @@ __pycache__/
 *.kate-swp
 *.~
 *~
+test/*/.booktree.xml
 
 # C extensions
 *.so
