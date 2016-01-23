@@ -5,8 +5,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-rstxml2db Manual Page
-==========================
+rstxml2db Manual Page Version 0.0.1
+===================================
 
 Synopsis
 --------
