@@ -16,21 +16,19 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+from .core import BOOKTREE
 from .log import log, setloglevel
 from .treebuilder import process_index
+from .xml import bigfile, process
 from .xslt import transform
 from .cleanup import cleanupxml
 
 import argparse
-from itertools import chain
 from lxml import etree
 import os
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-__all__ = ('__version__', 'main', )
+__all__ = ('__version__', 'main', 'parsecli')
 __version__ = "0.0.1"
-_booktree = '.booktree.xml'
-_xsltfile = os.path.join(HERE, 'rstxml2db.xsl')
 
 
 def parsecli(cliargs=None):
@@ -49,7 +47,7 @@ def parsecli(cliargs=None):
                         version='%(prog)s ' + __version__
                         )
     parser.add_argument('-t', '--booktree',
-                        default=_booktree,
+                        default=BOOKTREE,
                         help='save book tree to a given file (default %(default)r)',
                         )
     parser.add_argument('-d', '--output-dir',
@@ -91,86 +89,6 @@ def parsecli(cliargs=None):
     args.legalnotice = etree.XSLT.strparam(args.legalnotice)
     log.info(args)
     return args
-
-
-def process(args):
-    """Process arguments from CLI parser
-
-    :param args: result from `argparse` parser
-    :return: True or False
-    """
-    # init log module
-    setloglevel(args.verbose)
-
-    if args.booktree == _booktree:
-        args.booktree = os.path.join(os.path.dirname(args.indexfile), args.booktree)
-        log.info("Using booktree %r", args.booktree)
-
-    if not os.path.exists(args.outputdir):
-        log.info("Creating output dir %r", args.outputdir)
-        os.makedirs(args.outputdir)
-
-    index = process_index(args.indexfile, args.booktree)
-    log.info('')
-
-    xslt = etree.XSLT(etree.parse(_xsltfile))
-
-    for inputfile in index.iter('ref'):
-        href = inputfile.attrib.get('href')
-        infile = os.path.join(os.path.dirname(args.indexfile), href)
-        outfile = os.path.join(args.outputdir, href)
-        log.info("Using %r -> %r", infile, outfile)
-
-        # Also create output structure
-        try:
-            os.makedirs(os.path.dirname(outfile))
-        except OSError:
-            pass
-
-        # TODO: also process **params
-        result, errors = transform(xslt,
-                                   infile,
-                                   os.path.abspath(args.booktree),
-                                   productname=args.productname,
-                                   productnumber=args.productnumber,
-                                   legalnotice=args.legalnotice,
-                                   )
-        result.write(outfile,
-                     encoding='utf-8',
-                     pretty_print=True,
-                     )
-        log.info("Writing transformation results to %r", outfile)
-        for entry in errors:
-            print(entry)
-
-    if args.bigfile is not None:
-        indexfile = os.path.join(args.outputdir, os.path.basename(args.indexfile))
-        xml = etree.parse(indexfile)
-        # Resolve all XIncludes
-        xml.xinclude()
-
-        # Search for all <xref/>s and remove unused IDs
-        if args.keepallids:
-            cleanupxml(xml)
-
-        rootname = xml.getroot().tag
-        doctype="""<!DOCTYPE {} PUBLIC
-  "-//OASIS//DTD DocBook XML V4.5//EN"
-  "http://docbook.org/xml/4.5/docbookx.dtd"
-[
-   <!--
-    <!ENTITY % entities SYSTEM "entity-decl.ent">
-    %entities;
-    -->
-]>""".format(rootname)
-        with open(args.bigfile, 'w') as f:
-            log.info("Writing bigfile to %r", args.bigfile)
-            f.write(etree.tostring(xml,
-                                   encoding='unicode',
-                                   pretty_print=True,
-                                   doctype=doctype,
-                                   )
-            )
 
 
 def main(cliargs=None):
