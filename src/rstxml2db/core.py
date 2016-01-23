@@ -16,9 +16,10 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-from . import main
-from . import log
-from lxml import etree
+import os
 
-if __name__ == "__main__":
-    main()
+__all__ = ('BOOKTREE', 'XSLTRST2DB')
+
+_HERE = os.path.dirname(os.path.abspath(__file__))
+BOOKTREE = '.booktree.xml'
+XSLTRST2DB = os.path.join(_HERE, 'rstxml2db.xsl')

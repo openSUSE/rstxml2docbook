@@ -17,7 +17,6 @@
 # you may find current contact information at www.suse.com
 
 from .log import log
-from itertools import chain
 
 
 def finddoubleids(allids):
