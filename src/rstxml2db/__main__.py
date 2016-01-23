@@ -21,7 +21,4 @@ from . import log
 from lxml import etree
 
 if __name__ == "__main__":
-    try:
-        main()
-    except etree.XSLTApplyError as err:
-        log.error(err)
+    main()

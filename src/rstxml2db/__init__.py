@@ -18,7 +18,6 @@
 
 from .core import BOOKTREE
 from .log import log, setloglevel
-from .treebuilder import process_index
 from .xml import bigfile, process
 from .xslt import transform
 from .cleanup import cleanupxml
@@ -26,6 +25,7 @@ from .cleanup import cleanupxml
 import argparse
 from lxml import etree
 import os
+import sys
 
 __all__ = ('__version__', 'main', 'parsecli')
 __version__ = "0.0.1"
@@ -87,6 +87,10 @@ def parsecli(cliargs=None):
     args.productname = etree.XSLT.strparam(args.productname)
     args.productnumber = etree.XSLT.strparam(args.productnumber)
     args.legalnotice = etree.XSLT.strparam(args.legalnotice)
+
+#    if not os.path.exists(args.indexfile):
+#        raise FileNotFoundError('Cannot find file %r' % args.indexfile)
+
     log.info(args)
     return args
 
@@ -97,6 +101,13 @@ def main(cliargs=None):
     :param list cliargs: Arguments to parse or None (=use sys.argv)
     :return: True or False
     """
-    args = parsecli(cliargs)
-    return process(args)
+    try:
+        args = parsecli(cliargs)
+        return process(args)
+    except etree.XSLTApplyError as err:
+        log.error(err)
+        sys.exit(10)
+    except (FileNotFoundError, OSError) as err:
+        log.error(err)
+        sys.exit(20)
 
