@@ -16,8 +16,12 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-from . import BOOKTREE
-from .log import log
+
+from .cleanup import cleanupxml
+from .core import BOOKTREE, XSLTRST2DB
+from .log import log, setloglevel
+from .treebuilder import process_index
+from .xslt import transform
 
 from lxml import etree
 import sys
@@ -79,7 +83,7 @@ def process(args):
     index = process_index(args.indexfile, args.booktree)
     log.info('')
 
-    xslt = etree.XSLT(etree.parse(_xsltfile))
+    xslt = etree.XSLT(etree.parse(XSLTRST2DB))
 
     for inputfile in index.iter('ref'):
         href = inputfile.attrib.get('href')
