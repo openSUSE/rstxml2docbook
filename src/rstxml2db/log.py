@@ -21,8 +21,6 @@ import sys
 
 __all__ = ('log', 'setloglevel', 'LOGLEVELS', )
 
-# TODO: Output a different format depending on logging level
-# See http://stackoverflow.com/questions/1343227/can-pythons-logging-format-be-modified-depending-on-the-message-log-level
 
 log = logging.getLogger(__file__)
 _ch = logging.StreamHandler(sys.stderr)
