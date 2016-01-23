@@ -16,11 +16,11 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-from .log import log
-
-from lxml import etree
 import os
 
+from lxml import etree
+
+from .log import log
 
 NSMAP = dict(xi='http://www.w3.org/2001/XInclude',
              d='http://docbook.org/ns/docbook',

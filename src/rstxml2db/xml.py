@@ -17,15 +17,18 @@
 # you may find current contact information at www.suse.com
 
 
-from .cleanup import cleanupxml
-from .core import BOOKTREE, XSLTRST2DB
-from .log import log, setloglevel
-from .treebuilder import process_index
-from .xslt import transform
+import os
+import sys
 
 from lxml import etree
-import sys
-import os
+
+from .cleanup import cleanupxml
+from .core import BOOKTREE
+from .core import XSLTRST2DB
+from .log import log
+from .log import setloglevel
+from .treebuilder import process_index
+from .xslt import transform
 
 
 def bigfile(args):
