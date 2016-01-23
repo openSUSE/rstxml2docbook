@@ -20,7 +20,7 @@
 """
 
 __all__ = ('__version__', 'main', 'parsecli')
-__version__ = "0.0.4"
+__version__ = "0.1.0"
 __author__ = "Thomas Schraitle <toms (AT) suse DOT de>"
 
 
