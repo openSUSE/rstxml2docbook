@@ -13,25 +13,15 @@ HERE = local(local(__file__).dirname)
 DOCDIR= HERE / 'doc.001'
 
 
-def test_integration(tmpdir):
+def test_integration(tmpdir, args):
     DOCDIR.copy(tmpdir)
     bigfile = tmpdir / 'bigfile.xml'
     outdir = tmpdir / 'out'
     indexfile = tmpdir / 'index.xml'
 
-    # Construct a fake parsed cli argparser object
-    args = Namespace(booktree = BOOKTREE,
-                     bigfile = str(bigfile),
-                     keepallids = True,
-                     legalnotice = etree.XSLT.strparam(''),
-                     productname = etree.XSLT.strparam('FooObfuscator'),
-                     productnumber = etree.XSLT.strparam('1.0.1'),
-                     outputdir = str(outdir),
-                     verbose = 0,
-                     params = None,
-                     #
-                     indexfile = str(indexfile)
-                     )
+    # Use the faked parsed cli argparser object
+    args.bigfile = str(bigfile)
+    args.indexfile = str(indexfile)
 
     process(args)
 
@@ -41,27 +31,17 @@ def test_integration(tmpdir):
     xml = etree.parse(str(bigfile))
     productname = xml.xpath('/book/bookinfo/productname')
     assert productname
-    assert productname[0].text == 'FooObfuscator'
+    assert productname[0].text == args._productname
     productnumber = xml.xpath('/book/bookinfo/productnumber')
     assert productnumber
-    assert productnumber[0].text == '1.0.1'
+    assert productnumber[0].text == args._productnumber
     assert len(xml.xpath('/book/chapter')) == 2
 
 
-def test_filenotfound():
-    # Construct a fake parsed cli argparser object
-    args = Namespace(booktree = BOOKTREE,
-                     bigfile = str('big.xml'),
-                     keepallids = True,
-                     legalnotice = etree.XSLT.strparam(''),
-                     productname = etree.XSLT.strparam('FooObfuscator'),
-                     productnumber = etree.XSLT.strparam('1.0.1'),
-                     outputdir = str('out'),
-                     verbose = 0,
-                     params = None,
-                     #
-                     indexfile = str('file-does-not-exist.xml')
-                     )
+def test_filenotfound(args):
+    #
+    args.bigfile = 'big.xml'
+    args.indexfile = 'file-does-not-exist.xml'
 
     with pytest.raises((FileNotFoundError, OSError)):
         process(args)

@@ -23,3 +23,4 @@ import os
 _HERE = os.path.dirname(os.path.abspath(__file__))
 BOOKTREE = '.booktree.xml'
 XSLTRST2DB = os.path.join(_HERE, 'rstxml2db.xsl')
+OUTDIR='out'

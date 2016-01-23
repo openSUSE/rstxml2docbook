@@ -35,9 +35,9 @@ Options
                                Create a single DocBook XML file
 -k, --keep-all-ids             By default, IDs in bigfile are removed if they
                                are not referenced. This option keeps all IDs.
--n <PRODUCTNAME>, --productname <PRODUCTNAME>
+-N <PRODUCTNAME>, --productname <PRODUCTNAME>
                                Name of the product (included into `book/bookinfo`)
--p <PRODUCTNUMBER>, --productnumber <PRODUCTNUMBER>
+-P <PRODUCTNUMBER>, --productnumber <PRODUCTNUMBER>
                                Number/release etc. of the product (also
                                included into `book/bookinfo`)
 -l <LEGALNOTICE>, --legalnotice <LEGALNOTICE>

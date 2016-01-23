@@ -22,7 +22,7 @@ import argparse
 from lxml import etree
 
 from . import __version__, __author__
-from .core import BOOKTREE
+from .core import BOOKTREE, OUTDIR
 from .log import log
 
 
@@ -49,7 +49,7 @@ def parsecli(cliargs=None):
                         )
     parser.add_argument('-d', '--output-dir',
                         dest='outputdir',
-                        default='out',
+                        default=OUTDIR,
                         help='save XML files given directory (default %(default)r)',
                         )
     parser.add_argument('-b', '--bigfile',
