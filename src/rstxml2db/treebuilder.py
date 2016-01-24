@@ -28,22 +28,49 @@ NSMAP = dict(xi='http://www.w3.org/2001/XInclude',
 __all__ = ('NSMAP', 'buildcompounds', 'process_index', 'iter_sections')
 
 
+def iter_toctree(xf, doc, dirname, level):
+    """Iterate over toctree
+
+    :param xf: context manager
+    :param doc: element tree
+    :param dirname: directory name
+    :param level: current level
+    :return: None
+    """
+    for item in doc.iter('list_item'):
+        if item.attrib.get('classes') == 'toctree-l1':
+            ref = item.xpath("*/reference[@internal='True']")[0]
+            if ref is not None:
+                href = "%s.xml" % ref.attrib.get('refuri')
+
+                with xf.element('ref', href=href):
+                    d = os.path.join(dirname, href)
+                    log.info("Loading %r...", d)
+                    xml = etree.parse(d)
+                    document = xml.getroot()
+                    iter_sections(xf, document, d, level+1)
+                    xml = None
+                    document = None
+
+                ref = None
+
+
 def buildcompounds(xf, doc, source=None, level=0):
     """Build the output tree
 
     :param xf: context manager
     :param doc: element tree
     :param source: filename
+    :param level: current level
+    :return: None
     """
 
-    log.debug("   buildcompounds: %s, %r", doc, source)
+    # Try to get the dirname, otherwise fallback
     try:
         dirname = os.path.dirname(source)
-        # source = os.path.basename(source)
         log.debug("Using source %r and dirname %r", source, dirname)
     except AttributeError:
         # Fall back
-        # dirname = os.path.dirname(doc.getroottree().docinfo.URL)
         dirname = ''
 
     level += int(doc.xpath("count(ancestor::section)"))
@@ -55,23 +82,7 @@ def buildcompounds(xf, doc, source=None, level=0):
         if doc.find('title') is not None:
             xf.write(doc.find('title'))
 
-        for item in doc.iter('list_item'):
-            if item.attrib.get('classes') == 'toctree-l1':
-                ref = item.xpath("*/reference[@internal='True']")[0]
-                if ref is not None:
-                    href = "%s.xml" % ref.attrib.get('refuri')
-
-                    with xf.element('ref', href=href):
-                        d = os.path.join(dirname, href)
-                        log.info("Loading %r...", d)
-                        xml = etree.parse(d)
-                        document = xml.getroot()
-                        iter_sections(xf, document, d, level+1)
-                        xml = None
-                        document = None
-
-                    ref = None
-
+        iter_toctree(xf, doc, dirname, level)
 
 
 def iter_sections(xf, doc, source=None, level=0):
