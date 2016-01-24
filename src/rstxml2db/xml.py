@@ -65,6 +65,20 @@ def bigfile(args):
                                )
                 )
 
+def prepare_process(args):
+    """Some preparation steps before running process()
+
+    :param args: result from `argparse` parser
+    :return: None
+    """
+    if args.booktree == BOOKTREE:
+        args.booktree = os.path.join(os.path.dirname(args.indexfile), args.booktree)
+        log.info("Using booktree %r", args.booktree)
+
+    if not os.path.exists(args.outputdir):
+        log.info("Creating output dir %r", args.outputdir)
+        os.makedirs(args.outputdir)
+
 
 def process(args):
     """Process arguments from CLI parser
@@ -74,14 +88,7 @@ def process(args):
     """
     # init log module
     setloglevel(args.verbose)
-
-    if args.booktree == BOOKTREE:
-        args.booktree = os.path.join(os.path.dirname(args.indexfile), args.booktree)
-        log.info("Using booktree %r", args.booktree)
-
-    if not os.path.exists(args.outputdir):
-        log.info("Creating output dir %r", args.outputdir)
-        os.makedirs(args.outputdir)
+    prepare_process(args)
 
     index = process_index(args.indexfile, args.booktree)
     log.info('')
