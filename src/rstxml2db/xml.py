@@ -80,21 +80,14 @@ def prepare_process(args):
         os.makedirs(args.outputdir)
 
 
-def process(args):
-    """Process arguments from CLI parser
+def process_iter_ref(args, index, xslt):
+    """Iterate over all ref elements and transform RST XML -> DocBook XML
 
     :param args: result from `argparse` parser
-    :return: True or False
+    :param index: XML tree of booktree structure
+    :param xslt: :class:`etree.XSLT` from stylesheet
+    :return: None
     """
-    # init log module
-    setloglevel(args.verbose)
-    prepare_process(args)
-
-    index = process_index(args.indexfile, args.booktree)
-    log.info('')
-
-    xslt = etree.XSLT(etree.parse(XSLTRST2DB))
-
     for inputfile in index.iter('ref'):
         href = inputfile.attrib.get('href')
         infile = os.path.join(os.path.dirname(args.indexfile), href)
@@ -123,6 +116,23 @@ def process(args):
         log.info("Writing transformation results to %r", outfile)
         for entry in errors:
             print(entry, file=sys.stderr)
+
+
+def process(args):
+    """Process arguments from CLI parser
+
+    :param args: result from `argparse` parser
+    :return: True or False
+    """
+    # init log module
+    setloglevel(args.verbose)
+    prepare_process(args)
+
+    index = process_index(args.indexfile, args.booktree)
+    log.info('')
+
+    xslt = etree.XSLT(etree.parse(XSLTRST2DB))
+    process_iter_ref(args, index, xslt)
 
     bigfile(args)
     return 0

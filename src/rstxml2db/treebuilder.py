@@ -91,7 +91,7 @@ def process_index(indexfile, output=None):
 
     :param indexfile: main file
     :param output: filename to save the result
-    :return: None
+    :return: XML tree of booktree structure
     """
     def indent(output):
         os.rename(output, "%s.tmp" % output)
