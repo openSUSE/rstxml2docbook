@@ -3,9 +3,13 @@ README
 
 .. image:: https://travis-ci.org/tomschr/rstxml2docbook.svg?branch=develop
     :target: https://travis-ci.org/tomschr/rstxml2docbook
+    :alt: Travis CI
 .. image:: https://codeclimate.com/github/tomschr/rstxml2docbook/badges/gpa.svg
     :target: https://codeclimate.com/github/tomschr/rstxml2docbook
     :alt: Code Climate
+.. image:: https://scrutinizer-ci.com/g/tomschr/rstxml2docbook/badges/quality-score.png?b=develop
+    :target: https://scrutinizer-ci.com/g/tomschr/rstxml2docbook/?branch=develop
+    :alt: Scrutinizer Code Quality
 
 The :program:`rstxml2db` script converts RST XML files back to DocBook XML.
 
