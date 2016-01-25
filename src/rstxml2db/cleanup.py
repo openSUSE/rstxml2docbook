@@ -69,7 +69,7 @@ def fix_colspec_width(xml):
             colspec.attrib['colwidth'] = "{:.1f}*".format(100*int(colspec.attrib.get('colwidth'))/colspecsum)
 
 
-def add_pi_in_screen(xml, limit=54, target='dbsuse-fo', fontsize='8pt'):
+def add_pi_in_screen(xml, limit=83, target='dbsuse-fo', fontsize='8pt'):
     """Add processing-instruction for long texts in screens
 
     :param xml: :class:`lxml.etree._ElementTree`
