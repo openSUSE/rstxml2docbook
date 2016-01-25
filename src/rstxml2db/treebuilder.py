@@ -47,11 +47,8 @@ def iter_toctree(xf, doc, dirname, level):
                     d = os.path.join(dirname, href)
                     log.info("Loading %r...", d)
                     xml = etree.parse(d)
-                    document = xml.getroot()
-                    iter_sections(xf, document, d, level+1)
+                    iter_sections(xf, xml.getroot(), d, level+1)
                     xml = None
-                    document = None
-
                 ref = None
 
 
@@ -64,24 +61,17 @@ def buildcompounds(xf, doc, source=None, level=0):
     :param level: current level
     :return: None
     """
-
     # Try to get the dirname, otherwise fallback
-    try:
-        dirname = os.path.dirname(source)
-        log.debug("Using source %r and dirname %r", source, dirname)
-    except AttributeError:
-        # Fall back
-        dirname = ''
+    dirname = '' if source is None else os.path.dirname(source)
+    log.debug("Using source %r and dirname %r", source, dirname)
 
     level += int(doc.xpath("count(ancestor::section)"))
-
     with xf.element('section',
                     id=doc.attrib.get('ids'),
                     level=str(level)
                     ):
         if doc.find('title') is not None:
             xf.write(doc.find('title'))
-
         iter_toctree(xf, doc, dirname, level)
 
 
