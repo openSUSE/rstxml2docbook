@@ -31,6 +31,9 @@
   <xsl:param name="xml.ext">.xml</xsl:param>
   <xsl:param name="indexfile" select="'.booktree.xml'"/>
 
+  <!-- Natural language for root element -->
+  <xsl:param name="rootlang">en</xsl:param>
+
   <xsl:param name="productname"/>
   <xsl:param name="productnumber"/>
   <xsl:param name="legalnotice"/>
@@ -245,6 +248,11 @@
     </xsl:variable>
 
     <xsl:element name="{$name}">
+      <xsl:if test="$name = 'book'">
+        <xsl:attribute name="lang">
+          <xsl:value-of select="$rootlang"/>
+        </xsl:attribute>
+      </xsl:if>
       <xsl:if test="@ids">
         <xsl:attribute name="id">
           <xsl:value-of select="$idattr"/>

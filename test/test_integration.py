@@ -36,6 +36,7 @@ def test_integration(tmpdir, args):
     assert productnumber[0].text == args._productnumber
     assert len(xml.xpath('/book/chapter')) == 2
 
+    assert xml.xpath('/book/@lang')
 
 def test_filenotfound(args):
     #
