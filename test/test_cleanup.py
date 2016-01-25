@@ -1,15 +1,17 @@
 #
 
 from rstxml2db.cleanup import (cleanupxml,
+                               remove_double_ids,
                                finddoubleids,
                                allelementswithid,
                                fix_colspec_width,
+                               add_pi_in_screen,
                                )
 from py.path import local
 from lxml import etree
 
 
-def test_cleanup():
+def test_remove_double_ids():
     xmlstr = """<book id="book">
   <title>Test</title>
   <chapter id="chapter.without.xref">
@@ -25,7 +27,7 @@ def test_cleanup():
     xml = etree.fromstring(xmlstr)
     xml = xml.getroottree()
     assert len(xml.xpath("//*[@id]")) == 3
-    cleanupxml(xml, False)
+    remove_double_ids(xml, False)
     assert len(xml.xpath("//*[@id]")) == 1
     assert xml.xpath("//*[@id='chapter.with.xref']")
 
@@ -93,3 +95,13 @@ def test_fix_colspec_width():
     fix_colspec_width(xml)
 
     assert xml.xpath('/table/tgroup/colspec/@colwidth') == ['20.0*', '10.0*', '41.0*', '29.0*']
+
+
+def test_add_pi_in_screen():
+    xmlstr = """<screen>{}</screen>""".format('0123456789'*5+'012345')
+    xml = etree.fromstring(xmlstr)
+    xml = xml.getroottree()
+    add_pi_in_screen(xml)
+
+    assert xml.xpath("/screen/processing-instruction()")
+    assert xml.xpath("/screen/processing-instruction('dbsuse-fo')")

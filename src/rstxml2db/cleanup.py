@@ -17,7 +17,7 @@
 # you may find current contact information at www.suse.com
 
 from .log import log
-
+from lxml import etree
 
 def finddoubleids(allids):
     """Find all double IDs
@@ -67,6 +67,17 @@ def fix_colspec_width(xml):
         colspecsum = sum([int(x) for x in colspecsum])
         for colspec in table.xpath('tgroup/colspec'):
             colspec.attrib['colwidth'] = "{:.1f}*".format(100*int(colspec.attrib.get('colwidth'))/colspecsum)
+
+
+def add_pi_in_screen(xml, limit=54):
+    """Add processing-instruction for long text in screens
+
+    :param xml: :class:`lxml.etree._ElementTree`
+    """
+    tree = xml.getroottree() if hasattr(xml, 'getroottree') else xml
+    for screen in tree.iter('screen'):
+        if any([len(i)>limit for i in screen.text.split("\n")]):
+            screen.insert(0, etree.ProcessingInstruction('dbsuse-fo', 'font-size="8pt"'))
 
 
 def remove_double_ids(xml, usedoubleids=True):
