@@ -1,6 +1,10 @@
 #
 
-from rstxml2db.cleanup import cleanupxml, finddoubleids, allelementswithid
+from rstxml2db.cleanup import (cleanupxml,
+                               finddoubleids,
+                               allelementswithid,
+                               fix_colspec_width,
+                               )
 from py.path import local
 from lxml import etree
 
@@ -70,3 +74,22 @@ def test_allelementswithid():
     print(ids)
     assert len(ids) == 3
     assert [item.tag for item in ids] == [ 'book', 'chapter', 'chapter' ]
+
+
+def test_fix_colspec_width():
+    xmlstr = """<table>
+    <title>OpenStack services and clients</title>
+    <tgroup cols="4">
+      <colspec colwidth="20"/>
+      <colspec colwidth="10"/>
+      <colspec colwidth="41"/>
+      <colspec colwidth="29"/>
+      <thead/>
+      <tbody/>
+    </tgroup>
+</table>"""
+    xml = etree.fromstring(xmlstr)
+    xml = xml.getroottree()
+    fix_colspec_width(xml)
+
+    assert xml.xpath('/table/tgroup/colspec/@colwidth') == ['20.0*', '10.0*', '41.0*', '29.0*']

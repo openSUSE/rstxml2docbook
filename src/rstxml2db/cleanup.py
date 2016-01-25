@@ -46,14 +46,36 @@ def allelementswithid(xml):
             yield item
 
 
-def cleanupxml(xml, usedoubleids=True):
+def alltableelements(xml):
+    """Generator: yield all table or informaltable elements
+
+    :param xml: root tree or element node
+    """
+    tree = xml.getroottree() if hasattr(xml, 'getroottree') else xml
+    for item in tree.iter():
+        if item.tag in ('table', 'informaltable'):
+            yield item
+
+
+def fix_colspec_width(xml):
+    """Fix columspec/@width
+
+    :param xml: root tree or element node
+    """
+    for table in alltableelements(xml):
+        colspecsum = table.xpath('tgroup/colspec/@colwidth')
+        colspecsum = sum([int(x) for x in colspecsum])
+        for colspec in table.xpath('tgroup/colspec'):
+            colspec.attrib['colwidth'] = "{:.1f}*".format(100*int(colspec.attrib.get('colwidth'))/colspecsum)
+
+
+def remove_double_ids(xml, usedoubleids=True):
     """Cleanup step to remove all IDs with no corresponding xref
 
     :param xml: :class:`lxml.etree._ElementTree`
     :param finddoubleids: boolean to execute additional check to find
            double ids or not (default True)
     """
-
     linkends = set([i.attrib['linkend'] for i in xml.iter('xref')])
 
     for item in allelementswithid(xml):
@@ -64,4 +86,14 @@ def cleanupxml(xml, usedoubleids=True):
 
     if usedoubleids:
         double = finddoubleids(xml.xpath("//*[@id]"))
-        log.warning("Double ids found: %s", double)
+        if double:
+            log.warning("Double ids found: %s", double)
+
+
+def cleanupxml(xml):
+    """Cleanup steps to execute
+
+    :param xml: :class:`lxml.etree._ElementTree`
+    """
+    remove_double_ids(xml)
+    fix_colspec_width(xml)
