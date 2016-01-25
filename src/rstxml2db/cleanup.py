@@ -31,12 +31,7 @@ def finddoubleids(allids):
             d[idattr] += d.setdefault(idattr, 1)
         except KeyError:
             d[idattr] = 1
-    double = list()  # [(i,k) for i,k in d.items() if k>1]
-    for i, k in d.items():
-        if k > 1:
-            double.append((i, k))
-
-    return double
+    return [(i,k) for i,k in d.items() if k>1]
 
 
 def allelementswithid(xml):
