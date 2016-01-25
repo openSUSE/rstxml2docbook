@@ -489,9 +489,9 @@
   <xsl:template match="figure">
     <figure>
       <xsl:choose>
-        <xsl:when test="following-sibling::paragraph[strong]">
+        <xsl:when test="following-sibling::paragraph[1][strong]">
           <xsl:variable name="title">
-            <xsl:value-of select="substring-after('Figure', following-sibling::paragraph[1]/strong)"/>
+            <xsl:value-of select="normalize-space(substring-after(string(following-sibling::paragraph[1][strong]), 'Figure:'))"/>
           </xsl:variable>
           <title><xsl:value-of select="$title"/></title>
         </xsl:when>
