@@ -22,7 +22,7 @@ import sys
 
 from lxml import etree
 
-from .cleanup import cleanupxml
+from .cleanup import cleanupxml, remove_double_ids
 from .core import BOOKTREE
 from .core import XSLTRST2DB
 from .log import log
@@ -52,7 +52,9 @@ def bigfile(args):
 
     # Search for all <xref/>s and remove unused IDs
     if args.keepallids:
-        cleanupxml(xml)
+        remove_double_ids(xml)
+
+    cleanupxml(xml)
 
     with open(args.bigfile, 'w') as f:
         log.info("Writing bigfile to %r", args.bigfile)

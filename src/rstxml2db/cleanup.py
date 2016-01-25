@@ -69,15 +69,23 @@ def fix_colspec_width(xml):
             colspec.attrib['colwidth'] = "{:.1f}*".format(100*int(colspec.attrib.get('colwidth'))/colspecsum)
 
 
-def add_pi_in_screen(xml, limit=54):
-    """Add processing-instruction for long text in screens
+def add_pi_in_screen(xml, limit=54, target='dbsuse-fo', fontsize='8pt'):
+    """Add processing-instruction for long texts in screens
 
     :param xml: :class:`lxml.etree._ElementTree`
+    :param limit: maximum number of characters allowed
+    :param target: name of processing instruction
+    :param fontsize: font size to use
     """
     tree = xml.getroottree() if hasattr(xml, 'getroottree') else xml
     for screen in tree.iter('screen'):
         if any([len(i)>limit for i in screen.text.split("\n")]):
-            screen.insert(0, etree.ProcessingInstruction('dbsuse-fo', 'font-size="8pt"'))
+            log.info("Add PI into screen")
+            pi = etree.ProcessingInstruction(target,
+                                             'font-size="{}"'.format(fontsize))
+            pi.tail = screen.text
+            screen.text = ''
+            screen.insert(0, pi)
 
 
 def remove_double_ids(xml, usedoubleids=True):
@@ -106,5 +114,6 @@ def cleanupxml(xml):
 
     :param xml: :class:`lxml.etree._ElementTree`
     """
-    remove_double_ids(xml)
+    # remove_double_ids(xml)
     fix_colspec_width(xml)
+    add_pi_in_screen(xml)

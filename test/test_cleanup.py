@@ -7,9 +7,9 @@ from rstxml2db.cleanup import (cleanupxml,
                                fix_colspec_width,
                                add_pi_in_screen,
                                )
-from py.path import local
 from lxml import etree
-
+from py.path import local
+import pytest
 
 def test_remove_double_ids():
     xmlstr = """<book id="book">
@@ -97,11 +97,13 @@ def test_fix_colspec_width():
     assert xml.xpath('/table/tgroup/colspec/@colwidth') == ['20.0*', '10.0*', '41.0*', '29.0*']
 
 
-def test_add_pi_in_screen():
-    xmlstr = """<screen>{}</screen>""".format('0123456789'*5+'012345')
+@pytest.mark.parametrize('xmlstr,expected', [
+    ("""<screen>x</screen>""",                                   False),
+    ("""<screen>{}</screen>""".format('0123456789'*5+'012345'),  True),
+])
+def test_add_pi_in_screen(xmlstr, expected):
     xml = etree.fromstring(xmlstr)
     xml = xml.getroottree()
     add_pi_in_screen(xml)
 
-    assert xml.xpath("/screen/processing-instruction()")
-    assert xml.xpath("/screen/processing-instruction('dbsuse-fo')")
+    assert bool(xml.xpath("/screen/processing-instruction('dbsuse-fo')")) == expected
