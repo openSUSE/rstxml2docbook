@@ -30,13 +30,21 @@ from .log import setloglevel
 from .treebuilder import process_index
 from .xslt import transform
 
+DOCTYPE = r"""<!DOCTYPE {} PUBLIC
+"-//OASIS//DTD DocBook XML V4.5//EN"
+"http://docbook.org/xml/4.5/docbookx.dtd"
+[
+<!--
+  <!ENTITY % entities SYSTEM "entity-decl.ent">
+  %entities;
+-->
+]>"""
 
 def bigfile(args):
     """Resolve all XIncludes and save file
 
     :param args: :class:`argparse.Namespace`
     """
-
     indexfile = os.path.join(args.outputdir, os.path.basename(args.indexfile))
     xml = etree.parse(indexfile)
     # Resolve all XIncludes
@@ -46,22 +54,12 @@ def bigfile(args):
     if args.keepallids:
         cleanupxml(xml)
 
-    rootname = xml.getroot().tag
-    doctype = r"""<!DOCTYPE {} PUBLIC
-"-//OASIS//DTD DocBook XML V4.5//EN"
-"http://docbook.org/xml/4.5/docbookx.dtd"
-[
-<!--
-  <!ENTITY % entities SYSTEM "entity-decl.ent">
-  %entities;
--->
-]>""".format(rootname)
     with open(args.bigfile, 'w') as f:
         log.info("Writing bigfile to %r", args.bigfile)
         f.write(etree.tostring(xml,
                                encoding='unicode',
                                pretty_print=True,
-                               doctype=doctype,
+                               doctype=DOCTYPE.format(xml.getroot().tag),
                                )
                 )
 
