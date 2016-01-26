@@ -97,13 +97,15 @@ def test_fix_colspec_width():
     assert xml.xpath('/table/tgroup/colspec/@colwidth') == ['20.0*', '10.0*', '41.0*', '29.0*']
 
 
-@pytest.mark.parametrize('xmlstr,expected', [
-    ("""<screen>x</screen>""",                                   False),
-    ("""<screen>{}</screen>""".format('0123456789'*5+'012345'),  True),
+@pytest.mark.parametrize('xmlstr,limit,expected', [
+    ("""<screen>x</screen>""",                                  10, False),
+    ("""<screen>{}</screen>""".format('0123456789'*5+'012345'), 10, True),
+    ("""<screen>01234567890123456789</screen>""",               10, True),
+    ("""<screen>01234567890123456789</screen>""",               40, False),
 ])
-def test_add_pi_in_screen(xmlstr, expected):
+def test_add_pi_in_screen(xmlstr, limit, expected):
     xml = etree.fromstring(xmlstr)
     xml = xml.getroottree()
-    add_pi_in_screen(xml)
+    add_pi_in_screen(xml, limit=limit)
 
     assert bool(xml.xpath("/screen/processing-instruction('dbsuse-fo')")) == expected
