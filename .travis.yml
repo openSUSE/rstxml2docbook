@@ -16,7 +16,8 @@ install:
 
 # command to run tests
 script:
-    - py.test -v
+    - py.test -s -vv
+    # -s -v --cov-report term-missing --cov=rstxml2db
 
 # after_success:
 #    codecov

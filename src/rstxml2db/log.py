@@ -24,7 +24,7 @@ __all__ = ('log', 'setloglevel', 'LOGLEVELS', )
 
 log = logging.getLogger(__file__)
 _ch = logging.StreamHandler(sys.stderr)
-_frmt = logging.Formatter('%(asctime)s [%(levelname)s]: '
+_frmt = logging.Formatter('[%(levelname)s]: '
                           '%(message)s', '%H:%M:%S')
 _ch.setFormatter(_frmt)
 log.setLevel(logging.DEBUG)

@@ -22,8 +22,7 @@ import argparse
 from lxml import etree
 
 from . import __version__, __author__
-from .core import BOOKTREE, OUTDIR
-from .log import log
+from .log import log, setloglevel
 
 
 def prepareparams(params):
@@ -33,7 +32,6 @@ def prepareparams(params):
        :param params: a list with "NAME=VALUE" entries
        :return: a tuple with ('NAME', 'VALUE') entries
     """
-
     result = []
     if params is None:
         return result
@@ -66,19 +64,9 @@ def parsecli(cliargs=None):
                         action='version',
                         version='%(prog)s ' + __version__
                         )
-    parser.add_argument('-t', '--booktree',
-                        default=BOOKTREE,
-                        help='save book tree to a given file (default %(default)r)',
-                        )
-    parser.add_argument('-d', '--output-dir',
-                        dest='outputdir',
-                        default=OUTDIR,
-                        help='save XML files given directory (default %(default)r)',
-                        )
-    parser.add_argument('-b', '--bigfile',
-                        dest='bigfile',
-                        default=None,
-                        help='create a single DocBook XML file',
+    parser.add_argument('-o', '--output',
+                        dest='output',
+                        help='save DocBook XML file to the given path',
                         )
     parser.add_argument('-k', '--keep-all-ids',
                         dest='keepallids',
@@ -116,12 +104,21 @@ def parsecli(cliargs=None):
                         )
 
     args = parser.parse_args(args=cliargs)
-
-    args.productname = etree.XSLT.strparam(args.productname)
-    args.productnumber = etree.XSLT.strparam(args.productnumber)
-    args.legalnotice = etree.XSLT.strparam(args.legalnotice)
+    setloglevel(args.verbose)
 
     args.params = prepareparams(args.params)
+
+    if args.productname:
+        args.productname = etree.XSLT.strparam(args.productname)
+        args.params.append(('productname', args.productname))
+
+    if args.productnumber:
+        args.productnumber = etree.XSLT.strparam(args.productnumber)
+        args.params.append(('productnumber', args.productnumber))
+
+    if args.legalnotice:
+        args.legalnotice = etree.XSLT.strparam(args.legalnotice)
+        args.params.append(('legalnotice', args.legalnotice))
 
     log.info(args)
     return args

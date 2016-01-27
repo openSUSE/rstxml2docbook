@@ -1,18 +1,15 @@
 
 import pytest
 from rstxml2db.cli import prepareparams, parsecli
-from rstxml2db.core import BOOKTREE, OUTDIR
 from argparse import Namespace
 
 
 def ns(**kwargs):
-    params = dict(booktree = BOOKTREE,
-                  bigfile = None,
-                  keepallids = True,
+    params = dict(keepallids = True,
                   legalnotice = None,
                   productname = None,
                   productnumber = None,
-                  outputdir = OUTDIR,
+                  output = None,
                   verbose = None,
                   params = [],
                   indexfile = 'a.xml',
@@ -23,8 +20,9 @@ def ns(**kwargs):
 
 def compare(ns1, ns2):
     """Compare two Namespaces"""
-    values={'bigfile', 'booktree', 'indexfile', 'keepallids',
-            # 'legalnotice', 'productnumber', 'productname',
+    values={'output', 'indexfile', 'keepallids',
+            # 'params',
+            # 'booktree', 'legalnotice', 'productnumber', 'productname',
             'params', 'verbose'
             }
     for value in values:
@@ -50,14 +48,14 @@ def test_prepareparams(params, expected):
   (['--verbose', 'a.xml'],
    ns(verbose=1,)
    ),
-  (['-vv', '-t', 't.xml', 'a.xml'],
-   ns(verbose=2, booktree='t.xml')
+  (['-vv', 'a.xml'],
+   ns(verbose=2)
    ),
-  (['-b', 'b.xml', 'a.xml'],
-   ns(bigfile='b.xml')
-   ),
-  (['-d', 'foo', 'a.xml'],
-   ns(outputdir='foo')
+  #(['-b', 'b.xml', 'a.xml'],
+  # ns(bigfile='b.xml')
+  # ),
+  (['-o', 'foo', 'a.xml'],
+   ns(output='foo')
    ),
   (['-k', 'a.xml'],
    ns(keepallids=False)

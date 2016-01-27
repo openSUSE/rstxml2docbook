@@ -16,11 +16,26 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-__all__ = ('BOOKTREE', 'XSLTRST2DB')
+__all__ = ('NSMAP', 'XSLTRST2DB', 'HERE')
 
 import os
 
-_HERE = os.path.dirname(os.path.abspath(__file__))
-BOOKTREE = '.booktree.xml'
-XSLTRST2DB = os.path.join(_HERE, 'rstxml2db.xsl')
-OUTDIR='out'
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+# Stylesheets
+XSLTRST2DB = os.path.join(HERE, 'rstxml2db.xsl')
+XSLTRESOLVE = os.path.join(HERE, 'resolve.xsl')
+
+NSMAP = dict(xi='http://www.w3.org/2001/XInclude',
+             d='http://docbook.org/ns/docbook',
+             )
+
+DOCTYPE = r"""<!DOCTYPE {} PUBLIC
+"-//OASIS//DTD DocBook XML V4.5//EN"
+"http://docbook.org/xml/4.5/docbookx.dtd"
+[
+<!--
+  <!ENTITY % entities SYSTEM "entity-decl.ent">
+  %entities;
+-->
+]>"""

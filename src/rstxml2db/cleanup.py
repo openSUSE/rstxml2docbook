@@ -19,6 +19,7 @@
 from .log import log
 from lxml import etree
 
+
 def finddoubleids(allids):
     """Find all double IDs
 
@@ -31,7 +32,7 @@ def finddoubleids(allids):
             d[idattr] += d.setdefault(idattr, 1)
         except KeyError:
             d[idattr] = 1
-    return [(i,k) for i,k in d.items() if k>1]
+    return [(i, k) for i, k in d.items() if k > 1]
 
 
 def allelementswithid(xml):
@@ -66,7 +67,8 @@ def fix_colspec_width(xml):
         colspecsum = table.xpath('tgroup/colspec/@colwidth')
         colspecsum = sum([int(x) for x in colspecsum])
         for colspec in table.xpath('tgroup/colspec'):
-            colspec.attrib['colwidth'] = "{:.1f}*".format(100*int(colspec.attrib.get('colwidth'))/colspecsum)
+            colspec.attrib['colwidth'] = "{:.1f}*".format(100*int(colspec.attrib.get('colwidth')) /
+                                                          colspecsum)
 
 
 def add_pi_in_screen(xml, limit=83, target='dbsuse-fo', fontsize='8pt'):
@@ -79,8 +81,7 @@ def add_pi_in_screen(xml, limit=83, target='dbsuse-fo', fontsize='8pt'):
     """
     tree = xml.getroottree() if hasattr(xml, 'getroottree') else xml
     for screen in tree.iter('screen'):
-        if any([len(i)>limit for i in screen.text.split("\n")]):
-            log.info("Add PI into screen")
+        if any([len(i) > limit for i in screen.text.split("\n")]):
             pi = etree.ProcessingInstruction(target,
                                              'font-size="{}"'.format(fontsize))
             pi.tail = screen.text
@@ -97,16 +98,18 @@ def remove_double_ids(xml, usedoubleids=True):
     """
     linkends = set([i.attrib['linkend'] for i in xml.iter('xref')])
 
+    unusedattr = []
     for item in allelementswithid(xml):
         idattr = item.attrib['id']
         if idattr not in linkends:
-            log.info("Removing unused %r attribute", idattr)
             del item.attrib['id']
+            unusedattr.append(idattr)
+    log.debug('Unused IDs, removed from output: %s', ', '.join(unusedattr))
 
     if usedoubleids:
         double = finddoubleids(xml.xpath("//*[@id]"))
         if double:
-            log.warning("Double ids found: %s", double)
+            log.warning("Double IDs found: %s", double)
 
 
 def cleanupxml(xml):

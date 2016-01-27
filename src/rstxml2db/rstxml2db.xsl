@@ -27,9 +27,11 @@
   <xsl:strip-space elements="*"/>
 
   <xsl:key name="id" match="*" use="@ids"/>
+  <xsl:key name="documents" match="document" use="@source"/>
 
   <xsl:param name="xml.ext">.xml</xsl:param>
   <xsl:param name="indexfile" select="'.booktree.xml'"/>
+  <xsl:param name="use.preface.as.first.section" select="1"/>
 
   <!-- Natural language for root element -->
   <xsl:param name="rootlang">en</xsl:param>
@@ -38,16 +40,17 @@
   <xsl:param name="productnumber"/>
   <xsl:param name="legalnotice"/>
 
-  <xsl:variable name="index" select="document($indexfile, .)"/>
+  <!--<xsl:variable name="index" select="document($indexfile, .)"/>
+  <xsl:variable name="refs" select="$index//ref"/>
   <xsl:variable name="sections" select="$index//section"/>
-  <xsl:variable name="indexids" select="$index//@id"/>
+  <xsl:variable name="indexids" select="$index//@id"/>-->
 
   <xsl:template match="*">
     <xsl:message>WARN: Unknown element '<xsl:value-of select="local-name()"/>'</xsl:message>
   </xsl:template>
 
 
-  <xsl:template name="has.section.id">
+<!--  <xsl:template name="has.section.id">
     <xsl:param name="id"/>
 
     <xsl:value-of select="boolean($indexids[. = $id])"/>
@@ -63,7 +66,7 @@
     <xsl:param name="id"/>
 
     <xsl:value-of select="$index//*[@id = $id]/@level"/>
-  </xsl:template>
+  </xsl:template>-->
 
   <xsl:template name="get.structural.name">
     <xsl:param name="level"/>
@@ -78,7 +81,7 @@
       <xsl:when test="$level = 6">sect5</xsl:when>
       -->
       <xsl:otherwise>
-        <xsl:message>ERROR: Level too big!</xsl:message>
+        <xsl:message>ERROR: Level too big! (level=<xsl:value-of select="$level"/>)</xsl:message>
         <xsl:text>topic</xsl:text>
       </xsl:otherwise>
     </xsl:choose>
@@ -87,9 +90,16 @@
   <xsl:template name="create.structural.name">
     <xsl:param name="id" select="@ids"/>
     <xsl:variable name="level">
-      <xsl:call-template name="get.level.from.id">
-        <xsl:with-param name="id" select="$id"/>
-      </xsl:call-template>
+      <xsl:choose>
+        <xsl:when test="/document[@role='big']">
+          <xsl:value-of select="count(ancestor::section)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <!--<xsl:call-template name="get.level.from.id">
+            <xsl:with-param name="id" select="$id"/>
+          </xsl:call-template>-->
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:variable>
     <xsl:variable name="name">
       <xsl:call-template name="get.structural.name">
@@ -215,6 +225,36 @@
     <xsl:apply-templates/>
   </xsl:template>
 
+  <xsl:template match="/document[@role='big']/section">
+    <xsl:variable name="idattr">
+      <xsl:call-template name="get.target4section.id"/>
+    </xsl:variable>
+
+    <book lang="{$rootlang}">
+      <xsl:if test="$idattr != ''">
+        <xsl:attribute name="id">
+          <xsl:value-of select="$idattr"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates/>
+    </book>
+  </xsl:template>
+
+  <xsl:template match="/document[@role='big']/section/document/section">
+    <xsl:variable name="idattr">
+      <xsl:call-template name="get.target4section.id"/>
+    </xsl:variable>
+
+    <chapter>
+      <xsl:if test="$idattr != ''">
+        <xsl:attribute name="id">
+          <xsl:value-of select="$idattr"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates/>
+    </chapter>
+  </xsl:template>
+
   <xsl:template match="section[@names='abstract']">
     <xsl:param name="root"/>
     <xsl:element name="{$root}info">
@@ -246,13 +286,9 @@
     <xsl:variable name="idattr">
       <xsl:call-template name="get.target4section.id"/>
     </xsl:variable>
+    <xsl:variable name="level" select="count(ancestor::section)"/>
 
     <xsl:element name="{$name}">
-      <xsl:if test="$name = 'book'">
-        <xsl:attribute name="lang">
-          <xsl:value-of select="$rootlang"/>
-        </xsl:attribute>
-      </xsl:if>
       <xsl:if test="@ids">
         <xsl:attribute name="id">
           <xsl:value-of select="$idattr"/>
@@ -408,6 +444,11 @@
 
   <xsl:template match="definition_list[@classes='glossary']/definition_list_item">
     <glossentry>
+      <xsl:if test="term/@ids">
+        <xsl:attribute name="id">
+          <xsl:value-of select="term/@ids"/>
+        </xsl:attribute>
+      </xsl:if>
       <xsl:apply-templates/>
     </glossentry>
   </xsl:template>
@@ -589,6 +630,35 @@
     <ulink url="{@refuri}">
       <xsl:value-of select="."/>
     </ulink>
+  </xsl:template>
+
+  <xsl:template match="reference[@refuri][@internal='True']">
+    <xsl:variable name="uri" select="substring-after(@refuri, '#')"/>
+
+    <xsl:choose>
+      <xsl:when test="$uri != ''">
+        <xref linkend="{$uri}"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:variable name="refuri" select="concat(@refuri, '.xml')"/>
+<!--        <xsl:variable name="sectid" select="($refs[@href=$refuri])[1]/section[1]/@id"/> -->
+        <xsl:variable name="sectid" select="key('documents', @refuri)"/>
+        <xsl:choose>
+          <xsl:when test="$sectid != ''">
+            <xref linkend="{$sectid}"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <!-- common/cli_set_environment_variables_using_openstack_rc.xml
+              concat(@refuri, '.xml')
+             -->
+            <xsl:message>WARNING: could not find referenced ID '<xsl:value-of select="@refuri"/>'!
+             sectid="<xsl:value-of select="$sectid"/>"
+             refuri=<xsl:value-of select="$refuri"/>
+             <!-- ref section=<xsl:value-of select="$refs[@href='common/cli_set_environment_variables_using_openstack_rc.xml']/section[1]/@id"/>--></xsl:message>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="reference[@refid]">

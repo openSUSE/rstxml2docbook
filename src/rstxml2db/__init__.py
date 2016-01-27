@@ -25,11 +25,8 @@ __author__ = "Thomas Schraitle <toms (AT) suse DOT de>"
 
 
 from .cli import parsecli
-from .core import BOOKTREE
 from .log import log
 from .xml import process
-
-import argparse
 from lxml import etree
 import sys
 
