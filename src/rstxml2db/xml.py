@@ -20,7 +20,7 @@
 from lxml import etree
 
 from .cleanup import cleanupxml, remove_double_ids
-from .core import XSLTRST2DB, XSLTRESOLVE, DOCTYPE
+from .core import DOCTYPE, XSLTRST2DB, XSLTRESOLVE, XSLTDB4TO5
 from .log import log
 
 
@@ -40,7 +40,7 @@ def addchapter(xml, convfile):
         pos = 0
 
     firstchapter = book.find('chapter[1]')
-    if firstchapter:
+    if firstchapter is not None:
         book.remove(firstchapter)
     book.insert(pos, conv.getroot())
 
@@ -62,7 +62,6 @@ def process(args):
     rst2db_trans = etree.XSLT(rst2db_xslt)
 
     # Transform
-    log.info(">>> args.params: %s", args.params)
     rst = resolve_trans(doc)
     xml = rst2db_trans(rst, **dict(args.params))
 
@@ -73,15 +72,21 @@ def process(args):
     remove_double_ids(xml)
     cleanupxml(xml)
 
+    if not args.db4:
+        db4o5_xslt = etree.parse(XSLTDB4TO5)
+        db4o5_trans = etree.XSLT(db4o5_xslt)
+        xml = db4o5_trans(xml, **dict(args.params))
+
     if args.output is not None:
+        xmldict = dict(encoding='unicode',
+                       pretty_print=True,
+                       )
+        if args.db4:
+            xmldict.update(doctype=DOCTYPE.format(xml.getroot().tag))
+
         with open(args.output, 'w') as f:
             log.info("Writing results to %r...", args.output)
-            f.write(etree.tostring(xml,
-                                   encoding='unicode',
-                                   pretty_print=True,
-                                   doctype=DOCTYPE.format(xml.getroot().tag),
-                                   )
-                    )
+            f.write(etree.tostring(xml, **xmldict))
     else:
         print(str(xml))
     return 0

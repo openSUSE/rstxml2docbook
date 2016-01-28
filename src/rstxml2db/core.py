@@ -16,7 +16,8 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-__all__ = ('NSMAP', 'XSLTRST2DB', 'HERE')
+__all__ = ('DOCTYPE', 'HERE', 'NSMAP',
+           'XSLTRST2DB', 'XSLTRESOLVE', 'XSLTDB4TO5')
 
 import os
 
@@ -25,9 +26,11 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # Stylesheets
 XSLTRST2DB = os.path.join(HERE, 'rstxml2db.xsl')
 XSLTRESOLVE = os.path.join(HERE, 'resolve.xsl')
+XSLTDB4TO5 = os.path.join(HERE, 'suse-upgrade.xsl')
 
 NSMAP = dict(xi='http://www.w3.org/2001/XInclude',
              d='http://docbook.org/ns/docbook',
+             xl='http://www.w3.org/1999/xlink',
              )
 
 DOCTYPE = r"""<!DOCTYPE {} PUBLIC

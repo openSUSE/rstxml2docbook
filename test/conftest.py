@@ -31,6 +31,7 @@ def args():
                      productnumber = etree.XSLT.strparam(number),
                      _productnumber = number,
                      output = None,
+                     db4 = False,
                      conventions = None,
                      verbose = 0,
                      params = [(p[0], etree.XSLT.strparam(p[1])) for p in params],

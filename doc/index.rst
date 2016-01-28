@@ -27,14 +27,10 @@ Options
 
 -h, --help                     Prints the help text
 -v, --verbose                  Increase verbosity (can be repeated)
--t <file>, --booktree <file>   Save book tree structure in separate file
-                               (default `.booktree.xml`)
--d <dir>, --output-dir <dir>   Save XML files into <dir> directory
-                               (default `out`)
--b <BIGFILE>, --bigfile <BIGFILE>
-                               Create a single DocBook XML file
+-o <OUTPUT, --output <OUTPUT>  save DocBook XML file to the given path
 -k, --keep-all-ids             By default, IDs in bigfile are removed if they
                                are not referenced. This option keeps all IDs.
+-4, --db4                      Create DocBook 4 version (default False)
 -N <PRODUCTNAME>, --productname <PRODUCTNAME>
                                Name of the product (included into `book/bookinfo`)
 -P <PRODUCTNUMBER>, --productnumber <PRODUCTNUMBER>
