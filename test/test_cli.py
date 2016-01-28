@@ -12,10 +12,16 @@ def ns(**kwargs):
                   output = None,
                   verbose = None,
                   params = [],
+                  conventions = None,
+                  db4 = False,
                   indexfile = 'a.xml',
                   )
     params.update(kwargs)
     return Namespace(**params)
+    params = [('productname',   name),
+              ('productnumber', number),
+              ('legalnotice',   legal),
+              ]
 
 
 def compare(ns1, ns2):
@@ -51,9 +57,12 @@ def test_prepareparams(params, expected):
   (['-vv', 'a.xml'],
    ns(verbose=2)
    ),
-  #(['-b', 'b.xml', 'a.xml'],
-  # ns(bigfile='b.xml')
-  # ),
+  (['-l', 'legal.xml', 'a.xml'],
+   ns(legalnotice='legal.xml')
+   ),
+  (['-c', 'preface.xml', 'a.xml'],
+   ns(conventions='preface.xml')
+   ),
   (['-o', 'foo', 'a.xml'],
    ns(output='foo')
    ),
@@ -70,3 +79,4 @@ def test_prepareparams(params, expected):
 def test_parsecli(cli, expected):
     result = parsecli(cli)
     compare(result, expected)
+

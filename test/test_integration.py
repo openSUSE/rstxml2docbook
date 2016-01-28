@@ -24,14 +24,11 @@ def test_integration(tmpdir, args):
 
     assert result.exists()
     xml = etree.parse(str(result))
-    productname = xml.xpath('/book/bookinfo/productname')
-    assert productname
-    assert productname[0].text == args._productname
-    productnumber = xml.xpath('/book/bookinfo/productnumber')
-    assert productnumber
-    assert productnumber[0].text == args._productnumber
+    assert xml.xpath('/book/bookinfo')
     assert len(xml.xpath('/book/chapter')) == 2
     assert xml.xpath('/book/@lang')
+    assert not xml.xpath('/book/bookinfo/productname')
+    assert not xml.xpath('/book/bookinfo/productnumber')
 
 
 def test_integration_with_conventions(tmpdir, args):
@@ -60,21 +57,41 @@ def test_integration_with_conventions(tmpdir, args):
                                                      'chapter']
 
 
-def test_filenotfound1(args):
-    #
-    args.output = 'result.xml'
-    args.indexfile = 'file-does-not-exist.xml'
+def test_integration_with_legalnotice(tmpdir, args):
+    DOCDIR.copy(tmpdir)
+    result = tmpdir / 'result.xml'
+    indexfile = tmpdir / 'index.xml'
+    legalfile = tmpdir / 'legal.xml'
 
-    with pytest.raises((FileNotFoundError, OSError)):
-        process(args)
+    # Use the faked parsed cli argparser object
+    args.output = str(result)
+    args.indexfile = str(indexfile)
+    args.legalnotice = str(legalfile)
+
+    process(args)
+    assert result.exists()
+    xml = etree.parse(str(result))
+    legalnotice = xml.xpath('/book/bookinfo/legalnotice')
+    assert legalnotice
+    title = xml.xpath('/book/bookinfo/legalnotice/title')
+    assert title
+    assert title[0].text == 'Legal Notice'
 
 
-def test_filenotfound2():
-    #
-    from rstxml2db import main
+def test_integration_with_productname(tmpdir, args):
+    DOCDIR.copy(tmpdir)
+    result = tmpdir / 'result.xml'
+    indexfile = tmpdir / 'index.xml'
 
-    with pytest.raises(SystemExit):
-        main(['-o', 'result.xml', 'file-does-not-exist.xml'])
+    # Use the faked parsed cli argparser object
+    args.output = str(result)
+    args.indexfile = str(indexfile)
+    print(">>>args.params=", args.params)
+
+    process(args)
+    assert result.exists()
+    xml = etree.parse(str(result))
+    assert xml.xpath('/book')
 
 
 def test_wrong_xml(tmpdir):

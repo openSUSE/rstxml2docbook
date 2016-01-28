@@ -45,6 +45,17 @@ def addchapter(xml, convfile):
     book.insert(pos, conv.getroot())
 
 
+def addlegalnotice(xml, legalfile):
+    """Add legalnotice file into book/bookinfo
+
+    :param xml: :class:`lxml.etree._ElementTree`
+    :param convfile: filename with root element `<legalnotice>`
+    """
+    legal = etree.parse(legalfile).getroot()
+    bookinfo = xml.getroot().find('bookinfo')
+    bookinfo.append(legal)
+
+
 def process(args):
     """Process arguments from CLI parser
 
@@ -65,6 +76,9 @@ def process(args):
     log.info(">>> args.params: %s", args.params)
     rst = resolve_trans(doc)
     xml = rst2db_trans(rst, **dict(args.params))
+
+    if args.legalnotice is not None:
+        addlegalnotice(xml, args.legalnotice)
 
     if args.conventions is not None:
         addchapter(xml, args.conventions)
