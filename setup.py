@@ -26,7 +26,7 @@ HERE = path.abspath(path.dirname(__file__))
 
 setupdict = dict(
    name='rstxml2db',
-   version='0.2.0',
+   version='0.3.0',
    description='',
    url='https://github.com/tomschr/rstxml2docbook',
    # Author details
