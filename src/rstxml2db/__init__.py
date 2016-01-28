@@ -40,9 +40,9 @@ def main(cliargs=None):
     try:
         args = parsecli(cliargs)
         return process(args)
-    except etree.XSLTApplyError as err:
-        log.error(err)
+    except (etree.XMLSyntaxError, etree.XSLTApplyError) as error:
+        log.error(error)
         sys.exit(10)
-    except (FileNotFoundError, OSError) as err:
-        log.error(err)
+    except (FileNotFoundError, OSError) as error:
+        log.error(error)
         sys.exit(20)

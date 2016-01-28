@@ -38,35 +38,12 @@
 
   <xsl:param name="productname"/>
   <xsl:param name="productnumber"/>
-  <xsl:param name="legalnotice"/>
 
-  <!--<xsl:variable name="index" select="document($indexfile, .)"/>
-  <xsl:variable name="refs" select="$index//ref"/>
-  <xsl:variable name="sections" select="$index//section"/>
-  <xsl:variable name="indexids" select="$index//@id"/>-->
 
   <xsl:template match="*">
     <xsl:message>WARN: Unknown element '<xsl:value-of select="local-name()"/>'</xsl:message>
   </xsl:template>
 
-
-<!--  <xsl:template name="has.section.id">
-    <xsl:param name="id"/>
-
-    <xsl:value-of select="boolean($indexids[. = $id])"/>
-  </xsl:template>
-
-  <xsl:template name="get.section.from.id">
-    <xsl:param name="id"/>
-
-    <xsl:value-of select="$sections[@id = $id]"/>
-  </xsl:template>
-
-  <xsl:template name="get.level.from.id">
-    <xsl:param name="id"/>
-
-    <xsl:value-of select="$index//*[@id = $id]/@level"/>
-  </xsl:template>-->
 
   <xsl:template name="get.structural.name">
     <xsl:param name="level"/>
@@ -89,18 +66,7 @@
 
   <xsl:template name="create.structural.name">
     <xsl:param name="id" select="@ids"/>
-    <xsl:variable name="level">
-      <xsl:choose>
-        <xsl:when test="/document[@role='big']">
-          <xsl:value-of select="count(ancestor::section)"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <!--<xsl:call-template name="get.level.from.id">
-            <xsl:with-param name="id" select="$id"/>
-          </xsl:call-template>-->
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
+    <xsl:variable name="level" select="count(ancestor::section)"/>
     <xsl:variable name="name">
       <xsl:call-template name="get.structural.name">
         <xsl:with-param name="level" select="$level"/>
@@ -249,15 +215,6 @@
           <productnumber>
             <xsl:value-of select="$productnumber"/>
           </productnumber>
-        </xsl:if>
-        <xsl:if test="$legalnotice != ''">
-          <xsl:copy-of select="document($legalnotice)"/>
-          <!--<xsl:element name="xi:include"
-        namespace="http://www.w3.org/2001/XInclude">
-        <xsl:attribute name="href">
-          <xsl:value-of select="$legalnotice"/>
-        </xsl:attribute>
-      </xsl:element>-->
         </xsl:if>
       </bookinfo>
       <xsl:apply-templates select="*[not(self::title)]"/>

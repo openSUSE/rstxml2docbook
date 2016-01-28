@@ -98,7 +98,6 @@ def parsecli(cliargs=None):
                              '<chapter>); will replace the first chapter',
                         )
     parser.add_argument('-l', '--legalnotice',
-                        default='',
                         help='path to filename which contains a <legalnotice> '
                              'element  (included into `book/bookinfo`)',
                         )
@@ -129,7 +128,7 @@ def parsecli(cliargs=None):
 
     if args.legalnotice:
         args.legalnotice = etree.XSLT.strparam(args.legalnotice)
-        args.params.append(('legalnotice', args.legalnotice))
+#        args.params.append(('legalnotice', args.legalnotice))
 
     log.info(args)
     return args

@@ -11,6 +11,7 @@ import os
 HERE = local(local(__file__).dirname)
 DOCDIR= HERE / 'doc.001'
 
+
 def assert_xpaths(xml, xpath, args):
     productname = xml.xpath(xpath[0], namespaces=NSMAP)
     assert productname
@@ -48,6 +49,8 @@ def test_integration(xpath, db4, tmpdir, args):
     # Use the faked parsed cli argparser object
     args.output = str(result)
     args.indexfile = str(indexfile)
+    args.params.append(('productname',   args.productname))
+    args.params.append(('productnumber', args.productnumber))
     args.db4 = db4
 
     process(args)
@@ -55,6 +58,7 @@ def test_integration(xpath, db4, tmpdir, args):
     assert result.exists()
     xml = etree.parse(str(result))
     assert_xpaths(xml, xpath, args)
+
 
 @pytest.mark.parametrize('xpath,db4', [
     (['/book/preface/title',
@@ -80,6 +84,8 @@ def test_integration_with_conventions(xpath, db4, tmpdir, args):
     args.indexfile = str(indexfile)
     args.conventions = str(conventions)
     args.db4 = db4
+    args.params.append(('productname',   args.productname))
+    args.params.append(('productnumber', args.productnumber))
 
     process(args)
 
@@ -119,6 +125,8 @@ def test_integration_with_stdout(xpath, db4, tmpdir, capsys, args):
     args.output = None
     args.db4 = db4
     args.indexfile = str(indexfile)
+    args.params.append(('productname',   args.productname))
+    args.params.append(('productnumber', args.productnumber))
     process(args)
     out, err = capsys.readouterr()
     assert out
@@ -129,10 +137,48 @@ def test_integration_with_stdout(xpath, db4, tmpdir, capsys, args):
     assert_xpaths(xml, xpath, args)
 
 
-def test_filenotfound(args):
-    #
-    args.output = 'result.xml'
-    args.indexfile = 'file-does-not-exist.xml'
+def test_integration_with_legalnotice(tmpdir, args):
+    DOCDIR.copy(tmpdir)
+    result = tmpdir / 'result.xml'
+    indexfile = tmpdir / 'index.xml'
+    legalfile = tmpdir / 'legal.xml'
 
-    with pytest.raises((FileNotFoundError, OSError)):
-        process(args)
+    # Use the faked parsed cli argparser object
+    args.output = str(result)
+    args.indexfile = str(indexfile)
+    args.legalnotice = str(legalfile)
+    args.db4 = True
+
+    process(args)
+    assert result.exists()
+    xml = etree.parse(str(result))
+    legalnotice = xml.xpath('/book/bookinfo/legalnotice')
+    assert legalnotice
+    title = xml.xpath('/book/bookinfo/legalnotice/title')
+    assert title
+    assert title[0].text == 'Legal Notice'
+
+
+def test_integration_with_productname(tmpdir, args):
+    DOCDIR.copy(tmpdir)
+    result = tmpdir / 'result.xml'
+    indexfile = tmpdir / 'index.xml'
+
+    # Use the faked parsed cli argparser object
+    args.output = str(result)
+    args.indexfile = str(indexfile)
+    args.params.append(('productname',   args.productname))
+    args.db4 = True
+    process(args)
+    assert result.exists()
+    xml = etree.parse(str(result))
+    assert xml.xpath('/book')
+
+
+def test_wrong_xml(tmpdir):
+    from rstxml2db import main
+    badxml = str(tmpdir / 'bad.xml')
+    with open(badxml, 'w') as fh:
+        fh.write("<bad_tag>")
+    with pytest.raises(SystemExit):
+        main(['-o', 'result.xml', badxml])
