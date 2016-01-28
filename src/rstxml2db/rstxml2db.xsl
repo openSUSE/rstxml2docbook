@@ -213,6 +213,7 @@
   <!-- =================================================================== -->
   <!-- Ignored elements                                                    -->
   <xsl:template match="section[@names='search\ in\ this\ guide']"/>
+  <xsl:template match="section[@names='abstract']"/>
 
   <xsl:template match="comment"/>
   <xsl:template match="index"/>
@@ -236,7 +237,30 @@
           <xsl:value-of select="$idattr"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:apply-templates/>
+      <xsl:apply-templates select="title"/>
+      <bookinfo>
+        <xsl:apply-templates select="section[@names='abstract']" mode="bookinfo"/>
+        <xsl:if test="$productname != ''">
+          <productname>
+            <xsl:value-of select="$productname"/>
+          </productname>
+        </xsl:if>
+        <xsl:if test="$productnumber != ''">
+          <productnumber>
+            <xsl:value-of select="$productnumber"/>
+          </productnumber>
+        </xsl:if>
+        <xsl:if test="$legalnotice != ''">
+          <xsl:copy-of select="document($legalnotice)"/>
+          <!--<xsl:element name="xi:include"
+        namespace="http://www.w3.org/2001/XInclude">
+        <xsl:attribute name="href">
+          <xsl:value-of select="$legalnotice"/>
+        </xsl:attribute>
+      </xsl:element>-->
+        </xsl:if>
+      </bookinfo>
+      <xsl:apply-templates select="*[not(self::title)]"/>
     </book>
   </xsl:template>
 
@@ -255,28 +279,10 @@
     </chapter>
   </xsl:template>
 
-  <xsl:template match="section[@names='abstract']">
-    <xsl:param name="root"/>
-    <xsl:element name="{$root}info">
-      <xsl:if test="$root = 'book'">
-        <xsl:if test="$productname != ''">
-          <productname><xsl:value-of select="$productname"/></productname>
-        </xsl:if>
-        <xsl:if test="$productnumber != ''">
-          <productnumber><xsl:value-of select="$productnumber"/></productnumber>
-        </xsl:if>
-      </xsl:if>
-      <xsl:if test="$legalnotice != ''">
-        <xsl:element name="xi:include" namespace="http://www.w3.org/2001/XInclude">
-          <xsl:attribute name="href">
-            <xsl:value-of select="$legalnotice"/>
-          </xsl:attribute>
-        </xsl:element>
-      </xsl:if>
-      <abstract>
-        <xsl:apply-templates/>
-      </abstract>
-    </xsl:element>
+  <xsl:template match="section[@names = 'abstract']" mode="bookinfo">
+     <abstract>
+      <xsl:apply-templates/>
+    </abstract>
   </xsl:template>
 
   <xsl:template match="section">

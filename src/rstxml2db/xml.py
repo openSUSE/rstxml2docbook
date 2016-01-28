@@ -24,6 +24,27 @@ from .core import XSLTRST2DB, XSLTRESOLVE, DOCTYPE
 from .log import log
 
 
+def addchapter(xml, convfile):
+    """Replace first chapter with content of conventions file
+
+    :param xml: :class:`lxml.etree._ElementTree`
+    :param convfile: filename to some conventions, usually as root element
+                        `<preface>` or `<chapter>`
+    """
+    conv = etree.parse(convfile)
+    preface = conv.getroot()
+    book = xml.getroot()
+    try:
+        pos = [i for i in range(len(book)) if book[i].tag == 'chapter'][0]
+    except KeyError:
+        pos = 0
+
+    firstchapter = book.find('chapter[1]')
+    if firstchapter:
+        book.remove(firstchapter)
+    book.insert(pos, conv.getroot())
+
+
 def process(args):
     """Process arguments from CLI parser
 
@@ -41,8 +62,12 @@ def process(args):
     rst2db_trans = etree.XSLT(rst2db_xslt)
 
     # Transform
+    log.info(">>> args.params: %s", args.params)
     rst = resolve_trans(doc)
     xml = rst2db_trans(rst, **dict(args.params))
+
+    if args.conventions is not None:
+        addchapter(xml, args.conventions)
 
     # Cleanup
     remove_double_ids(xml)

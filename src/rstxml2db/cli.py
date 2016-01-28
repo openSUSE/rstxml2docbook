@@ -86,6 +86,12 @@ def parsecli(cliargs=None):
                         help='number/release etc. of the product '
                              '(included into `book/bookinfo`)',
                         )
+    parser.add_argument('-c', '--conventions',
+                        # default='',
+                        help='path to filename which contains doc conventions '
+                             'about the document (usually <preface> or '
+                             '<chapter>); will replace the first chapter',
+                        )
     parser.add_argument('-l', '--legalnotice',
                         default='',
                         help='path to filename which contains a <legalnotice> '
