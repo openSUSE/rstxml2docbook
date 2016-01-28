@@ -83,7 +83,6 @@ def transform(doc, args):
 
     if args.legalnotice is not None:
         addlegalnotice(xml, args.legalnotice)
-
     if args.conventions is not None:
         addchapter(xml, args.conventions)
 
@@ -110,16 +109,17 @@ def process(args):
     #
     xml = transform(doc, args)
 
-    if args.output is not None:
-        xmldict = dict(encoding='unicode',
-                       pretty_print=True,
-                       )
-        if args.db4:
-            xmldict.update(doctype=DOCTYPE.format(xml.getroot().tag))
+    xmldict = dict(encoding='unicode',
+                   pretty_print=True,
+                   )
+    if args.db4:
+        xmldict.update(doctype=DOCTYPE.format(xml.getroot().tag))
+    outstring = etree.tostring(xml, **xmldict)
 
+    if args.output is not None:
         with open(args.output, 'w') as f:
-            log.info("Writing results to %r...", args.output)
-            f.write(etree.tostring(xml, **xmldict))
+                log.info("Writing results to %r...", args.output)
+                f.write(outstring)
     else:
-        print(str(xml))
+        print(outstring)
     return 0
