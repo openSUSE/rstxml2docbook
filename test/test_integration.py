@@ -60,10 +60,27 @@ def test_integration_with_conventions(tmpdir, args):
                                                      'chapter']
 
 
-def test_filenotfound(args):
+def test_filenotfound1(args):
     #
     args.output = 'result.xml'
     args.indexfile = 'file-does-not-exist.xml'
 
     with pytest.raises((FileNotFoundError, OSError)):
         process(args)
+
+
+def test_filenotfound2():
+    #
+    from rstxml2db import main
+
+    with pytest.raises(SystemExit):
+        main(['-o', 'result.xml', 'file-does-not-exist.xml'])
+
+
+def test_wrong_xml(tmpdir):
+    from rstxml2db import main
+    badxml = str(tmpdir / 'bad.xml')
+    with open(badxml, 'w') as fh:
+        fh.write("<bad_tag>")
+    with pytest.raises(SystemExit):
+        main(['-o', 'result.xml', badxml])
