@@ -137,7 +137,21 @@ def test_integration_with_stdout(xpath, db4, tmpdir, capsys, args):
     assert_xpaths(xml, xpath, args)
 
 
-def test_integration_with_legalnotice(tmpdir, args):
+@pytest.mark.parametrize('xpath,db4', [
+    (['/book/bookinfo/legalnotice',
+      '/book/bookinfo/legalnotice/title',
+     ],
+     True
+    ),
+    # For DocBook 5
+    (
+    ['/d:book/d:info/d:legalnotice',
+     '/d:book/d:info/d:legalnotice/d:title',
+     ],
+    False
+    ),
+])
+def test_integration_with_legalnotice(xpath, db4, tmpdir, args):
     DOCDIR.copy(tmpdir)
     result = tmpdir / 'result.xml'
     indexfile = tmpdir / 'index.xml'
@@ -147,14 +161,14 @@ def test_integration_with_legalnotice(tmpdir, args):
     args.output = str(result)
     args.indexfile = str(indexfile)
     args.legalnotice = str(legalfile)
-    args.db4 = True
+    args.db4 = db4
 
     process(args)
     assert result.exists()
     xml = etree.parse(str(result))
-    legalnotice = xml.xpath('/book/bookinfo/legalnotice')
+    legalnotice = xml.xpath(xpath[0], namespaces=NSMAP)
     assert legalnotice
-    title = xml.xpath('/book/bookinfo/legalnotice/title')
+    title = xml.xpath(xpath[1], namespaces=NSMAP)
     assert title
     assert title[0].text == 'Legal Notice'
 

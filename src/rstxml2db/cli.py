@@ -128,9 +128,5 @@ def parsecli(cliargs=None):
         args._productnumber = args.productnumber
         args.params.append(('productnumber', args.productnumber))
 
-    if args.legalnotice:
-        args.legalnotice = etree.XSLT.strparam(args.legalnotice)
-#        args.params.append(('legalnotice', args.legalnotice))
-
     log.info(args)
     return args
