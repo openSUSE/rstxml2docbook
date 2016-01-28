@@ -35,7 +35,7 @@ def addchapter(xml, convfile):
     preface = conv.getroot()
     book = xml.getroot()
     try:
-        pos = [i for i in range(len(book)) if book[i].tag == 'chapter'][0]
+        pos = [i for i in range(len(book)) if etree.QName(book[i].tag).localname == 'chapter'][0]
     except KeyError:
         pos = 0
 
