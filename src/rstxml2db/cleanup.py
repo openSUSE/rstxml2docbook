@@ -18,20 +18,17 @@
 
 from .log import log
 from lxml import etree
-
+from collections import defaultdict
 
 def finddoubleids(allids):
     """Find all double IDs
 
     :param allids: list with :class:`etree.Element`
     """
-    d = dict()
+    d = defaultdict(int)
     for i in allids:
         idattr = i.attrib['id']
-        try:
-            d[idattr] += d.setdefault(idattr, 1)
-        except KeyError:
-            d[idattr] = 1
+        d[idattr] += 1
     return [(i, k) for i, k in d.items() if k > 1]
 
 
