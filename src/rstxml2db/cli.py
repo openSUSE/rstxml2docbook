@@ -119,11 +119,13 @@ def parsecli(cliargs=None):
     args.params = prepareparams(args.params)
 
     if args.productname:
-        args.productname = etree.XSLT.strparam(args.productname)
+        # We save productname in _productname because as soon as etree.XSLT.strparam
+        # is called, the original value cannot be retrieved anymore
+        args._productname = args.productname
         args.params.append(('productname', args.productname))
 
     if args.productnumber:
-        args.productnumber = etree.XSLT.strparam(args.productnumber)
+        args._productnumber = args.productnumber
         args.params.append(('productnumber', args.productnumber))
 
     if args.legalnotice:

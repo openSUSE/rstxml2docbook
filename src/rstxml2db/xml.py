@@ -72,6 +72,9 @@ def process(args):
     resolve_trans = etree.XSLT(rstresolve_xslt)
     rst2db_trans = etree.XSLT(rst2db_xslt)
 
+    args.params = [(p[0], p[1] if p[0].startswith('_') else etree.XSLT.strparam(p[1]))
+                   for p in args.params ]
+
     # Transform
     rst = resolve_trans(doc)
     xml = rst2db_trans(rst, **dict(args.params))
