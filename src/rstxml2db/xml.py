@@ -56,15 +56,19 @@ def addlegalnotice(xml, legalfile):
     bookinfo.append(legal)
 
 
-def process(args):
-    """Process arguments from CLI parser
+def quoteparams(args):
+    """Quote parameters with :func:`etree.XSLT.strparam`
 
     :param args: result from `argparse` parser
-    :return: True or False
-    :rtype: bool
+    :return: parameter list with quoted values
+    :rtype: list
     """
-    doc = etree.parse(args.indexfile)
-    # Create tree structure of both stylesheets
+    return [(p[0], p[1] if p[0].startswith('_') else etree.XSLT.strparam(p[1]))
+            for p in args.params]
+
+def transform(doc, args):
+    """
+    """
     rstresolve_xslt = etree.parse(XSLTRESOLVE)
     rst2db_xslt = etree.parse(XSLTRST2DB)
 
@@ -72,10 +76,8 @@ def process(args):
     resolve_trans = etree.XSLT(rstresolve_xslt)
     rst2db_trans = etree.XSLT(rst2db_xslt)
 
-    args.params = [(p[0], p[1] if p[0].startswith('_') else etree.XSLT.strparam(p[1]))
-                   for p in args.params ]
-
-    # Transform
+    # Resolve RST XML -> single RST XML structure
+    # then, transform RST XML -> DocBook
     rst = resolve_trans(doc)
     xml = rst2db_trans(rst, **dict(args.params))
 
@@ -86,13 +88,27 @@ def process(args):
         addchapter(xml, args.conventions)
 
     # Cleanup
-    remove_double_ids(xml)
     cleanupxml(xml)
 
     if not args.db4:
         db4o5_xslt = etree.parse(XSLTDB4TO5)
         db4o5_trans = etree.XSLT(db4o5_xslt)
         xml = db4o5_trans(xml, **dict(args.params))
+
+    return xml
+
+
+def process(args):
+    """Process arguments from CLI parser
+
+    :param args: result from `argparse` parser
+    :return: True or False
+    :rtype: bool
+    """
+    args.params = quoteparams(args)
+    doc = etree.parse(args.indexfile)
+    #
+    xml = transform(doc, args)
 
     if args.output is not None:
         xmldict = dict(encoding='unicode',

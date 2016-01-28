@@ -117,6 +117,6 @@ def cleanupxml(xml):
 
     :param xml: :class:`lxml.etree._ElementTree`
     """
-    # remove_double_ids(xml)
+    remove_double_ids(xml)
     fix_colspec_width(xml)
     add_pi_in_screen(xml)
