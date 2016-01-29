@@ -16,12 +16,11 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-"""Converts RST XML (Sphinx/ReST) into DocBook XML
-"""
+"""Converts RST XML (Sphinx/ReST XML) into DocBook XML"""
 
-__all__ = ('__version__', 'main', 'parsecli')
-__version__ = "0.4.0"
-__author__ = "Thomas Schraitle <toms (AT) suse DOT de>"
+__version__ = "0.4.0"  # flake8: noqa
+__all__ = ('__version__', 'main', 'parsecli')  # flake8: noqa
+__author__ = "Thomas Schraitle <toms (AT) suse DOT de>"  # flake8: noqa
 
 
 from .cli import parsecli

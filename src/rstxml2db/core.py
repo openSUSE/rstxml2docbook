@@ -16,10 +16,13 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+"""Core variables"""
+
+import os
+
 __all__ = ('DOCTYPE', 'HERE', 'NSMAP',
            'XSLTRST2DB', 'XSLTRESOLVE', 'XSLTDB4TO5')
 
-import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 

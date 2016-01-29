@@ -16,12 +16,16 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+"""Dealing with XML structures and execute transformation"""
 
 from lxml import etree
 
-from .cleanup import cleanupxml, remove_double_ids
+from .cleanup import cleanupxml
 from .core import DOCTYPE, XSLTRST2DB, XSLTRESOLVE, XSLTDB4TO5
 from .log import log
+
+__all__ = ['addchapter', 'addlegalnotice', 'quoteparams', 'transform',
+           'process']
 
 
 def addchapter(xml, convfile):
@@ -32,7 +36,6 @@ def addchapter(xml, convfile):
                         `<preface>` or `<chapter>`
     """
     conv = etree.parse(convfile)
-    preface = conv.getroot()
     book = xml.getroot()
     try:
         pos = [i for i in range(len(book)) if etree.QName(book[i].tag).localname == 'chapter'][0]
@@ -65,6 +68,7 @@ def quoteparams(args):
     """
     return [(p[0], p[1] if p[0].startswith('_') else etree.XSLT.strparam(p[1]))
             for p in args.params]
+
 
 def transform(doc, args):
     """

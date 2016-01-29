@@ -16,9 +16,12 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+"""Collect several cleanup steps"""
+
 from .log import log
 from lxml import etree
 from collections import defaultdict
+
 
 def finddoubleids(allids):
     """Find all double IDs
@@ -36,6 +39,7 @@ def allelementswithid(xml):
     """Generator: yielding all elements with an 'id' attribute
 
     :param xml: root tree or element
+    :return: generator
     """
     tree = xml.getroottree() if hasattr(xml, 'getroottree') else xml
 
@@ -48,6 +52,7 @@ def alltableelements(xml):
     """Generator: yield all table or informaltable elements
 
     :param xml: root tree or element node
+    :return: generator
     """
     tree = xml.getroottree() if hasattr(xml, 'getroottree') else xml
     for item in tree.iter():
@@ -56,7 +61,8 @@ def alltableelements(xml):
 
 
 def fix_colspec_width(xml):
-    """Fix columspec/@width
+    """Fix columspec/@width from simple absolute values into the relative
+       star notation
 
     :param xml: root tree or element node
     """
