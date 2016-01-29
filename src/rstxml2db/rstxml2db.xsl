@@ -511,20 +511,30 @@
 
   <!-- =================================================================== -->
   <xsl:template match="figure">
-    <figure>
+    <xsl:variable name="title">
       <xsl:choose>
         <xsl:when test="following-sibling::paragraph[1][strong]">
-          <xsl:variable name="title">
-            <xsl:value-of select="normalize-space(substring-after(string(following-sibling::paragraph[1][strong]), 'Figure:'))"/>
-          </xsl:variable>
-          <title><xsl:value-of select="$title"/></title>
+          <xsl:variable name="tmp.title" select="following-sibling::paragraph[1][strong]"/>
+          <xsl:choose>
+            <xsl:when test="starts-with($tmp.title, 'Figure&#xa0;')">
+              <xsl:value-of select="substring-after($tmp.title, 'Figure&#xa0;')"/>
+            </xsl:when>
+            <xsl:when test="starts-with($tmp.title, 'Figure')">
+              <xsl:value-of select="substring-after($tmp.title, 'Figure')"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="$tmp.title"/>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:when>
-        <xsl:when test="caption">
-          <title>
-            <xsl:apply-templates select="caption"/>
-          </title>
-        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="caption"/>
+        </xsl:otherwise>
       </xsl:choose>
+    </xsl:variable>
+
+    <figure>
+      <title><xsl:value-of select="normalize-space($title)"/></title>
       <xsl:apply-templates select="node()[not(self::caption)]"/>
     </figure>
   </xsl:template>

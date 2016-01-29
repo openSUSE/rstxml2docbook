@@ -61,6 +61,43 @@ def test_integration(xpath, db4, tmpdir, args):
 
 
 @pytest.mark.parametrize('xpath,db4', [
+    (['//figure[1]',# '/book/chapter[2]/section[1]/figure[1]'
+      'title'
+     ],
+     True
+    ),
+    # For DocBook 5
+    (
+    ['//d:figure[1]', # '/d:book/d:chapter[2]/d:section[1]/d:figure[1]'
+     'd:title'
+     ],
+    False
+    ),
+])
+def test_integration_figure(xpath, db4, tmpdir, args):
+    DOCDIR.copy(tmpdir)
+    result = tmpdir / 'result.xml'
+    indexfile = tmpdir / 'index.xml'
+
+    # Use the faked parsed cli argparser object
+    args.output = str(result)
+    args.indexfile = str(indexfile)
+    args.db4 = db4
+
+    process(args)
+
+    assert result.exists()
+    xml = etree.parse(str(result))
+
+    figure = xml.xpath(xpath[0], namespaces=NSMAP)
+    assert figure
+    figure = figure[0]
+    title = figure.find(xpath[1], namespaces=NSMAP)
+    assert title is not None
+    assert title.text == 'Foo Image'
+
+
+@pytest.mark.parametrize('xpath,db4', [
     (['/book/preface/title',
       '/book/preface/para',
       ['title', 'bookinfo', 'preface', 'chapter', 'glossary']

@@ -5,5 +5,10 @@
     <section ids="installing-foofoo-sdk" names="installing\ foofoo\ sdk">
         <title>Installing FooFoo SDK</title>
         <paragraph>Each project has its own Python library.</paragraph>
+        <figure>
+            <image candidates="{'*': 'figures/create_image.png'}"
+                   uri="figures/foo.png"/>
+        </figure>
+        <paragraph><strong>Figure Foo Image</strong></paragraph>
     </section>
 </document>
