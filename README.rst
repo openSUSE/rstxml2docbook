@@ -1,6 +1,8 @@
 README
 ******
 
+License: GPL 3+
+
 .. image:: https://travis-ci.org/tomschr/rstxml2docbook.svg?branch=develop
     :target: https://travis-ci.org/tomschr/rstxml2docbook
     :alt: Travis CI
@@ -64,3 +66,31 @@ creates DocBook files, for example::
 The previous step uses the `index.xml` file and writes all DocBook files
 into the `out/` directory.
 
+
+The Internal Workflow
+=====================
+
+The workflow from the RST XML files to DocBook involves these steps:
+
+1. Load the ``index.xml`` file.
+1. Resolve all external references to other files; create one single RST XML
+   tree.
+1. If ``--legalnotice`` is used, add the legalnotice file into ``bookinfo``.
+1. If ``--conventions`` is used, replace first chapter with ``preface`` content.
+1. Clean up XML:
+   1. Remove IDs with no corresponding ``<xref/>``.
+   1. Fix absolute colum width into relative value.
+   1. Add processing instruction in ``<screen>``, if the maximum characters
+      inside screen exceeds a certain value.
+1. Transform DocBook 4 tree into DocBook 5, if option ``--db4`` is not set.
+1. Output tree, either by saving it or by printing it to std out.
+
+
+The transformation from separate RST XML files into a single RST XML tree
+uses mainly the element ``list_item[@classes='toctree-l1']``. Anything that
+is referenced is used as a file for inclusion. Everything else is copied
+as it is.
+
+
+The transformation from the single RST XML tree into DocBook 4 use the
+``rstxml2db.xsl`` stylesheet.
