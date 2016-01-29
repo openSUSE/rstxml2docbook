@@ -23,6 +23,11 @@
                 <reference anchorname="" internal="True" refuri="sdk">SDK</reference>
               </compact_paragraph>
             </list_item>
+            <list_item classes="toctree-l1">
+              <compact_paragraph classes="toctree-l1">
+                <reference anchorname="" internal="True" refuri="glossary">Glossary</reference>
+              </compact_paragraph>
+            </list_item>
           </bullet_list>
         </compact_paragraph>
       </compound>

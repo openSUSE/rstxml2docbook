@@ -242,6 +242,12 @@
     </abstract>
   </xsl:template>
 
+  <xsl:template match="section[@names='glossary']">
+    <glossary>
+      <xsl:apply-templates mode="glossary"/>
+    </glossary>
+  </xsl:template>
+
   <xsl:template match="section">
     <xsl:variable name="name">
       <xsl:call-template name="create.structural.name"/>
@@ -261,6 +267,10 @@
         <xsl:with-param name="root" select="$name"/>
       </xsl:apply-templates>
     </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="section/title" mode="glossary">
+    <xsl:apply-templates select="."/>
   </xsl:template>
 
   <xsl:template match="section/title">
@@ -392,17 +402,27 @@
 
 
   <!-- =================================================================== -->
+
+  <xsl:template match="*" mode="glossary">
+      <xsl:apply-templates select="."/>
+  </xsl:template>
+
   <xsl:template match="glossary">
-    <!--<glossary>
-      <xsl:copy-of select="ancestor::title"/>-->
       <xsl:apply-templates/>
-    <!--</glossary>-->
+  </xsl:template>
+
+  <xsl:template match="glossary" mode="glossary">
+      <xsl:apply-templates mode="glossary"/>
   </xsl:template>
 
   <xsl:template match="definition_list[@classes='glossary']">
     <glosslist>
       <xsl:apply-templates select="definition_list_item"/>
     </glosslist>
+  </xsl:template>
+
+  <xsl:template match="definition_list[@classes='glossary']" mode="glossary">
+      <xsl:apply-templates select="definition_list_item"/>
   </xsl:template>
 
   <xsl:template match="definition_list[@classes='glossary']/definition_list_item">

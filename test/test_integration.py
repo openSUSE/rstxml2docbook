@@ -63,13 +63,13 @@ def test_integration(xpath, db4, tmpdir, args):
 @pytest.mark.parametrize('xpath,db4', [
     (['/book/preface/title',
       '/book/preface/para',
-      ['title', 'bookinfo', 'preface', 'chapter']
+      ['title', 'bookinfo', 'preface', 'chapter', 'glossary']
      ],
      True),
     # For DocBook 5
     (['/d:book/d:preface/d:title',
       '/d:book/d:preface/d:para',
-      ['title', 'info', 'preface', 'chapter']
+      ['title', 'info', 'preface', 'chapter', 'glossary']
      ],
      False),
 ])
