@@ -1,8 +1,8 @@
 # kate: icon-border true; indent-mode none; syntax INI Files;
 
 [run]
-# These files shouldn't be covered:
 source = rstxml2db
+branch = True
 
 [report]
 exclude_lines =

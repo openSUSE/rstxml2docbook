@@ -10,6 +10,9 @@ README
 .. image:: https://scrutinizer-ci.com/g/tomschr/rstxml2docbook/badges/quality-score.png?b=develop
     :target: https://scrutinizer-ci.com/g/tomschr/rstxml2docbook/?branch=develop
     :alt: Scrutinizer Code Quality
+.. image:: https://codecov.io/github/tomschr/rstxml2docbook/coverage.svg?branch=develop
+    :target: https://codecov.io/github/tomschr/rstxml2docbook?branch=develop
+    :alt: Code Coverage
 
 The :program:`rstxml2db` script converts RST XML files back to DocBook XML.
 

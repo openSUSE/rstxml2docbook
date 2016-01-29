@@ -3,3 +3,6 @@
 -r requirements.txt
 pytest
 # flake8
+coverage
+codecov
+pytest-cov
