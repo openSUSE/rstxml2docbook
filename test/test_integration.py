@@ -89,9 +89,8 @@ def test_integration_figure(xpath, db4, tmpdir, args):
     assert result.exists()
     xml = etree.parse(str(result))
 
-    figure = xml.xpath(xpath[0], namespaces=NSMAP)
-    assert figure
-    figure = figure[0]
+    figure = xml.find(xpath[0], namespaces=NSMAP)
+    assert figure is not None
     title = figure.find(xpath[1], namespaces=NSMAP)
     assert title is not None
     assert title.text == 'Foo Image'
