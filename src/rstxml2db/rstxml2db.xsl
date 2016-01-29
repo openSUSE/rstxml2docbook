@@ -4,8 +4,17 @@
      Transforms RST XML into DocBook
 
    Parameters:
-     * indexfile
-       Path to the '.booktree.xml' file
+     * productname
+       The name of the product; added inside <bookinfo>
+     * produtnumber
+       The number or any other identification of a product; added inside
+       <bookinfo>
+     * xml.ext
+       References to XML files; this parameter contains the extension
+       (usually '.xml') which is appended for the reference/@refuri part.
+     * rootlang
+       (Natural) language of the document; added into the root element as
+       lang="$rootlang"
 
    Input:
      RST XML file, converted with sphinx-build using option -b xml
@@ -30,8 +39,6 @@
   <xsl:key name="documents" match="document" use="@source"/>
 
   <xsl:param name="xml.ext">.xml</xsl:param>
-  <xsl:param name="indexfile" select="'.booktree.xml'"/>
-  <xsl:param name="use.preface.as.first.section" select="1"/>
 
   <!-- Natural language for root element -->
   <xsl:param name="rootlang">en</xsl:param>
