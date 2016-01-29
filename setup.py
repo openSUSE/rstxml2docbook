@@ -22,23 +22,25 @@ from os import path
 from setuptools import setup, find_packages
 
 
-HERE = path.abspath(path.dirname(__file__))
-
 setupdict = dict(
    name='rstxml2db',
    version='0.4.0',
-   description='',
+   description='Converts RST XML files back to DocBook XML',
    url='https://github.com/tomschr/rstxml2docbook',
    # Author details
    author='Thomas Schraitle',
    author_email='toms (AT) opensuse.org',
    license='GPL-3.0',
+   # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
    classifiers=[
-      'Development Status :: 3 - Alpha',
+      'Development Status :: 5 - Production/Stable'
+      #
       'Topic :: Documentation',
       'Topic :: Software Development :: Documentation',
       'Intended Audience :: Developers',
-      # Supported Python versions
+      # The license:
+      'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+      # Supported Python versions:
       'Programming Language :: Python :: 3.3',
       'Programming Language :: Python :: 3.4',
       'Programming Language :: Python :: 3.5',
@@ -56,6 +58,9 @@ setupdict = dict(
    # have to be included in MANIFEST.in as well.
    package_data={
         '': ['src/rstxml2db/*.xsl'],
+   },
+   extras_require={
+        'test': ['pytest', 'coverage'],
    },
    entry_points={
         'console_scripts': [
