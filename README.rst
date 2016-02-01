@@ -74,22 +74,22 @@ The workflow from the RST XML files to DocBook involves these steps:
 
 1. Load the ``index.xml`` file.
 
-1. Resolve all external references to other files; create one single RST XML tree.
+2. Resolve all external references to other files; create one single RST XML tree.
 
-1. If ``--legalnotice`` is used, add the legalnotice file into ``bookinfo``.
+3. If ``--legalnotice`` is used, add the legalnotice file into ``bookinfo``.
 
-1. If ``--conventions`` is used, replace first chapter with ``preface`` content.
+4. If ``--conventions`` is used, replace first chapter with ``preface`` content.
 
-1. Clean up XML:
+5. Clean up XML:
 
    a. Remove IDs with no corresponding ``<xref/>``.
    b. Fix absolute colum width into relative value.
    c. Add processing instruction in ``<screen>``, if the maximum characters
       inside screen exceeds a certain value.
 
-1. Transform DocBook 4 tree into DocBook 5, if option ``--db4`` is not set.
+6. Transform DocBook 4 tree into DocBook 5, if option ``--db4`` is not set.
 
-1. Output tree, either by saving it or by printing it to std out.
+7. Output tree, either by saving it or by printing it to std out.
 
 
 The transformation from separate RST XML files into a single RST XML tree
