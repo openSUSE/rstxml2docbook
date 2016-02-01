@@ -65,8 +65,7 @@
       <xsl:when test="$level = 6">sect5</xsl:when>
       -->
       <xsl:otherwise>
-        <xsl:message>ERROR: Level too big! (level=<xsl:value-of select="$level"/>)</xsl:message>
-        <xsl:text>topic</xsl:text>
+        <xsl:message>ERROR: Level out of scope (level=<xsl:value-of select="$level"/>)</xsl:message>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>

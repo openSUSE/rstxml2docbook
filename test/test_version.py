@@ -3,7 +3,7 @@
 
 def test_version():
     """Check if version is available and set"""
-    from rstxml2db import __version__
+    from rstxml2db.version import __version__
     assert __version__
 
 

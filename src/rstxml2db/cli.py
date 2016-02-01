@@ -20,8 +20,8 @@
 
 import argparse
 
-from . import __version__, __author__
 from .log import log, setloglevel
+from .version import __version__, __author__
 
 
 def prepareparams(params):

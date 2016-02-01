@@ -18,13 +18,11 @@
 
 """Converts RST XML (Sphinx/ReST XML) into DocBook XML"""
 
-__version__ = "0.4.0"  # flake8: noqa
 __all__ = ('__version__', 'main', 'parsecli')  # flake8: noqa
-__author__ = "Thomas Schraitle <toms (AT) suse DOT de>"  # flake8: noqa
-
 
 from .cli import parsecli
 from .log import log
+from .version import __version__, __author__
 from .xml import process
 from lxml import etree
 import sys
