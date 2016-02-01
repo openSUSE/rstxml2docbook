@@ -103,11 +103,6 @@ def remove_double_ids(xml, usedoubleids=True):
     unusedattr = [item for item in allelementswithid(xml)
                   if item.attrib['id'] not in linkends]
     idattrs = [item.attrib['id'] for item in unusedattr]
-    #for item in allelementswithid(xml):
-    #    idattr = item.attrib['id']
-    #    if idattr not in linkends:
-    #        del item.attrib['id']
-    #        unusedattr.append(idattr)
     for item in unusedattr:
         del item.attrib['id']
     log.debug('Unused IDs, removed from output: %s', ', '.join(idattrs))
