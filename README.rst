@@ -100,3 +100,30 @@ as it is.
 
 The transformation from the single RST XML tree into DocBook 4 use the
 ``rstxml2db.xsl`` stylesheet.
+
+
+Things to Know During Convertion
+================================
+
+The convertion internally creates a single RST XML tree. This tree contains
+*all* information which is needed.
+
+For example, the following things work:
+
+* Internal referencing from one section to another (element ``reference[@internal='True']``)
+* Internal references to a glossary entry (element ``reference[@internal='True']``, but
+  with ``@refuri`` containing an ``#`` character
+* External referencing to a remote site (element ``reference[@refuri]``)
+* Different, nested sections are corretly converted into the DocBook structures
+  (book, chapter, section etc.)
+* Admonition elements
+* Tables and figures
+* Lists like ``bullet_list``, ``definition_list``, and ``enumerated_list``
+* Glossary entries
+* Inline elements like ``strong``, ``literal_emphasis``
+
+The following issues are still problematic:
+
+* **Double IDs**
+  When RST contains the same title, the same IDs are generated from the RST
+  XML builder. I consider it as a bug.
