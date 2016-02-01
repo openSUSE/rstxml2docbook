@@ -523,8 +523,14 @@
         <xsl:when test="following-sibling::paragraph[1][strong]">
           <xsl:variable name="tmp.title" select="following-sibling::paragraph[1][strong]"/>
           <xsl:choose>
+            <xsl:when test="starts-with($tmp.title, 'Figure:&#xa0;')">
+              <xsl:value-of select="substring-after($tmp.title, 'Figure:&#xa0;')"/>
+            </xsl:when>
             <xsl:when test="starts-with($tmp.title, 'Figure&#xa0;')">
               <xsl:value-of select="substring-after($tmp.title, 'Figure&#xa0;')"/>
+            </xsl:when>
+            <xsl:when test="starts-with($tmp.title, 'Figure:')">
+              <xsl:value-of select="substring-after($tmp.title, 'Figure:')"/>
             </xsl:when>
             <xsl:when test="starts-with($tmp.title, 'Figure')">
               <xsl:value-of select="substring-after($tmp.title, 'Figure')"/>
