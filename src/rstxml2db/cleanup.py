@@ -100,14 +100,17 @@ def remove_double_ids(xml, usedoubleids=True):
            double ids or not (default True)
     """
     linkends = set([i.attrib['linkend'] for i in xml.iter('xref')])
-
-    unusedattr = []
-    for item in allelementswithid(xml):
-        idattr = item.attrib['id']
-        if idattr not in linkends:
-            del item.attrib['id']
-            unusedattr.append(idattr)
-    log.debug('Unused IDs, removed from output: %s', ', '.join(unusedattr))
+    unusedattr = [item for item in allelementswithid(xml)
+                  if item.attrib['id'] not in linkends]
+    idattrs = [item.attrib['id'] for item in unusedattr]
+    #for item in allelementswithid(xml):
+    #    idattr = item.attrib['id']
+    #    if idattr not in linkends:
+    #        del item.attrib['id']
+    #        unusedattr.append(idattr)
+    for item in unusedattr:
+        del item.attrib['id']
+    log.debug('Unused IDs, removed from output: %s', ', '.join(idattrs))
 
     if usedoubleids:
         double = finddoubleids(xml.xpath("//*[@id]"))
