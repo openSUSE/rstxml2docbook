@@ -6,3 +6,5 @@ pytest
 coverage
 codecov
 pytest-cov
+pytest-travis-fold
+
