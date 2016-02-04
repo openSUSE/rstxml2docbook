@@ -3,17 +3,17 @@ README
 
 License: GPL 3+
 
-.. image:: https://travis-ci.org/tomschr/rstxml2docbook.svg?branch=develop
-    :target: https://travis-ci.org/tomschr/rstxml2docbook
+.. image:: https://travis-ci.org/openSUSE/rstxml2docbook.svg?branch=develop
+    :target: https://travis-ci.org/openSUSE/rstxml2docbook
     :alt: Travis CI
-.. image:: https://codeclimate.com/github/tomschr/rstxml2docbook/badges/gpa.svg
-    :target: https://codeclimate.com/github/tomschr/rstxml2docbook
+.. image:: https://codeclimate.com/github/openSUSE/rstxml2docbook/badges/gpa.svg
+    :target: https://codeclimate.com/github/openSUSE/rstxml2docbook
     :alt: Code Climate
-.. image:: https://scrutinizer-ci.com/g/tomschr/rstxml2docbook/badges/quality-score.png?b=develop
-    :target: https://scrutinizer-ci.com/g/tomschr/rstxml2docbook/?branch=develop
+.. image:: https://scrutinizer-ci.com/g/openSUSE/rstxml2docbook/badges/quality-score.png?b=develop
+    :target: https://scrutinizer-ci.com/g/openSUSE/rstxml2docbook/?branch=develop
     :alt: Scrutinizer Code Quality
-.. image:: https://codecov.io/github/tomschr/rstxml2docbook/coverage.svg?branch=develop
-    :target: https://codecov.io/github/tomschr/rstxml2docbook?branch=develop
+.. image:: https://codecov.io/github/openSUSE/rstxml2docbook/coverage.svg?branch=develop
+    :target: https://codecov.io/github/openSUSE/rstxml2docbook?branch=develop
     :alt: Code Coverage
 
 The :program:`rstxml2db` script converts RST XML files back to DocBook XML.
@@ -33,7 +33,7 @@ To install :program:`rstxml2db`, use one of the following methods:
 
 3. Install the package::
 
-    $ pip install git+https://github.com/tomschr/rstxml2docbook.git@develop
+    $ pip install git+https://github.com/openSUSE/rstxml2docbook.git@develop
 
 After the installation in your Python virtual environment, two executable
 scripts are available: :program:`rstxml2db` and :program:`rstxml2docbook`.
