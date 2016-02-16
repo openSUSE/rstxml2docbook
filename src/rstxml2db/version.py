@@ -18,5 +18,5 @@
 
 """Contains __version__ and __author__"""
 
-__version__ = "0.4.0"  # flake8: noqa
+__version__ = "0.4.1"  # flake8: noqa
 __author__ = "Thomas Schraitle <toms (AT) suse DOT de>"  # flake8: noqa
