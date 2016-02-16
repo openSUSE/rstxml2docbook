@@ -13,6 +13,10 @@ exclude_lines =
     if 0:
     if False:
     if __name__ == .__main__.:
+ignore_errors = True
+omit =
+    tests/*
+    test/*
 
 [html]
 title = rstxml2docbook Coverage Report
