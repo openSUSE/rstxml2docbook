@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Feb 16 08:44:00 UTC 2015 - toms@opensuse.org
+
+Version 0.4.2:
+ * Fixed archive name to rstxml2docbook
+ * Include doc and test directories
+
+
+-------------------------------------------------------------------
 Tue Feb 16 08:00:00 UTC 2015 - toms@opensuse.org
 
 First stable release 0.4.1
