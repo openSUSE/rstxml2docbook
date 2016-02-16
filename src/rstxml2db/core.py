@@ -16,11 +16,32 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-"""Support python -m rstxml2db call with __main__.py"""
+"""Core variables"""
 
-import sys
-from . import main
+import os
+
+__all__ = ('DOCTYPE', 'HERE', 'NSMAP',
+           'XSLTRST2DB', 'XSLTRESOLVE', 'XSLTDB4TO5')
 
 
-if __name__ == "__main__":
-    sys.exit(main())
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+# Stylesheets
+XSLTRST2DB = os.path.join(HERE, 'rstxml2db.xsl')
+XSLTRESOLVE = os.path.join(HERE, 'resolve.xsl')
+XSLTDB4TO5 = os.path.join(HERE, 'suse-upgrade.xsl')
+
+NSMAP = dict(xi='http://www.w3.org/2001/XInclude',
+             d='http://docbook.org/ns/docbook',
+             xl='http://www.w3.org/1999/xlink',
+             )
+
+DOCTYPE = r"""<!DOCTYPE {} PUBLIC
+"-//OASIS//DTD DocBook XML V4.5//EN"
+"http://docbook.org/xml/4.5/docbookx.dtd"
+[
+<!--
+  <!ENTITY % entities SYSTEM "entity-decl.ent">
+  %entities;
+-->
+]>"""

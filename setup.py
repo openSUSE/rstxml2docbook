@@ -22,25 +22,28 @@ from os import path
 from setuptools import setup, find_packages
 
 
-HERE = path.abspath(path.dirname(__file__))
-
 setupdict = dict(
    name='rstxml2db',
-   version='0.0.1',
-   description='',
+   version='0.4.1',
+   description='Converts RST XML files back to DocBook XML',
    url='https://github.com/tomschr/rstxml2docbook',
    # Author details
    author='Thomas Schraitle',
    author_email='toms (AT) opensuse.org',
    license='GPL-3.0',
+   # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
    classifiers=[
-      'Development Status :: 3 - Alpha',
+      'Development Status :: 5 - Production/Stable'
+      #
       'Topic :: Documentation',
       'Topic :: Software Development :: Documentation',
       'Intended Audience :: Developers',
-      # Supported Python versions
+      # The license:
+      'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+      # Supported Python versions:
       'Programming Language :: Python :: 3.3',
       'Programming Language :: Python :: 3.4',
+      'Programming Language :: Python :: 3.5',
    ],
    keywords='docbook sphinx RST XML',
    include_package_data = True,
@@ -53,12 +56,16 @@ setupdict = dict(
    # If there are data files included in your packages that need to be
    # installed, specify them here.  If using Python 2.6 or less, then these
    # have to be included in MANIFEST.in as well.
-   #package_data={
-   #     '': ['template/*'],
-   #},
+   package_data={
+        '': ['src/rstxml2db/*.xsl'],
+   },
+   extras_require={
+        'test': ['pytest', 'coverage'],
+   },
    entry_points={
         'console_scripts': [
             'rstxml2db=rstxml2db:main',
+            'rstxml2docbook=rstxml2db:main',
         ],
     },
 )

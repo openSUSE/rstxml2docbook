@@ -16,11 +16,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-"""Support python -m rstxml2db call with __main__.py"""
+"""Contains __version__ and __author__"""
 
-import sys
-from . import main
-
-
-if __name__ == "__main__":
-    sys.exit(main())
+__version__ = "0.4.1"  # flake8: noqa
+__author__ = "Thomas Schraitle <toms (AT) suse DOT de>"  # flake8: noqa

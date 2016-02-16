@@ -1,0 +1,15 @@
+# https://codeclimate.com/
+#
+languages:
+  Ruby: false
+  JavaScript: false
+  PHP: false
+  Python: true
+
+engines:
+    radon:
+        enabled: true
+
+exclude_paths:
+    - tests/**
+    - test/**

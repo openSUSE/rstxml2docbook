@@ -16,11 +16,32 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-"""Support python -m rstxml2db call with __main__.py"""
+"""Logging setup"""
 
+import logging
 import sys
-from . import main
+
+__all__ = ('log', 'setloglevel', 'LOGLEVELS', )
 
 
-if __name__ == "__main__":
-    sys.exit(main())
+log = logging.getLogger(__file__)
+_ch = logging.StreamHandler(sys.stderr)
+_frmt = logging.Formatter('[%(levelname)s]: '
+                          '%(message)s', '%H:%M:%S')
+_ch.setFormatter(_frmt)
+log.setLevel(logging.DEBUG)
+log.addHandler(_ch)
+
+LOGLEVELS = {None: logging.NOTSET,
+             0: logging.NOTSET,
+             1: logging.INFO,
+             2: logging.DEBUG,
+             }
+
+
+def setloglevel(verbose):
+    """Set log level according to verbose argument
+
+    :param int verbose: verbose level to set
+    """
+    log.setLevel(LOGLEVELS.get(verbose, logging.DEBUG))

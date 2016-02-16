@@ -2,6 +2,13 @@
 __pycache__/
 *.py[cod]
 
+#
+*.kate-swp
+*.~
+*~
+test/*/.booktree.xml
+[^/]*\.xml
+
 # C extensions
 *.so
 
@@ -20,11 +27,13 @@ lib/
 lib64/
 parts/
 sdist/
+out/
 .tmp/
 var/
 *.egg-info/
 .installed.cfg
 *.egg
+
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -46,6 +55,7 @@ nosetests.xml
 coverage.xml
 *,cover
 
+
 # Translations
 *.mo
 *.pot
@@ -54,7 +64,7 @@ coverage.xml
 *.log
 
 # Sphinx documentation
-docs/_build/
+doc/_build/
 
 # PyBuilder
 target/
