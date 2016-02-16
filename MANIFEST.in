@@ -1,6 +1,7 @@
 
-graft man
-prune man/build
+graft doc
+graft test
+prune doc/_build
 
 include ChangeLog
 include README*
