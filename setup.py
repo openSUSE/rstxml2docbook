@@ -24,7 +24,7 @@ from setuptools import setup, find_packages
 
 setupdict = dict(
    name='rstxml2db',
-   version='0.4.0',
+   version='0.4.1',
    description='Converts RST XML files back to DocBook XML',
    url='https://github.com/tomschr/rstxml2docbook',
    # Author details
