@@ -6,3 +6,4 @@ pytest
 coverage
 codecov
 pytest-cov
+sphinx-rtd-theme
