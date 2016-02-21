@@ -1,7 +1,15 @@
 -------------------------------------------------------------------
+Son Feb 21 19:30:00 UTC 2016 - toms@opensuse.org
+
+Version 0.4.4:
+ * Improved manpage
+ * Used sphinx-rtd-theme as theme
+
+
+-------------------------------------------------------------------
 Son Feb 21 16:04:00 UTC 2016 - toms@opensuse.org
 
-Version 0.4.2:
+Version 0.4.3:
  * No code changes
  * Created public manpage
 
