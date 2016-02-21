@@ -5,7 +5,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-rstxml2db Manual Page Version 0.4.2
+rstxml2db Manual Page Version 0.4.3
 ===================================
 
 Synopsis
@@ -48,9 +48,8 @@ Options
                                Number/release etc. of the product (also
                                included into ``book/bookinfo``).
 -p <PARAM>, --param <PARAM>    single XSLT parameter; use the syntax "NAME=VALUE",
-                               can be used multiple times.
--o <output>, --output <output> save DocBook XML file to the given path.
-
+                                 can be used multiple times.
+-o <output>, --output <output>   save DocBook XML file to the given path.
 -v, --verbose                  Increase verbosity (can be repeated).
 
 
