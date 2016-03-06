@@ -16,7 +16,10 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-"""Converts RST XML (Sphinx/ReST XML) into DocBook XML"""
+"""
+Converts RST XML (Sphinx/ReST XML) into DocBook XML
+
+"""
 
 __all__ = ('__version__', 'main', 'parsecli')  # flake8: noqa
 

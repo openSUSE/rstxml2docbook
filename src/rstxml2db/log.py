@@ -16,14 +16,16 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-"""Logging setup"""
+"""
+Logging setup
+"""
 
 import logging
 import sys
 
 __all__ = ('log', 'setloglevel', 'LOGLEVELS', )
 
-
+#: ``log`` is the object to use for all log events
 log = logging.getLogger(__file__)
 _ch = logging.StreamHandler(sys.stderr)
 _frmt = logging.Formatter('[%(levelname)s]: '
@@ -32,6 +34,7 @@ _ch.setFormatter(_frmt)
 log.setLevel(logging.DEBUG)
 log.addHandler(_ch)
 
+#: Dictionary: Log levels to map verbosity level to logging values
 LOGLEVELS = {None: logging.NOTSET,
              0: logging.NOTSET,
              1: logging.INFO,

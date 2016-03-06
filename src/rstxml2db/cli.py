@@ -16,7 +16,9 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-"""CLI parsing"""
+"""
+This module implements the cli parser.
+"""
 
 import argparse
 

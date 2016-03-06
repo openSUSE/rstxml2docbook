@@ -16,7 +16,9 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-"""Dealing with XML structures and execute transformation"""
+"""
+Dealing with XML structures and execute transformation
+"""
 
 from lxml import etree
 
@@ -33,7 +35,7 @@ def addchapter(xml, convfile):
 
     :param xml: :class:`lxml.etree._ElementTree`
     :param convfile: filename to some conventions, usually as root element
-                        `<preface>` or `<chapter>`
+                        ``<preface>`` or ``<chapter>``
     """
     conv = etree.parse(convfile)
     book = xml.getroot()
@@ -52,7 +54,7 @@ def addlegalnotice(xml, legalfile):
     """Add legalnotice file into book/bookinfo
 
     :param xml: :class:`lxml.etree._ElementTree`
-    :param convfile: filename with root element `<legalnotice>`
+    :param convfile: filename with root element ``<legalnotice>``
     """
     legal = etree.parse(legalfile).getroot()
     bookinfo = xml.getroot().find('bookinfo')
@@ -62,7 +64,7 @@ def addlegalnotice(xml, legalfile):
 def quoteparams(args):
     """Quote parameters with :func:`etree.XSLT.strparam`
 
-    :param args: result from `argparse` parser
+    :param args: result from :class:`argparse` parser
     :return: parameter list with quoted values
     :rtype: list
     """
@@ -71,7 +73,12 @@ def quoteparams(args):
 
 
 def transform(doc, args):
-    """
+    """Transformation step
+
+    :param docs: tree of class :class:`lxml.etree._ElementTree`
+    :param args: argument result from :class:`argparse`
+    :return: XML tree
+    :rtype: :class:`lxml.etree._ElementTree`
     """
     rstresolve_xslt = etree.parse(XSLTRESOLVE)
     rst2db_xslt = etree.parse(XSLTRST2DB)
