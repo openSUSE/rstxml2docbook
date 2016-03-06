@@ -15,7 +15,6 @@ install:
     - pip install -U pip setuptools
     - pip install .
     - pip install -r travis_requirements.txt
-    - pip install  travis-sphinx
 
 # command to run tests
 script:
