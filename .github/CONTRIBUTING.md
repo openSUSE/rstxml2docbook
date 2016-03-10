@@ -8,7 +8,7 @@ is hosted on the [SUSE Organization](https://github.com/SUSE) on GitHub.
 ## Reporting Bugs
 
 * Ensure the bug was not already reported, see the
-  [KIWI Issue Tracker](https://github.com/SUSE/kiwi/issues) on GitHub.
+  [rstxml2docbook Issue Tracker](https://github.com/SUSE/rstxml2docbook/issues) on GitHub.
 * Open an issue or reference an existing one
 * Assign yourself to the issue when you are working on it
 * Reference the issue number (with `#NUMBER`) in your pull request
