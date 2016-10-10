@@ -458,37 +458,49 @@
   <!-- =================================================================== -->
   <xsl:template match="table">
     <xsl:variable name="title">
-      <xsl:if test="preceding-sibling::paragraph[1][strong]">
-        <xsl:apply-templates select="preceding-sibling::paragraph[1]/strong"/>
-      </xsl:if>
+     <xsl:choose>
+      <xsl:when test="title">
+       <xsl:apply-templates select="title"/>
+      </xsl:when>
+      <xsl:when test="preceding-sibling::paragraph[1][strong]">
+       <xsl:apply-templates select="preceding-sibling::paragraph[1]/strong"/>
+      </xsl:when>
+     </xsl:choose>
     </xsl:variable>
     <xsl:variable name="id">
       <xsl:call-template name="get.target4table.id"/>
     </xsl:variable>
-    <xsl:variable name="table">
+    <xsl:variable name="tabletype">
       <xsl:choose>
         <xsl:when test="$title != ''">table</xsl:when>
         <xsl:otherwise>informaltable</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
 
-    <!--<xsl:message>table:
+    <xsl:message>table:
     title=<xsl:value-of select="$title"/>
     id=<xsl:value-of select="$id"/>
-    type=<xsl:value-of select="$table"/>
-    </xsl:message>-->
+    type=<xsl:value-of select="$tabletype"/>
+    </xsl:message>
 
-    <xsl:element name="{$table}">
+    <xsl:element name="{$tabletype}">
       <xsl:if test="$id != ''">
         <xsl:attribute name="id">
           <xsl:value-of select="$id"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="$title != ''">
-        <title><xsl:value-of select="$title"/></title>
+      <xsl:if test="$title != '' and $tabletype = 'table'">
+        <xsl:copy-of select="$title"/>
       </xsl:if>
       <xsl:apply-templates mode="table"/>
     </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="table/title">
+   <xsl:variable name="content">
+    <xsl:apply-templates/>
+   </xsl:variable>
+   <title><xsl:value-of select="normalize-space($content)"/></title>
   </xsl:template>
 
   <xsl:template match="@stub" mode="table"/>
@@ -498,6 +510,8 @@
       <xsl:apply-templates select="@* | node()" mode="table"/>
     </xsl:copy>
   </xsl:template>
+ 
+ <xsl:template match="title" mode="table"/>
 
   <xsl:template match="colspec" mode="table">
     <colspec>
