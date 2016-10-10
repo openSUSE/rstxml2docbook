@@ -18,6 +18,17 @@ License: GPL 3+
 
 The :program:`rstxml2db` script converts RST XML files back to DocBook XML.
 
+
+Quick Start
+===========
+
+To use the program without :command:`pip`, use the following command:
+
+::
+    $ PYTHONPATH=src python3 -m rstxml2db -h
+
+
+
 Installation
 ============
 
