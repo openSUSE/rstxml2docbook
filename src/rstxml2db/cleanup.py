@@ -114,7 +114,7 @@ def remove_double_ids(xml, usedoubleids=True):
 
     if usedoubleids:
         double = finddoubleids(xml.xpath("//*[@id]"))
-        if double:
+        if double: # pragma: no cover
             log.warning("Double IDs found: %s", double)
 
 
