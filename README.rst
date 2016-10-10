@@ -1,5 +1,5 @@
-README
-******
+Convert RST to DocBook XML
+**************************
 
 License: GPL 3+
 
@@ -21,11 +21,12 @@ The :program:`rstxml2db` script converts RST XML files back to DocBook XML.
 Installation
 ============
 
-To install :program:`rstxml2db`, use one of the following methods:
+To install :program:`rstxml2db`, use the following steps:
 
-1. Create a Python 3 environment::
+1. Create a Python 3 environment and activate it::
 
     $ pyvenv .env
+    $ source .env/bin/activate
 
 2. Update `pip` and `setuptools`::
 
@@ -34,6 +35,8 @@ To install :program:`rstxml2db`, use one of the following methods:
 3. Install the package::
 
     $ pip install git+https://github.com/openSUSE/rstxml2docbook.git@develop
+    or use
+    $ pip install -e .
 
 After the installation in your Python virtual environment, two executable
 scripts are available: :program:`rstxml2db` and :program:`rstxml2docbook`.
@@ -48,7 +51,7 @@ builder with the `-b` option)::
 
    $ sphinx-build -b xml -d .../build/html.doctree src/ xml/
 
-The `src/` directory contains the RST files, whereas the `xml/`
+The `src/` directory contains all of your RST files, whereas the `xml/`
 directory is the output directory.
 
 Each RST file generates a corresponding XML file.
@@ -57,7 +60,7 @@ Each RST file generates a corresponding XML file.
 Building the DocBook Files
 ==========================
 
-After you have created the intermediate XML files, it's now the time to
+After you have created the intermediate XML files, it's now time to
 use the :program:`rstxml2db` script. The script reads in all XML files and
 creates DocBook files, for example::
 
@@ -70,7 +73,7 @@ into the `out/` directory.
 The Internal Workflow
 =====================
 
-The workflow from the RST XML files to DocBook involves these steps:
+The workflow from converting RST XML files into DocBook involves these steps:
 
 1. Load the ``index.xml`` file.
 
