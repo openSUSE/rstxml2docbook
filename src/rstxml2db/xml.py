@@ -41,9 +41,10 @@ def addchapter(xml, convfile):
     conv = etree.parse(convfile)
     book = xml.getroot()
     try:
-        pos = [i for i in range(len(book)) if etree.QName(book[i].tag).localname == 'chapter'][0]
-    except KeyError:
-        pos = 0
+        pos = [i for i in range(len(book))
+               if etree.QName(book[i].tag).localname == 'chapter'][0]
+    except (KeyError, IndexError):
+        pos = 1
 
     firstchapter = book.find('chapter[1]')
     if firstchapter is not None:
