@@ -505,6 +505,14 @@
 
   <xsl:template match="@stub" mode="table"/>
 
+  <xsl:template match="@morecols" mode="table">
+   <xsl:attribute name="namest">c1</xsl:attribute>
+   <xsl:attribute name="nameend">
+    <xsl:text>c</xsl:text>
+    <xsl:value-of select="."/>
+   </xsl:attribute>
+  </xsl:template>
+
   <xsl:template match="node() | @*" mode="table">
     <xsl:copy>
       <xsl:apply-templates select="@* | node()" mode="table"/>
@@ -514,10 +522,11 @@
  <xsl:template match="title" mode="table"/>
 
   <xsl:template match="colspec" mode="table">
-    <colspec>
+    <colspec colname="c{position() -1}">
       <xsl:apply-templates select="@*" mode="table"/>
     </colspec>
   </xsl:template>
+
 
   <xsl:template match="paragraph" mode="table">
     <para>
