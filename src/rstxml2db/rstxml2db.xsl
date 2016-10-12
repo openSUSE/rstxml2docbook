@@ -462,9 +462,9 @@
       <xsl:when test="title">
        <xsl:apply-templates select="title"/>
       </xsl:when>
-      <xsl:when test="preceding-sibling::paragraph[1][strong]">
+      <!--<xsl:when test="preceding-sibling::paragraph[1][strong]">
        <xsl:apply-templates select="preceding-sibling::paragraph[1]/strong"/>
-      </xsl:when>
+      </xsl:when>-->
      </xsl:choose>
     </xsl:variable>
     <xsl:variable name="id">
