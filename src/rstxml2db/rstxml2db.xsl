@@ -529,6 +529,39 @@
     <xsl:apply-templates select="."/>
   </xsl:template>
 
+  <xsl:template match="option_list">
+   <variablelist>
+    <xsl:apply-templates/>
+   </variablelist>
+  </xsl:template>
+
+  <xsl:template match="option_list_item">
+   <varlistentry>
+    <xsl:apply-templates/>
+   </varlistentry>
+  </xsl:template>
+
+  <xsl:template match="option_group">
+   <term>
+    <xsl:apply-templates/>
+   </term>
+  </xsl:template>
+
+  <xsl:template match="option">
+   <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="option_string">
+   <option><xsl:apply-templates/></option>
+  </xsl:template>
+
+  <xsl:template match="description">
+   <listitem>
+    <xsl:apply-templates/>
+   </listitem>
+  </xsl:template>
+
+
   <!-- =================================================================== -->
   <xsl:template match="figure">
     <xsl:variable name="title">
