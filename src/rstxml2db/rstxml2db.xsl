@@ -92,8 +92,8 @@
         <xsl:when test="$node/preceding-sibling::section[1]/section[1]/section[1]/*[last()][self::target]">
           <xsl:value-of select="$node/preceding-sibling::section[1]/section[1]/section[1]/*[last()][self::target]/@refid"/>
         </xsl:when>
-        <xsl:when test="$node/preceding-sibling::section[1]/section[1]/*[last()][self::target]">
-          <xsl:value-of select="$node/preceding-sibling::section[1]/section[1]/*[last()][self::target]/@refid"/>
+        <xsl:when test="$node/preceding-sibling::section[1]/section[last()]/*[last()][self::target]">
+          <xsl:value-of select="$node/preceding-sibling::section[1]/section[last()]/*[last()][self::target]/@refid"/>
         </xsl:when>
         <xsl:when test="$node/preceding-sibling::section[1]/*[last()][self::target]">
           <xsl:value-of select="$node/preceding-sibling::section[1]/*[last()][self::target]/@refid"/>
