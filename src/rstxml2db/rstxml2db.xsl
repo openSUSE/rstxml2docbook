@@ -603,7 +603,7 @@
     </guilabel>
   </xsl:template>
 
-  <xsl:template match="emphasis[@classes='menuselection']|inline[@classes='guilabel']">
+  <xsl:template match="emphasis[@classes='menuselection']|inline[@classes='menuselection']">
     <menuchoice>
       <xsl:call-template name="create.guimenu">
         <xsl:with-param name="text" select="text()"/>
@@ -625,7 +625,7 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="strong[@classes='command']">
+  <xsl:template match="strong[@classes='command']|literal_strong[@classes='command']">
     <command>
       <xsl:apply-templates/>
     </command>
@@ -637,7 +637,7 @@
     </emphasis>
   </xsl:template>
 
-  <xsl:template match="literal">
+  <xsl:template match="literal|literal_strong">
     <literal>
       <xsl:apply-templates/>
     </literal>
