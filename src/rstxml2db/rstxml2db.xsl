@@ -593,13 +593,17 @@
     <xsl:copy-of select="."/>
   </xsl:template>
 
-  <xsl:template match="emphasis[@classes='guilabel']">
+  <xsl:template match="inline">
+   <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="emphasis[@classes='guilabel']|inline[@classes='guilabel']">
     <guilabel>
       <xsl:apply-templates/>
     </guilabel>
   </xsl:template>
 
-  <xsl:template match="emphasis[@classes='menuselection']">
+  <xsl:template match="emphasis[@classes='menuselection']|inline[@classes='guilabel']">
     <menuchoice>
       <xsl:call-template name="create.guimenu">
         <xsl:with-param name="text" select="text()"/>
