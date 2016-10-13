@@ -1,0 +1,12 @@
+
+<!--<!DOCTYPE document PUBLIC
+  "+//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML"
+  "http://docutils.sourceforge.net/docs/ref/docutils.dtd">-->
+
+<document source="document.001.rst">
+ <target refid="volume"/>
+ <section ids="manage-volumes volume" names="manage\ volumes volume">
+  <title>Manage volumes</title>
+  <paragraph>Found!</paragraph>
+ </section>
+</document>

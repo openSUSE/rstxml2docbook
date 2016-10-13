@@ -1,10 +1,11 @@
 #
-
+from argparse import Namespace
+import glob
+from lxml import etree
 import pytest
 import py.path
-from argparse import Namespace
-from lxml import etree
 
+DATADIR = py.path.local(__file__).parts()[-2] / "data"
 
 # ------------------------------------------------------
 # Fixtures
@@ -30,3 +31,11 @@ def args():
                      params = [],
                      indexfile = None
                      )
+
+
+def pytest_generate_tests(metafunc):
+    """Replace the xmltestcases fixture by all *.xml files in test/data"""
+    if 'xmltestcase' in metafunc.fixturenames:
+        testcases = DATADIR.listdir('*.xml')
+        ids = [f.purebasename for f in testcases]
+        metafunc.parametrize("xmltestcase", testcases, ids=ids)
