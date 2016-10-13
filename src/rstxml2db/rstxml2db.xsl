@@ -509,7 +509,7 @@
    <xsl:attribute name="namest">c1</xsl:attribute>
    <xsl:attribute name="nameend">
     <xsl:text>c</xsl:text>
-    <xsl:value-of select="."/>
+    <xsl:value-of select=". +1"/>
    </xsl:attribute>
   </xsl:template>
 
