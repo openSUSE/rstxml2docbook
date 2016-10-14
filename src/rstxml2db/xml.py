@@ -88,11 +88,24 @@ def transform(doc, args):
     resolve_trans = etree.XSLT(rstresolve_xslt)
     rst2db_trans = etree.XSLT(rst2db_xslt)
 
-    # Resolve RST XML -> single RST XML structure
-    # then, transform RST XML -> DocBook
+    # (1) Resolve multiple RST XML -> single RST XML structure...
+    #
     rst = resolve_trans(doc)
-    log.debug("Resolved all external references")
+    # log.debug("Resolved all external references")
+    # rst.write('/tmp/rsttree.xml',
+    #           encoding='utf-8',
+    #           pretty_print=True,
+    #           )
+    # log.debug("Wrote resolved tree to '/tmp/tree.xml'")
+
+    # (2) Transform RST XML -> DocBook 4
     xml = rst2db_trans(rst, **dict(args.params))
+    # xml.write('/tmp/result-tree.xml',
+    #           encoding='utf-8',
+    #           pretty_print=True,
+    #           )
+    # log.debug("Wrote result tree to '/tmp/result-tree.xml'")
+
     if log.isEnabledFor(logging.DEBUG):
         # We want xsl:message output only when we've set the right log level
         for entry in rst2db_trans.error_log:
