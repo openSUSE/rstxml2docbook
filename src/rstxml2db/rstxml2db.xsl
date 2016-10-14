@@ -192,6 +192,11 @@
   <xsl:template match="target"/>
   <xsl:template match="substitution_definition"/>
 
+  <!-- =================================================================== -->
+  <!-- Skipped elements                                                    -->
+  <xsl:template match="hlist|hlistcol">
+   <xsl:apply-templates/>
+  </xsl:template>
 
   <!-- =================================================================== -->
   <xsl:template match="document">
