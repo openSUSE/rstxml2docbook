@@ -110,6 +110,7 @@ def parsecli(cliargs=None):
                         )
 
     parser.add_argument('indexfile',
+                        metavar="INDEXFILE",
                         help='index file (XML) which refer all other files '
                              '(usually something like \'index.xml\')'
                         )
