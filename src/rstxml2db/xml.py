@@ -126,6 +126,15 @@ def transform(doc, args):
         db4o5_xslt = etree.parse(XSLTDB4TO5)
         db4o5_trans = etree.XSLT(db4o5_xslt)
         xml = db4o5_trans(xml, **dict(args.params))
+        for entry in db4o5_trans.error_log:
+            level, msg = entry.message.split(':', maxsplit=1)
+            msg = msg.strip()
+            log.log(getattr(logging, level, 'INFO'), "%s", msg)
+        # xml.write('/tmp/result-db5-tree.xml',
+        #           encoding='utf-8',
+        #           pretty_print=True,
+        #           )
+        # log.info("Wrote DB5 result tree to '/tmp/result-db5-tree.xml'")
 
     return xml
 
