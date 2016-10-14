@@ -1396,6 +1396,13 @@
     </xsl:element>
   </xsl:template>
 
+  <xsl:template match="*" mode="clean-terms">
+   <xsl:element name="{local-name()}" namespace="http://docbook.org/ns/docbook">
+    <xsl:copy-of select="@*"/>
+    <xsl:apply-templates mode="clean-terms"/>
+   </xsl:element>
+  </xsl:template>
+
   <xsl:template match="varlistentry/term">
     <xsl:element name="{local-name(.)}">
       <xsl:call-template name="copy.attributes"/>
