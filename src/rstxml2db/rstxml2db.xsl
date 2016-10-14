@@ -442,13 +442,11 @@
   </xsl:template>
 
   <xsl:template match="definition_list[@classes='glossary']">
-    <glossentry>
       <xsl:apply-templates select="definition_list_item"/>
-    </glossentry>
   </xsl:template>
 
   <xsl:template match="definition_list[@classes='glossary']/definition_list_item">
-    <glossterm>
+    <glossentry>
       <xsl:if test="term/@ids">
         <xsl:attribute name="id">
           <xsl:value-of select="term/@ids"/>
@@ -456,13 +454,13 @@
       </xsl:if>
       <xsl:apply-templates select="term"/>
       <xsl:apply-templates select="definition"/>
-    </glossterm>
+    </glossentry>
   </xsl:template>
 
   <xsl:template match="definition_list[@classes='glossary']/definition_list_item/term">
-   <term>
+   <glossterm>
       <xsl:apply-templates/>
-   </term>
+   </glossterm>
   </xsl:template>
 
   <xsl:template match="definition_list[@classes='glossary']/definition_list_item/term/index"/>
