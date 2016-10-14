@@ -253,12 +253,6 @@
     </abstract>
   </xsl:template>
 
-  <xsl:template match="section[@names='glossary']">
-    <glossary>
-      <xsl:apply-templates mode="glossary"/>
-    </glossary>
-  </xsl:template>
-
   <xsl:template match="section">
     <xsl:variable name="name">
       <xsl:call-template name="create.structural.name"/>
@@ -278,10 +272,6 @@
         <xsl:with-param name="root" select="$name"/>
       </xsl:apply-templates>
     </xsl:element>
-  </xsl:template>
-
-  <xsl:template match="section/title" mode="glossary">
-    <xsl:apply-templates select="."/>
   </xsl:template>
 
   <xsl:template match="section/title">
@@ -413,6 +403,35 @@
 
 
   <!-- =================================================================== -->
+  <xsl:template match="section[@names='glossary'][document/section[@names='glossary']]">
+   <!-- Just skip this double entry: -->
+   <xsl:message>INFO: skipping document for glossary</xsl:message>
+   <xsl:apply-templates select="document/section[@names='glossary']"/>
+  </xsl:template>
+
+  <xsl:template match="document/section[@names='glossary']">
+   <glossary>
+    <xsl:apply-templates/>
+   </glossary>
+  </xsl:template>
+
+ <xsl:template match="section[@names='glossary']/section">
+  <xsl:variable name="name">
+   <xsl:call-template name="create.structural.name"/>
+  </xsl:variable>
+  <xsl:variable name="idattr">
+   <xsl:call-template name="get.target4section.id"/>
+  </xsl:variable>
+  <xsl:message>INFO: visited glossdiv <xsl:value-of select="$idattr"/></xsl:message>
+  <glossdiv id="{$idattr}">
+   <xsl:apply-templates select="title"/>
+   <xsl:apply-templates select="*[not(self::title)]"/>
+  </glossdiv>
+ </xsl:template>
+
+ <xsl:template match="section[@names='glossary']/section/glossary">
+  <xsl:apply-templates/>
+ </xsl:template>
 
   <xsl:template match="*" mode="glossary">
       <xsl:apply-templates select="."/>
@@ -422,36 +441,31 @@
       <xsl:apply-templates/>
   </xsl:template>
 
-  <xsl:template match="glossary" mode="glossary">
-      <xsl:apply-templates mode="glossary"/>
-  </xsl:template>
-
   <xsl:template match="definition_list[@classes='glossary']">
-    <glosslist>
+    <glossentry>
       <xsl:apply-templates select="definition_list_item"/>
-    </glosslist>
-  </xsl:template>
-
-  <xsl:template match="definition_list[@classes='glossary']" mode="glossary">
-      <xsl:apply-templates select="definition_list_item"/>
+    </glossentry>
   </xsl:template>
 
   <xsl:template match="definition_list[@classes='glossary']/definition_list_item">
-    <glossentry>
+    <glossterm>
       <xsl:if test="term/@ids">
         <xsl:attribute name="id">
           <xsl:value-of select="term/@ids"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:apply-templates/>
-    </glossentry>
+      <xsl:apply-templates select="term"/>
+      <xsl:apply-templates select="definition"/>
+    </glossterm>
   </xsl:template>
 
   <xsl:template match="definition_list[@classes='glossary']/definition_list_item/term">
-    <glossterm>
+   <term>
       <xsl:apply-templates/>
-    </glossterm>
+   </term>
   </xsl:template>
+
+  <xsl:template match="definition_list[@classes='glossary']/definition_list_item/term/index"/>
 
   <xsl:template match="definition_list[@classes='glossary']/definition_list_item/definition">
     <glossdef>
@@ -482,11 +496,11 @@
       </xsl:choose>
     </xsl:variable>
 
-    <xsl:message>table:
+<!--    <xsl:message>table:
     title=<xsl:value-of select="$title"/>
     id=<xsl:value-of select="$id"/>
     type=<xsl:value-of select="$tabletype"/>
-    </xsl:message>
+    </xsl:message>-->
 
     <xsl:element name="{$tabletype}">
       <xsl:if test="$id != ''">
