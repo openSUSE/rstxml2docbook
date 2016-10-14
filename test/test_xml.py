@@ -43,6 +43,7 @@ def test_xmltestcases(xmltestcase, args):
 
     doc = etree.parse(str(xmltestcase))
     resultxml = transform(doc, args)
+    resultxmlstr = etree.tostring(resultxml, encoding="unicode")
 
     for param in params:
         xpath, expected = param
