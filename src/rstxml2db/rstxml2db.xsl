@@ -446,11 +446,15 @@
   </xsl:template>
 
   <xsl:template match="definition_list[@classes='glossary']/definition_list_item">
+   <xsl:variable name="idattr">
+     <xsl:value-of select="term/@ids"/>
+   </xsl:variable>
     <glossentry>
-      <xsl:if test="term/@ids">
+      <xsl:if test="$idattr">
         <xsl:attribute name="id">
-          <xsl:value-of select="term/@ids"/>
+          <xsl:value-of select="$idattr"/>
         </xsl:attribute>
+        <xsl:message>INFO: Add id=<xsl:value-of select="$idattr"/></xsl:message>
       </xsl:if>
       <xsl:apply-templates select="term"/>
       <xsl:apply-templates select="definition"/>
@@ -466,7 +470,7 @@
   <xsl:template match="definition_list[@classes='glossary']/definition_list_item/term/index"/>
 
   <xsl:template match="definition_list[@classes='glossary']/definition_list_item/definition">
-    <xsl:message>INFO: Add definition of <xsl:value-of select="normalize-space(../term)"/></xsl:message>
+    <xsl:message>INFO: Add definition of <xsl:value-of select="normalize-space(../term)"/>, id=<xsl:value-of select="../term/@ids"/></xsl:message>
     <glossdef>
       <xsl:apply-templates/>
     </glossdef>
