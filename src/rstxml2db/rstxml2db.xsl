@@ -356,7 +356,7 @@
     </para>
   </xsl:template>
 
-  <xsl:template match="bullet_list[@bullet='-' or @bullet='*']">
+  <xsl:template match="bullet_list[@bullet='-' or @bullet='*']|bullet_list">
     <itemizedlist>
       <xsl:apply-templates/>
     </itemizedlist>
