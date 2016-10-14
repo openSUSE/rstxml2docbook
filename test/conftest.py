@@ -1,9 +1,7 @@
 #
 
 import pytest
-import py.path
 from argparse import Namespace
-from lxml import etree
 
 
 # ------------------------------------------------------
@@ -17,16 +15,16 @@ def args():
     """
     name = 'FooObfuscator'
     number = '1.0.1'
-    return Namespace(keepallids = True,
-                     legalnotice = None,
-                     productname = name,
-                     _productname = name,
-                     productnumber = number,
-                     _productnumber = number,
-                     output = None,
-                     db4 = False,
-                     conventions = None,
-                     verbose = 0,
-                     params = [],
-                     indexfile = None
+    return Namespace(keepallids=True,
+                     legalnotice=None,
+                     productname=name,
+                     _productname=name,
+                     productnumber=number,
+                     _productnumber=number,
+                     output=None,
+                     db4=False,
+                     conventions=None,
+                     verbose=0,
+                     params=[],
+                     indexfile=None
                      )

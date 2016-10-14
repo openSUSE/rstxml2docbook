@@ -6,10 +6,9 @@ from rstxml2db.core import NSMAP
 from lxml import etree
 from py.path import local
 import pytest
-import os
 
 HERE = local(local(__file__).dirname)
-DOCDIR= HERE / 'doc.001'
+DOCDIR = HERE / 'doc.001'
 
 
 def assert_xpaths(xml, xpath, args):
@@ -28,18 +27,17 @@ def assert_xpaths(xml, xpath, args):
       '/book/bookinfo/productnumber',
       '/book/chapter',
       '/book/@lang',
-     ],
+      ],
      True
-    ),
+     ),
     # For DocBook 5
-    (
-    ['/d:book/d:info/d:productname',
-     '/d:book/d:info/d:productnumber',
-     '/d:book/d:chapter',
-     '/d:book/@xml:lang',
-     ],
-    False
-    ),
+    (['/d:book/d:info/d:productname',
+      '/d:book/d:info/d:productnumber',
+      '/d:book/d:chapter',
+      '/d:book/@xml:lang',
+      ],
+     False
+     ),
 ])
 def test_integration(xpath, db4, tmpdir, args):
     DOCDIR.copy(tmpdir)
@@ -61,18 +59,17 @@ def test_integration(xpath, db4, tmpdir, args):
 
 
 @pytest.mark.parametrize('xpath,db4', [
-    (['//figure[1]',# '/book/chapter[2]/section[1]/figure[1]'
+    (['//figure[1]',  # '/book/chapter[2]/section[1]/figure[1]'
       'title'
-     ],
+      ],
      True
-    ),
+     ),
     # For DocBook 5
-    (
-    ['//d:figure[1]', # '/d:book/d:chapter[2]/d:section[1]/d:figure[1]'
-     'd:title'
-     ],
-    False
-    ),
+    (['//d:figure[1]',  # '/d:book/d:chapter[2]/d:section[1]/d:figure[1]'
+      'd:title'
+      ],
+     False
+     ),
 ])
 def test_integration_figure(xpath, db4, tmpdir, args):
     DOCDIR.copy(tmpdir)
@@ -100,13 +97,13 @@ def test_integration_figure(xpath, db4, tmpdir, args):
     (['/book/preface/title',
       '/book/preface/para',
       ['title', 'bookinfo', 'preface', 'chapter', 'glossary']
-     ],
+      ],
      True),
     # For DocBook 5
     (['/d:book/d:preface/d:title',
       '/d:book/d:preface/d:para',
       ['title', 'info', 'preface', 'chapter', 'glossary']
-     ],
+      ],
      False),
 ])
 def test_integration_with_conventions(xpath, db4, tmpdir, args):
@@ -140,22 +137,21 @@ def test_integration_with_conventions(xpath, db4, tmpdir, args):
       '/book/bookinfo/productnumber',
       '/book/chapter',
       '/book/@lang',
-     ],
+      ],
      True
-    ),
+     ),
     # For DocBook 5
-    (
-    ['/d:book/d:info/d:productname',
-     '/d:book/d:info/d:productnumber',
-     '/d:book/d:chapter',
-     '/d:book/@xml:lang',
-     ],
-    False
-    ),
+    (['/d:book/d:info/d:productname',
+      '/d:book/d:info/d:productnumber',
+      '/d:book/d:chapter',
+      '/d:book/@xml:lang',
+      ],
+     False
+     ),
 ])
 def test_integration_with_stdout(xpath, db4, tmpdir, capsys, args):
     DOCDIR.copy(tmpdir)
-    result = str(tmpdir / 'result.xml')
+    # result = str(tmpdir / 'result.xml')
     indexfile = tmpdir / 'index.xml'
 
     args.output = None
@@ -167,7 +163,7 @@ def test_integration_with_stdout(xpath, db4, tmpdir, capsys, args):
     out, err = capsys.readouterr()
     assert out
     assert not err
-    #with open(result, 'w') as fh:
+    # with open(result, 'w') as fh:
     #    fh.write(out)
     xml = etree.fromstring(out)
     assert_xpaths(xml, xpath, args)
@@ -176,16 +172,15 @@ def test_integration_with_stdout(xpath, db4, tmpdir, capsys, args):
 @pytest.mark.parametrize('xpath,db4', [
     (['/book/bookinfo/legalnotice',
       '/book/bookinfo/legalnotice/title',
-     ],
+      ],
      True
-    ),
+     ),
     # For DocBook 5
-    (
-    ['/d:book/d:info/d:legalnotice',
-     '/d:book/d:info/d:legalnotice/d:title',
-     ],
-    False
-    ),
+    (['/d:book/d:info/d:legalnotice',
+      '/d:book/d:info/d:legalnotice/d:title',
+      ],
+     False
+     ),
 ])
 def test_integration_with_legalnotice(xpath, db4, tmpdir, args):
     DOCDIR.copy(tmpdir)

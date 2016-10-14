@@ -1,7 +1,6 @@
 
 import pytest
 from rstxml2db.cli import prepareparams, parsecli
-from argparse import Namespace
 
 
 @pytest.mark.parametrize('params, expected', [
@@ -58,6 +57,5 @@ def test_parsecli(cli, expected):
     result = parsecli(cli)
     # Create set difference and only compare this with the expected dictionary
     diff = set(result.__dict__) & set(expected)
-    result = {i:getattr(result, i) for i in diff}
+    result = {i: getattr(result, i) for i in diff}
     assert result == expected
-
