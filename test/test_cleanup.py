@@ -1,15 +1,14 @@
 #
 
-from rstxml2db.cleanup import (cleanupxml,
-                               remove_double_ids,
+from rstxml2db.cleanup import (remove_double_ids,
                                finddoubleids,
                                allelementswithid,
                                fix_colspec_width,
                                add_pi_in_screen,
                                )
 from lxml import etree
-from py.path import local
 import pytest
+
 
 def test_remove_double_ids():
     xmlstr = """<book id="book">
@@ -75,7 +74,7 @@ def test_allelementswithid():
     ids = list(allelementswithid(xml))
     print(ids)
     assert len(ids) == 3
-    assert [item.tag for item in ids] == [ 'book', 'chapter', 'chapter' ]
+    assert [item.tag for item in ids] == ['book', 'chapter', 'chapter']
 
 
 def test_fix_colspec_width():

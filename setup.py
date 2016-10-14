@@ -17,7 +17,6 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-from os import path
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
 
@@ -46,7 +45,7 @@ setupdict = dict(
       'Programming Language :: Python :: 3.5',
    ],
    keywords='docbook sphinx RST XML',
-   include_package_data = True,
+   include_package_data=True,
    # You can just specify the packages manually here if your project is
    # simple. Or you can use find_packages().
    packages=find_packages('src'),
