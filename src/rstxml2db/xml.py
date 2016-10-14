@@ -25,7 +25,7 @@ from lxml import etree
 from .cleanup import cleanupxml
 from .core import DOCTYPE, XSLTRST2DB, XSLTRESOLVE, XSLTDB4TO5
 from .log import log
-from logging import DEBUG
+import logging
 
 __all__ = ['addchapter', 'addlegalnotice', 'quoteparams', 'transform',
            'process']
@@ -91,11 +91,14 @@ def transform(doc, args):
     # Resolve RST XML -> single RST XML structure
     # then, transform RST XML -> DocBook
     rst = resolve_trans(doc)
+    log.debug("Resolved all external references")
     xml = rst2db_trans(rst, **dict(args.params))
-    if log.isEnabledFor(DEBUG):
+    if log.isEnabledFor(logging.DEBUG):
         # We want xsl:message output only when we've set the right log level
         for entry in rst2db_trans.error_log:
-            log.info("%s", entry.message)
+            level, msg = entry.message.split(':', maxsplit=1)
+            msg = msg.strip()
+            log.log(getattr(logging, level, 'INFO'), "%s", msg)
 
     if args.legalnotice is not None:
         addlegalnotice(xml, args.legalnotice)
