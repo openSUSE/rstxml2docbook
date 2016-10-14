@@ -35,10 +35,10 @@ log.setLevel(logging.DEBUG)
 log.addHandler(_ch)
 
 #: Dictionary: Log levels to map verbosity level to logging values
-LOGLEVELS = {None: logging.NOTSET,
-             0: logging.NOTSET,
-             1: logging.INFO,
-             2: logging.DEBUG,
+LOGLEVELS = {None: logging.NOTSET,  # 0
+             0: logging.NOTSET,     # 0
+             1: logging.INFO,       # 20
+             2: logging.DEBUG,      # 10
              }
 
 
