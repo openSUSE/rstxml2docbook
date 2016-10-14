@@ -422,7 +422,7 @@
   <xsl:variable name="idattr">
    <xsl:call-template name="get.target4section.id"/>
   </xsl:variable>
-  <xsl:message>INFO: visited glossdiv <xsl:value-of select="$idattr"/></xsl:message>
+  <xsl:message>INFO: Add glossdiv <xsl:value-of select="$idattr"/></xsl:message>
   <glossdiv id="{$idattr}">
    <xsl:apply-templates select="title"/>
    <xsl:apply-templates select="*[not(self::title)]"/>
@@ -468,6 +468,7 @@
   <xsl:template match="definition_list[@classes='glossary']/definition_list_item/term/index"/>
 
   <xsl:template match="definition_list[@classes='glossary']/definition_list_item/definition">
+    <xsl:message>INFO: Add definition of <xsl:value-of select="normalize-space(../term)"/></xsl:message>
     <glossdef>
       <xsl:apply-templates/>
     </glossdef>
