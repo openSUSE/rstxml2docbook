@@ -160,8 +160,8 @@ def process(args):
 
     if args.output is not None:
         with open(args.output, 'w') as f:
-                log.info("Writing results to %r...", args.output)
-                f.write(outstring)
+            log.info("Writing results to %r...", args.output)
+            f.write(outstring)
     else:
         print(outstring)
     return 0
