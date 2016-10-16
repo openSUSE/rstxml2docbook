@@ -1,0 +1,7 @@
+[
+    ["namespace-uri(/*)", "http://docbook.org/ns/docbook"],
+    ["local-name(/*)", "book"],
+    ["/*/@xml:lang", ["en"]],
+    ["/d:book/d:title/text()", ["Foo"]],
+    ["/d:book/d:chapter/d:title/text()", ["Bar"]]
+]

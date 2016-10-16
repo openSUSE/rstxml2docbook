@@ -41,9 +41,10 @@ def addchapter(xml, convfile):
     conv = etree.parse(convfile)
     book = xml.getroot()
     try:
-        pos = [i for i in range(len(book)) if etree.QName(book[i].tag).localname == 'chapter'][0]
-    except KeyError:
-        pos = 0
+        pos = [i for i in range(len(book))
+               if etree.QName(book[i].tag).localname == 'chapter'][0]
+    except (KeyError, IndexError):
+        pos = 1
 
     firstchapter = book.find('chapter[1]')
     if firstchapter is not None:
@@ -125,6 +126,15 @@ def transform(doc, args):
         db4o5_xslt = etree.parse(XSLTDB4TO5)
         db4o5_trans = etree.XSLT(db4o5_xslt)
         xml = db4o5_trans(xml, **dict(args.params))
+        for entry in db4o5_trans.error_log:
+            level, msg = entry.message.split(':', maxsplit=1)
+            msg = msg.strip()
+            log.log(getattr(logging, level, 'INFO'), "%s", msg)
+        # xml.write('/tmp/result-db5-tree.xml',
+        #           encoding='utf-8',
+        #           pretty_print=True,
+        #           )
+        # log.info("Wrote DB5 result tree to '/tmp/result-db5-tree.xml'")
 
     return xml
 

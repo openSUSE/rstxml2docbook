@@ -1,0 +1,19 @@
+<!--
+<!DOCTYPE document PUBLIC
+  "+//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML"
+  "http://docutils.sourceforge.net/docs/ref/docutils.dtd">
+-->
+
+<document source="list.001.rst">
+ <section ids="bullet.list">
+  <title>Bullet List</title>
+  <bullet_list bullet="*">
+   <list_item>
+    <paragraph>First item</paragraph>
+   </list_item>
+   <list_item>
+    <paragraph>Second item</paragraph>
+   </list_item>
+  </bullet_list>
+ </section>
+</document>

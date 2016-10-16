@@ -110,7 +110,7 @@ def remove_double_ids(xml, usedoubleids=True):
         if idattr not in linkends:
             del item.attrib['id']
             unusedattr.append(idattr)
-    log.debug('Unused IDs, removed from output: %s', ', '.join(unusedattr))
+    # log.debug('Unused IDs, removed from output: %s', ', '.join(unusedattr))
 
     if usedoubleids:
         double = finddoubleids(xml.xpath("//*[@id]"))

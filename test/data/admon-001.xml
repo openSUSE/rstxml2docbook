@@ -1,0 +1,28 @@
+<!--
+<!DOCTYPE document PUBLIC
+  "+//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML"
+  "http://docutils.sourceforge.net/docs/ref/docutils.dtd">
+-->
+
+<document source="admon.001.rst">
+ <section names="admonitions">
+  <title>Admonition</title>
+  <section>
+    <title>Nothing</title>
+    <note>
+       <paragraph>A note.</paragraph>
+    </note>
+    <important>
+        <paragraph>Important.</paragraph>
+    </important>
+    <tip>
+       <paragraph>A tip.</paragraph>
+    </tip>
+    <!--
+    # ["/d:book/d:chapter/d:caution/d:para/text()", ["Caution."]]
+    <caution>
+        <paragraph>Caution.</paragraph>
+    </caution> -->
+  </section>
+ </section>
+</document>

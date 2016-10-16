@@ -1,0 +1,16 @@
+
+<!--<!DOCTYPE document PUBLIC
+  "+//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML"
+  "http://docutils.sourceforge.net/docs/ref/docutils.dtd">-->
+
+<!DOCTYPE document SYSTEM "docutils.dtd">
+<document source="document.002.rst">
+ <section ids="foo" names="foo">
+  <title>Foo</title>
+  <paragraph>I'm the foo para.</paragraph>
+  <section ids="bar" names="bar">
+   <title>Bar</title>
+   <paragraph>I'm the bar para.</paragraph>
+  </section>
+ </section>
+</document>
