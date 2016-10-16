@@ -34,24 +34,25 @@ def test_addchaper(monkeypatch):
     assert xml.xpath("/book/chapter[1]/@id") == ['foo']
 
 
-@pytest.mark.skip
-@patch('rstxml2db.xml.etree.parse')
-@patch('rstxml2db.log.log.isEnabledFor')
-def test_addchaper_mocklog(mock_log, mock_etreeparse):
-    xmlstr = """<book id="book">
-  <title>Test</title>
-  <chapter id="cha.intro">
-    <title>Intro</title>
-    <para>Nothing.</para>
-  </chapter>
-</book>
-    """
-    chapstr = """<chapter id="empty"/>"""
-    mock_log.return_value = True
-    xml = etree.fromstring(xmlstr).getroottree()
-    mock_etreeparse.return_value = etree.fromstring(chapstr).getroottree()
-    addchapter(xml, 'fake.xml')
-    assert mock_log.called
+if False:
+    @pytest.mark.skip
+    @patch('rstxml2db.xml.etree.parse')
+    @patch('rstxml2db.log.log.isEnabledFor')
+    def test_addchaper_mocklog(mock_log, mock_etreeparse):
+        xmlstr = """<book id="book">
+    <title>Test</title>
+    <chapter id="cha.intro">
+        <title>Intro</title>
+        <para>Nothing.</para>
+    </chapter>
+    </book>
+        """
+        chapstr = """<chapter id="empty"/>"""
+        mock_log.return_value = True
+        xml = etree.fromstring(xmlstr).getroottree()
+        mock_etreeparse.return_value = etree.fromstring(chapstr).getroottree()
+        addchapter(xml, 'fake.xml')
+        assert mock_log.called
 
 
 def test_xmltestcases(xmltestcase, args):
