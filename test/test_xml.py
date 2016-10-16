@@ -2,6 +2,7 @@
 
 from lxml import etree
 import json
+from unittest.mock import patch
 from py.path import local
 import pytest
 from unittest.mock import patch, Mock
@@ -31,6 +32,26 @@ def test_addchaper(monkeypatch):
     addchapter(xml, 'fake.xml')
     result = etree.tostring(xml, encoding="unicode")
     assert xml.xpath("/book/chapter[1]/@id") == ['foo']
+
+
+@pytest.mark.skip
+@patch('rstxml2db.xml.etree.parse')
+@patch('rstxml2db.log.log.isEnabledFor')
+def test_addchaper_mocklog(mock_log, mock_etreeparse):
+    xmlstr = """<book id="book">
+  <title>Test</title>
+  <chapter id="cha.intro">
+    <title>Intro</title>
+    <para>Nothing.</para>
+  </chapter>
+</book>
+    """
+    chapstr = """<chapter id="empty"/>"""
+    mock_log.return_value = True
+    xml = etree.fromstring(xmlstr).getroottree()
+    mock_etreeparse.return_value = etree.fromstring(chapstr).getroottree()
+    addchapter(xml, 'fake.xml')
+    assert mock_log.called
 
 
 def test_xmltestcases(xmltestcase, args):

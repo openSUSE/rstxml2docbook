@@ -1,6 +1,7 @@
 #
 import pytest
 from argparse import Namespace
+import py
 
 DATADIR = py.path.local(__file__).parts()[-2] / "data"
 
