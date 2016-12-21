@@ -1,9 +1,9 @@
 # config file for automatic testing at travis-ci.org
 language: python
 python:
-    - "3.3"
     - "3.4"
     - "3.5"
+    - "3.6"
 
 env:
     global:
