@@ -1,14 +1,21 @@
 # https://codeclimate.com/
 #
-languages:
-  Ruby: false
-  JavaScript: false
-  PHP: false
-  Python: true
-
 engines:
+    duplication:
+        enabled: true
+        config:
+            languages:
+                - python
+    pep8:
+        enabled: true
     radon:
         enabled: true
+    fixme:
+        enabled: true
+
+ratings:
+    paths:
+        - "src/rstxml2db/**"
 
 exclude_paths:
     - tests/**
