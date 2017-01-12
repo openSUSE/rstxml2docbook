@@ -1,5 +1,5 @@
 [
-    ["boolean(/*/d:mediaobject)", true],
-    ["/*/d:mediaobject/d:imageobject/@role", ["fo", "html"]],
+    ["boolean(/*/d:informalfigure/d:mediaobject)", true],
+    ["/*/d:informalfigure/d:mediaobject/d:imageobject/@role", ["fo", "html"]],
     ["//d:imagedata/@fileref", ["foo.png", "foo.png"]]
 ]

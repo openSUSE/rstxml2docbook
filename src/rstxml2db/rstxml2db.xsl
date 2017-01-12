@@ -648,14 +648,16 @@
       </xsl:if>
      </imagedata>
     </xsl:variable>
-    <mediaobject>
+    <informalfigure>
+     <mediaobject>
       <imageobject role="fo">
-        <xsl:copy-of select="$imagedata"/>
+       <xsl:copy-of select="$imagedata"/>
       </imageobject>
       <imageobject role="html">
        <xsl:copy-of select="$imagedata"/>
       </imageobject>
-    </mediaobject>
+     </mediaobject>
+    </informalfigure>
   </xsl:template>
 
   <xsl:template match="paragraph[strong][preceding-sibling::figure]"/>
