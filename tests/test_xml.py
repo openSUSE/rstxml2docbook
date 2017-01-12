@@ -2,10 +2,9 @@
 
 from lxml import etree
 import json
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 from py.path import local
 import pytest
-from unittest.mock import patch, Mock
 from rstxml2db.xml.struct import addchapter
 from rstxml2db.xml.process import transform
 from rstxml2db.core import NSMAP
@@ -35,9 +34,36 @@ def test_addchaper(monkeypatch):
     assert xml.xpath("/book/chapter[1]/@id") == ['foo']
 
 
+@patch('rstxml2db.xml.struct.etree.parse')
+@patch('rstxml2db.xml.struct.etree.QName')
+def test_addchaper_with_exception(mock_qname, mock_parse):
+    xmlstr = """<book id="book">
+  <title>Test</title>
+  <info/>
+</book>
+    """
+    def mockreturn(path):
+       chapstr = """<chapter id="foo">
+          <title>I'm the Foo</title>
+          <para>Nothing to see.</para>
+        </chapter>"""
+       return etree.fromstring(chapstr).getroottree()
+
+    mock_parse.return_value = mockreturn('fakepath')
+    #
+    mock_qname.side_effect = KeyError('mocked')
+
+    xml = etree.fromstring(xmlstr).getroottree()
+    addchapter(xml, 'fake.xml')
+    result = etree.tostring(xml, encoding="unicode")
+    # print(">>>", result)
+    assert xml.xpath("/book/chapter[1]/@id") == ['foo']
+
+
+
 if False:
     @pytest.mark.skip
-    @patch('rstxml2db.xml.etree.parse')
+    @patch('rstxml2db.xml.struct.etree.parse')
     @patch('rstxml2db.log.log.isEnabledFor')
     def test_addchaper_mocklog(mock_log, mock_etreeparse):
         xmlstr = """<book id="book">
