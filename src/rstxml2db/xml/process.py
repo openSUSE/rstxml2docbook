@@ -16,62 +16,14 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-"""
-Dealing with XML structures and execute transformation
-"""
-
 from lxml import etree
 
-from .cleanup import cleanupxml
-from .core import DOCTYPE, XSLTRST2DB, XSLTRESOLVE, XSLTDB4TO5
-from .log import log
+from .util import quoteparams
+from .struct import addchapter, addlegalnotice
+from ..cleanup import cleanupxml
+from ..core import DOCTYPE, XSLTRST2DB, XSLTRESOLVE, XSLTDB4TO5
+from ..log import log
 import logging
-
-__all__ = ['addchapter', 'addlegalnotice', 'quoteparams', 'transform',
-           'process']
-
-
-def addchapter(xml, convfile):
-    """Replace first chapter with content of conventions file
-
-    :param xml: :class:`lxml.etree._ElementTree`
-    :param convfile: filename to some conventions, usually as root element
-                        ``<preface>`` or ``<chapter>``
-    """
-    conv = etree.parse(convfile)
-    book = xml.getroot()
-    try:
-        pos = [i for i in range(len(book))
-               if etree.QName(book[i].tag).localname == 'chapter'][0]
-    except (KeyError, IndexError):
-        pos = 1
-
-    firstchapter = book.find('chapter[1]')
-    if firstchapter is not None:
-        book.remove(firstchapter)
-    book.insert(pos, conv.getroot())
-
-
-def addlegalnotice(xml, legalfile):
-    """Add legalnotice file into book/bookinfo
-
-    :param xml: :class:`lxml.etree._ElementTree`
-    :param convfile: filename with root element ``<legalnotice>``
-    """
-    legal = etree.parse(legalfile).getroot()
-    bookinfo = xml.getroot().find('bookinfo')
-    bookinfo.append(legal)
-
-
-def quoteparams(args):
-    """Quote parameters with :func:`etree.XSLT.strparam`
-
-    :param args: result from :class:`argparse` parser
-    :return: parameter list with quoted values
-    :rtype: list
-    """
-    return [(p[0], p[1] if p[0].startswith('_') else etree.XSLT.strparam(p[1]))
-            for p in args.params]
 
 
 def transform(doc, args):
