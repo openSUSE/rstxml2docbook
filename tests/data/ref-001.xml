@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<!DOCTYPE document SYSTEM "docutils.dtd">-->
+
+<document source="ref-001.rst"> >
+  <section>
+  <title>Fox and Dog</title>
+
+  <section ids="fox" names="Fox">
+   <title>Fox</title>
+   <paragraph>The quick brown fox. See <reference internal="True"
+      refid="dog">Dog</reference>.</paragraph>
+  </section>
+
+  <section ids="dog" names="Dog">
+   <title>Dog</title>
+   <paragraph>I'm the dog para. See <reference internal="True"
+      refid="fox">Fox</reference>.</paragraph>
+  </section>
+ </section>
+
+
+</document>
