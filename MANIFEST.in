@@ -1,6 +1,6 @@
 
 graft doc
-graft test
+graft tests
 prune doc/_build
 
 include ChangeLog
