@@ -639,12 +639,21 @@
         <xsl:with-param name="filename" select="@uri"></xsl:with-param>
       </xsl:call-template>
     </xsl:variable>
+    <xsl:variable name="imagedata">
+     <imagedata fileref="{$uri}">
+      <xsl:if test="@width">
+       <xsl:attribute name="width">
+        <xsl:value-of select="@width"/>
+       </xsl:attribute>
+      </xsl:if>
+     </imagedata>
+    </xsl:variable>
     <mediaobject>
       <imageobject role="fo">
-        <imagedata fileref="{$uri}" width="{@width}"/>
+        <xsl:copy-of select="$imagedata"/>
       </imageobject>
       <imageobject role="html">
-        <imagedata fileref="{$uri}" width="{@width}"/>
+       <xsl:copy-of select="$imagedata"/>
       </imageobject>
     </mediaobject>
   </xsl:template>

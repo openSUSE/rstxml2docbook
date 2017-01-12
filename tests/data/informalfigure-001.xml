@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document SYSTEM "docutils.dtd">
+
+<document source="informalfigure-001.rst">
+ <section ids="informalfigure">
+  <title>Informalfigure</title>
+  <image ids="foo" uri="foo.png"/>
+ </section>
+</document>
