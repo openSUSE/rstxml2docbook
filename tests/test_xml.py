@@ -67,6 +67,5 @@ def test_xmltestcases(xmltestcase, args):
     resultxml = transform(doc, args)
     resultxmlstr = etree.tostring(resultxml, encoding="unicode")
 
-    for param in params:
-        xpath, expected = param
+    for xpath, expected in params:
         assert resultxml.xpath(xpath, namespaces=NSMAP) == expected
