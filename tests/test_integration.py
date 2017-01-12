@@ -1,6 +1,6 @@
 #
 
-from rstxml2db.xml import process
+from rstxml2db.xml.process import process
 from rstxml2db.core import NSMAP
 
 from lxml import etree

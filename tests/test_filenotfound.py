@@ -1,6 +1,6 @@
 
 import pytest
-from rstxml2db.xml import process
+from rstxml2db.xml.process import process
 
 
 def test_filenotfound1(args):

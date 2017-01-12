@@ -6,7 +6,8 @@ from unittest.mock import patch
 from py.path import local
 import pytest
 from unittest.mock import patch, Mock
-from rstxml2db.xml import addchapter, transform
+from rstxml2db.xml.struct import addchapter
+from rstxml2db.xml.process import transform
 from rstxml2db.core import NSMAP
 
 
@@ -27,7 +28,7 @@ def test_addchaper(monkeypatch):
        return etree.fromstring(chapstr).getroottree()
 
     # Patching etree.parse
-    monkeypatch.setattr('rstxml2db.xml.etree.parse', mockreturn)
+    monkeypatch.setattr('rstxml2db.xml.struct.etree.parse', mockreturn)
     xml = etree.fromstring(xmlstr).getroottree()
     addchapter(xml, 'fake.xml')
     result = etree.tostring(xml, encoding="unicode")
