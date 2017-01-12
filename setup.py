@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# Copyright (c) 2015 SUSE Linux GmbH
+# Copyright (c) 2015-2017 SUSE Linux GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of version 3 of the GNU General Public License as
@@ -58,9 +58,11 @@ setupdict = dict(
    package_data={
         '': ['src/rstxml2db/*.xsl'],
    },
-   extras_require={
-        'test': ['pytest', 'coverage'],
-   },
+
+   # For testing purposes with "setup.py test"
+   setup_requires=['pytest-runner'],
+   tests_require=['pytest', 'pytest-cov',],
+   #
    entry_points={
         'console_scripts': [
             'rstxml2db=rstxml2db:main',
