@@ -739,20 +739,16 @@
       </xsl:when>
       <xsl:otherwise>
         <xsl:variable name="refuri" select="concat(@refuri, '.xml')"/>
-<!--        <xsl:variable name="sectid" select="($refs[@href=$refuri])[1]/section[1]/@id"/> -->
         <xsl:variable name="sectid" select="key('documents', @refuri)"/>
         <xsl:choose>
           <xsl:when test="$sectid != ''">
             <xref linkend="{$sectid}"/>
           </xsl:when>
           <xsl:otherwise>
-            <!-- common/cli_set_environment_variables_using_openstack_rc.xml
-              concat(@refuri, '.xml')
-             -->
             <xsl:message>WARNING: could not find referenced ID '<xsl:value-of select="@refuri"/>'!
              sectid="<xsl:value-of select="$sectid"/>"
              refuri=<xsl:value-of select="$refuri"/>
-             <!-- ref section=<xsl:value-of select="$refs[@href='common/cli_set_environment_variables_using_openstack_rc.xml']/section[1]/@id"/>--></xsl:message>
+            </xsl:message>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:otherwise>
