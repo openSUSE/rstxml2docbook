@@ -42,7 +42,7 @@ def getallfunctions(module=rstxml2db):
             yield ff
 
 modfuncs = list(getallfunctions())
-modfuncsnames = [ff.__name__ for ff in modfuncs]
+modfuncsnames = [".".join([ff.__module__, ff.__name__]) for ff in modfuncs]
 
 
 @pytest.mark.parametrize("func",
