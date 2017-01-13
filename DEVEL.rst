@@ -57,10 +57,10 @@ For example, if you want to create a new test case, proceed as follows:
 
    .. code-block:: json
 
-   [
-      ["namespace-uri(/*)", "http://docbook.org/ns/docbook"],
-      ["local-name(/*)", "book"]
-   ]
+      [
+         ["namespace-uri(/*)", "http://docbook.org/ns/docbook"],
+         ["local-name(/*)", "book"]
+      ]
 
 #. Run the test/test suite.
 
