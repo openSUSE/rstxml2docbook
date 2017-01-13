@@ -5,6 +5,7 @@ from rstxml2db.cleanup import (remove_double_ids,
                                allelementswithid,
                                fix_colspec_width,
                                add_pi_in_screen,
+                               normalize_source_attr,
                                )
 from lxml import etree
 import pytest
@@ -108,3 +109,25 @@ def test_add_pi_in_screen(xmlstr, limit, expected):
     add_pi_in_screen(xml, limit=limit)
 
     assert bool(xml.xpath("/screen/processing-instruction('dbsuse-fo')")) == expected
+
+@pytest.mark.parametrize('xpath, expected', [
+    ("/document/@source", "zoo.rst"),
+    ("/document/section/document/@source", "blub.rst"),
+])
+def test_normalize_source_attr(xpath, expected):
+    xmlstr = """<document source="/foo/bar/zoo.rst">
+ <section ids="foo" names="foo">
+  <title></title>
+  <paragraph></paragraph>
+  <document source="/foo/bar/blub.rst">
+    <section ids="bar" names="bar">
+        <title>Bar</title>
+        <paragraph></paragraph>
+    </section>
+  </document>
+ </section>
+</document>"""
+    xml = etree.fromstring(xmlstr)
+    xml = xml.getroottree()
+    normalize_source_attr(xml)
+    assert xml.xpath(xpath) == [expected]
