@@ -225,5 +225,6 @@ def test_wrong_xml(tmpdir):
     badxml = str(tmpdir / 'bad.xml')
     with open(badxml, 'w') as fh:
         fh.write("<bad_tag>")
-    with pytest.raises(SystemExit):
-        main(['-o', 'result.xml', badxml])
+
+    result = main(['-o', 'result.xml', badxml])
+    assert result != 0
