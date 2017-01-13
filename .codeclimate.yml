@@ -20,3 +20,11 @@ ratings:
 exclude_paths:
     - tests/**
     - test/**
+    - doc/**
+    - dist/**
+    - build/**
+    - "*.cfg"
+    - "*.in"
+    - "LICENSE"
+    - "*.txt"
+    - "*.rst"
