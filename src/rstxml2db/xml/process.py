@@ -26,10 +26,19 @@ from ..log import log
 import logging
 
 
-def logging_xslt():
+def logging_xslt(resultxslt, logger=log):
+    """Log result from XSLT transformation
+
+    :param resultxslt:
+    :type resultxslt: :class:`etree._XSLTResultTree`
+    :param logger:
+    :type logger: :clas:`logging.Logger`
     """
-    """
-    pass
+    for entry in resultxslt.error_log:
+        level, msg = entry.message.split(':', maxsplit=1)
+        msg = msg.strip()
+        logger.log(getattr(logging, level, 'INFO'), "%s", msg)
+
 
 def transform(doc, args):
     """Transformation step
@@ -49,6 +58,7 @@ def transform(doc, args):
     # (1) Resolve multiple RST XML -> single RST XML structure...
     #
     rst = resolve_trans(doc)
+    # logging_xslt(resolve_trans)
     # log.debug("Resolved all external references")
     # rst.write('/tmp/rsttree.xml',
     #           encoding='utf-8',
@@ -64,12 +74,7 @@ def transform(doc, args):
     #           )
     # log.debug("Wrote result tree to '/tmp/result-tree.xml'")
 
-    if log.isEnabledFor(logging.DEBUG):
-        # We want xsl:message output only when we've set the right log level
-        for entry in rst2db_trans.error_log:
-            level, msg = entry.message.split(':', maxsplit=1)
-            msg = msg.strip()
-            log.log(getattr(logging, level, 'INFO'), "%s", msg)
+    logging_xslt(rst2db_trans)
 
     if args.legalnotice is not None:
         addlegalnotice(xml, args.legalnotice)
@@ -83,10 +88,7 @@ def transform(doc, args):
         db4o5_xslt = etree.parse(XSLTDB4TO5)
         db4o5_trans = etree.XSLT(db4o5_xslt)
         xml = db4o5_trans(xml, **dict(args.params))
-        for entry in db4o5_trans.error_log:
-            level, msg = entry.message.split(':', maxsplit=1)
-            msg = msg.strip()
-            log.log(getattr(logging, level, 'INFO'), "%s", msg)
+        logging_xslt(db4o5_trans)
         # xml.write('/tmp/result-db5-tree.xml',
         #           encoding='utf-8',
         #           pretty_print=True,

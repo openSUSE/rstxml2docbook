@@ -23,7 +23,7 @@ Logging setup
 import logging
 import sys
 
-__all__ = ('log', 'setloglevel', 'LOGLEVELS', )
+__all__ = ('log', 'setloglevel', 'LOGLEVELS')
 
 #: ``log`` is the object to use for all log events
 log = logging.getLogger(__file__)
@@ -34,11 +34,20 @@ _ch.setFormatter(_frmt)
 log.setLevel(logging.DEBUG)
 log.addHandler(_ch)
 
+#: ``xsltlog`` is the logger for all XSLT related output
+xsltlog = logging.getLogger('xslt')
+_ch = logging.StreamHandler(sys.stderr)
+_frmt = logging.Formatter('[%(levelname)s]: %(message)s')
+_ch.setFormatter(_frmt)
+xsltlog.setLevel(logging.ERROR)
+xsltlog.addHandler(_ch)
+
 #: Dictionary: Log levels to map verbosity level to logging values
 LOGLEVELS = {None: logging.NOTSET,  # 0
-             0: logging.NOTSET,     # 0
-             1: logging.INFO,       # 20
-             2: logging.DEBUG,      # 10
+             0: logging.ERROR,
+             1: logging.WARNING,
+             2: logging.INFO,
+             3: logging.DEBUG,
              }
 
 
