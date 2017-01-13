@@ -44,7 +44,7 @@ def addlegalnotice(xml, legalfile):
     """Add legalnotice file into book/bookinfo
 
     :param xml: :class:`lxml.etree._ElementTree`
-    :param convfile: filename with root element ``<legalnotice>``
+    :param legalfile: filename with root element ``<legalnotice>``
     """
     legal = etree.parse(legalfile).getroot()
     bookinfo = xml.getroot().find('bookinfo')

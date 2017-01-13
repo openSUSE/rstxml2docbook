@@ -26,10 +26,15 @@ from ..log import log
 import logging
 
 
+def logging_xslt():
+    """
+    """
+    pass
+
 def transform(doc, args):
     """Transformation step
 
-    :param docs: tree of class :class:`lxml.etree._ElementTree`
+    :param doc: tree of class :class:`lxml.etree._ElementTree`
     :param args: argument result from :class:`argparse`
     :return: XML tree
     :rtype: :class:`lxml.etree._ElementTree`

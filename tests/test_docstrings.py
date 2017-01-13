@@ -26,13 +26,12 @@ import rstxml2db
 def getallfunctions(module=rstxml2db):
     def getfunctions(_module):
         for _, func, in inspect.getmembers(_module,
-                                              inspect.isfunction):
-            if func.__module__ == _module.__name__:
-                yield func
+                                           inspect.isfunction):
+            yield func
     def getmodules(_module):
         for _, m, in inspect.getmembers(_module,
-                                              inspect.ismodule):
-            if m.__package__ == _module.__package__:
+                                        inspect.ismodule):
+            if m.__package__.startswith(_module.__package__):
                 yield m
 
     # allfunctions = []
