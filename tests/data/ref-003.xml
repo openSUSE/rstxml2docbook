@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<!DOCTYPE document SYSTEM "docutils.dtd">-->
+
+<document role="big" source="/foo/bar/index.rst"> >
+  <section ids="fox-and-dog-guide">
+  <title>Fox and Dog</title>
+
+  <document role="big" source="/foo/bar/fox.rst">
+    <!-- no <target/> -->
+    <section ids="fox-something" names="Fox">
+        <title>Fox</title>
+        <paragraph>The quick brown fox. See <reference internal="True"
+            refid="dog">Dog</reference>.</paragraph>
+    </section>
+  </document>
+  <document role="big" source="/foo/bar/dog.rst">
+    <section ids="dog-something" names="Dog">
+        <title>Dog</title>
+        <paragraph>I'm the dog para. See <reference
+                internal="True" refid="fox"
+                ><inline class="doc">Fox</inline></reference>.</paragraph>
+    </section>
+  </document>
+ </section>
+</document>

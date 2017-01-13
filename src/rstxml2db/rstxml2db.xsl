@@ -87,25 +87,36 @@
 
     <xsl:choose>
        <xsl:when test="not(contains($node/@ids, ' '))">
+<!--         <xsl:message>WARNING: #1:<xsl:value-of select="$node/@ids"/></xsl:message>-->
          <xsl:value-of select="$node/@ids"/>
        </xsl:when>
         <xsl:when test="$node/preceding-sibling::section[1]/section[1]/section[1]/*[last()][self::target]">
+<!--          <xsl:message>WARNING: #2</xsl:message>-->
           <xsl:value-of select="$node/preceding-sibling::section[1]/section[1]/section[1]/*[last()][self::target]/@refid"/>
         </xsl:when>
         <xsl:when test="$node/preceding-sibling::section[1]/section[last()]/*[last()][self::target]">
-          <xsl:value-of select="$node/preceding-sibling::section[1]/section[last()]/*[last()][self::target]/@refid"/>
+<!--         <xsl:message>WARNING: #3</xsl:message>-->
+         <xsl:value-of select="$node/preceding-sibling::section[1]/section[last()]/*[last()][self::target]/@refid"/>
         </xsl:when>
         <xsl:when test="$node/preceding-sibling::section[1]/*[last()][self::target]">
-          <xsl:value-of select="$node/preceding-sibling::section[1]/*[last()][self::target]/@refid"/>
+<!--         <xsl:message>WARNING: #4</xsl:message>-->
+         <xsl:value-of select="$node/preceding-sibling::section[1]/*[last()][self::target]/@refid"/>
         </xsl:when>
         <xsl:when test="$node/preceding-sibling::*[1][self::target]">
-          <xsl:value-of select="$node/preceding-sibling::*[1][self::target]/@refid"/>
+<!--         <xsl:message>WARNING: #5</xsl:message>-->
+         <xsl:value-of select="$node/preceding-sibling::*[1][self::target]/@refid"/>
         </xsl:when>
         <xsl:when test="contains($node/@ids, ' ')">
-          <xsl:value-of select="substring-after($node/@ids, ' ')"/>
+<!--         <xsl:message>WARNING: #6</xsl:message>-->
+         <xsl:value-of select="substring-after($node/@ids, ' ')"/>
+        </xsl:when>
+        <xsl:when test="$node/ancestor::document">
+<!--         <xsl:message>WARNING: #7</xsl:message>-->
+         <xsl:value-of select="substring-before($node/ancestor::document[1]/@source, '.rst')"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="$node/@ids"/>
+<!--         <xsl:message>WARNING: #8</xsl:message>-->
+         <xsl:value-of select="$node/@ids"/>
         </xsl:otherwise>
       </xsl:choose>
   </xsl:template>
@@ -739,20 +750,17 @@
       </xsl:when>
       <xsl:otherwise>
         <xsl:variable name="refuri" select="concat(@refuri, '.xml')"/>
-<!--        <xsl:variable name="sectid" select="($refs[@href=$refuri])[1]/section[1]/@id"/> -->
         <xsl:variable name="sectid" select="key('documents', @refuri)"/>
         <xsl:choose>
           <xsl:when test="$sectid != ''">
             <xref linkend="{$sectid}"/>
           </xsl:when>
           <xsl:otherwise>
-            <!-- common/cli_set_environment_variables_using_openstack_rc.xml
-              concat(@refuri, '.xml')
-             -->
+            <xref linkend="{@refuri}"/> 
             <xsl:message>WARNING: could not find referenced ID '<xsl:value-of select="@refuri"/>'!
              sectid="<xsl:value-of select="$sectid"/>"
              refuri=<xsl:value-of select="$refuri"/>
-             <!-- ref section=<xsl:value-of select="$refs[@href='common/cli_set_environment_variables_using_openstack_rc.xml']/section[1]/@id"/>--></xsl:message>
+            </xsl:message>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:otherwise>

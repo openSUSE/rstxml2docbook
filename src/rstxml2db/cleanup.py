@@ -24,7 +24,7 @@ Collect several cleanup steps
 from .log import log
 from lxml import etree
 from collections import defaultdict
-
+import os.path
 
 def finddoubleids(allids):
     """Find all double IDs
@@ -114,6 +114,25 @@ def remove_double_ids(xml, usedoubleids=True):
         double = finddoubleids(xml.xpath("//*[@id]"))
         if double:  # pragma: no cover
             log.warning("Double IDs found: %s", double)
+
+
+def normalize_source_attr(xml):
+    """Normalize the document/@source attribute and remove any paths
+
+    :param xml: :class:`lxml.etree._ElementTree`
+    """
+    for item in xml.iter("document"):
+        source = item.attrib["source"]
+        item.attrib["source"] = os.path.split(source)[-1]
+
+
+def pre_cleanupxml(xml):
+    """Cleanup steps which are executed before any transformation
+       steps occur
+
+    :param xml: :class:`lxml.etree._ElementTree`
+    """
+    normalize_source_attr(xml)
 
 
 def cleanupxml(xml):

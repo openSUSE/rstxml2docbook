@@ -20,7 +20,7 @@ from lxml import etree
 
 from .util import quoteparams
 from .struct import addchapter, addlegalnotice
-from ..cleanup import cleanupxml
+from ..cleanup import cleanupxml, pre_cleanupxml
 from ..core import DOCTYPE, XSLTRST2DB, XSLTRESOLVE, XSLTDB4TO5
 from ..log import log
 import logging
@@ -48,6 +48,9 @@ def transform(doc, args):
     :return: XML tree
     :rtype: :class:`lxml.etree._ElementTree`
     """
+    # Some cleanup steps _before_ any transformation:
+    pre_cleanupxml(doc)
+
     rstresolve_xslt = etree.parse(XSLTRESOLVE)
     rst2db_xslt = etree.parse(XSLTRST2DB)
 
@@ -107,7 +110,7 @@ def process(args):
     """
     args.params = quoteparams(args)
     doc = etree.parse(args.indexfile)
-    #
+
     xml = transform(doc, args)
 
     xmldict = dict(encoding='unicode',
