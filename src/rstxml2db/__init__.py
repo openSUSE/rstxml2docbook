@@ -21,14 +21,16 @@ Converts RST XML (Sphinx/ReST XML) into DocBook XML
 
 """
 
-__all__ = ('__version__', 'main', 'parsecli')  # flake8: noqa
 
 from .cli import parsecli
+from .common import ERROR_CODES
 from .log import log
 from .version import __version__, __author__
 from .xml import process
 from lxml import etree
 import sys
+
+__all__ = ('__version__', 'main', 'parsecli')  # flake8: noqa
 
 
 def main(cliargs=None):
@@ -40,9 +42,11 @@ def main(cliargs=None):
     try:
         args = parsecli(cliargs)
         return process(args)
+
     except (etree.XMLSyntaxError, etree.XSLTApplyError) as error:
         log.fatal(error, exc_info=error, stack_info=True)
-        sys.exit(10)
+        return ERROR_CODES.get(repr(type(error)), 255)
+
     except (FileNotFoundError, OSError) as error:
-        log.fatal(error, exc_info=error, stack_info=True)
-        sys.exit(20)
+        log.fatal(error)
+        return ERROR_CODES.get(repr(type(error)), 255)
