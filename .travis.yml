@@ -23,6 +23,11 @@ script:
     #- coverage run $VIRTUAL_ENV/bin/py.test -l -v
     - travis-sphinx --nowarn --source=doc build
 
+
+addons:
+    code_climate:
+        repo_token: $CODECLIMATE_REPO_TOKEN
+
 after_success:
     - codecov
     - travis-sphinx deploy
