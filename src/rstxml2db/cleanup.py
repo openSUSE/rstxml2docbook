@@ -99,7 +99,7 @@ def remove_double_ids(xml, usedoubleids=True):
     """Cleanup step to remove all IDs with no corresponding xref
 
     :param xml: :class:`lxml.etree._ElementTree`
-    :param finddoubleids: boolean to execute additional check to find
+    :param usedoubleids: boolean to execute additional check to find
            double ids or not (default True)
     """
     linkends = set([i.attrib['linkend'] for i in xml.iter('xref')])
