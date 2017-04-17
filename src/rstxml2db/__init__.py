@@ -18,37 +18,18 @@
 
 """
 Converts RST XML (Sphinx/ReST XML) into DocBook XML
-
 """
 
 import logging
 
-from .cli import parsecli
-from .common import ERROR_CODES
-from .version import __version__, __author__
-from .xml import process
-from lxml import etree
 
-__all__ = ('__author__', '__version__', 'main', 'parsecli')  # flake8: noqa
+__author__ = "Thomas Schraitle"
+__version__ = "0.4.4"
+__name__ = "rstxml2db"
+__url__ = "https://github.com/openSUSE/rstxml2docbook"
+__email__ = "toms (AT) suse DOT de"
+__license__ = "GPL-3.0"
+__summary__ = __doc__
 
+# Set default logging handler to avoid "No handler found" warnings.
 logging.getLogger().addHandler(logging.NullHandler())
-
-
-def main(cliargs=None):
-    """Entry point for the application script
-
-    :param list cliargs: Arguments to parse or None (=use sys.argv)
-    :return: True or False
-    """
-    log = logging.getLogger(__name__)
-    try:
-        args = parsecli(cliargs)
-        return process(args)
-
-    except (etree.XMLSyntaxError, etree.XSLTApplyError) as error:
-        log.fatal(error, exc_info=error, stack_info=True)
-        return ERROR_CODES.get(repr(type(error)), 255)
-
-    except (FileNotFoundError, OSError) as error:
-        log.fatal(error)
-        return ERROR_CODES.get(repr(type(error)), 255)

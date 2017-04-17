@@ -19,7 +19,7 @@
 """Support python -m rstxml2db call with __main__.py"""
 
 import sys
-from . import main
+from .cli import main
 
 
 if __name__ == "__main__":

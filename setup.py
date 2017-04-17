@@ -65,8 +65,8 @@ setupdict = dict(
    #
    entry_points={
         'console_scripts': [
-            'rstxml2db=rstxml2db:main',
-            'rstxml2docbook=rstxml2db:main',
+            'rstxml2db=rstxml2db.cli:main',
+            'rstxml2docbook=rstxml2db.cli:main',
         ],
     },
 )
