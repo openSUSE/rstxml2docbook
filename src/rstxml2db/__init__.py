@@ -20,6 +20,9 @@
 Converts RST XML (Sphinx/ReST XML) into DocBook XML
 """
 
+import logging
+
+
 __author__ = "Thomas Schraitle"
 __version__ = "0.4.4"
 __name__ = "rstxml2db"
@@ -27,9 +30,6 @@ __url__ = "https://github.com/openSUSE/rstxml2docbook"
 __email__ = "toms (AT) suse DOT de"
 __license__ = "GPL-3.0"
 __summary__ = __doc__
-
-import logging
-
 
 # Set default logging handler to avoid "No handler found" warnings.
 logging.getLogger().addHandler(logging.NullHandler())
