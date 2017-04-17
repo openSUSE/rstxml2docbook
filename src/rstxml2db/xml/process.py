@@ -17,13 +17,15 @@
 # you may find current contact information at www.suse.com
 
 from lxml import etree
+import logging
 
 from .util import quoteparams
 from .struct import addchapter, addlegalnotice
 from ..cleanup import cleanupxml
 from ..core import DOCTYPE, XSLTRST2DB, XSLTRESOLVE, XSLTDB4TO5
-from ..log import log
-import logging
+
+
+log = logging.getLogger(__name__)
 
 
 def logging_xslt(resultxslt, logger=log):
@@ -37,7 +39,7 @@ def logging_xslt(resultxslt, logger=log):
     for entry in resultxslt.error_log:
         level, msg = entry.message.split(':', maxsplit=1)
         msg = msg.strip()
-        logger.log(getattr(logging, level, 'INFO'), "%s", msg)
+        log.log(getattr(logging, level, 'INFO'), "%s", msg)
 
 
 def transform(doc, args):

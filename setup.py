@@ -56,12 +56,12 @@ setupdict = dict(
    # installed, specify them here.  If using Python 2.6 or less, then these
    # have to be included in MANIFEST.in as well.
    package_data={
-        '': ['src/rstxml2db/*.xsl'],
+        '': ['src/rstxml2db/*.xsl', 'src/rstxml2db/*.conf'],
    },
 
    # For testing purposes with "setup.py test"
    setup_requires=['pytest-runner'],
-   tests_require=['pytest', 'pytest-cov',],
+   tests_require=['pytest', 'pytest-cov'],
    #
    entry_points={
         'console_scripts': [

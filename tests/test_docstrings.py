@@ -27,7 +27,9 @@ def getallfunctions(module=rstxml2db):
     def getfunctions(_module):
         for _, func, in inspect.getmembers(_module,
                                            inspect.isfunction):
-            yield func
+            # Make sure you only investigate functions from our modules:
+            if func.__module__.startswith(_module.__name__):
+                yield func
     def getmodules(_module):
         for _, m, in inspect.getmembers(_module,
                                         inspect.ismodule):

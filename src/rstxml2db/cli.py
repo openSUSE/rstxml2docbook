@@ -21,9 +21,17 @@ This module implements the cli parser.
 """
 
 import argparse
-
-from .log import log, setloglevel
+import logging
+from logging.config import fileConfig
+from os.path import dirname, join
+from .core import LOGLEVELS
 from .version import __version__, __author__
+
+
+# fileConfig needs to come first
+_logfile = join(dirname(__file__), 'logging.conf')
+fileConfig(_logfile)
+log = logging.getLogger(__name__)
 
 
 def prepareparams(params):
@@ -114,10 +122,8 @@ def parsecli(cliargs=None):
                         help='index file (XML) which refer all other files '
                              '(usually something like \'index.xml\')'
                         )
-
     args = parser.parse_args(args=cliargs)
-    setloglevel(args.verbose)
-
+    log.setLevel(LOGLEVELS.get(args.verbose, logging.DEBUG))
     args.params = prepareparams(args.params)
 
     if args.productname:

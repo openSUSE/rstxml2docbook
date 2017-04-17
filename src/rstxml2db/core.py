@@ -21,6 +21,8 @@ Core variables, used in other modules.
 """
 
 import os
+import logging
+
 
 __all__ = ('DOCTYPE', 'HERE', 'NSMAP',
            'XSLTRST2DB', 'XSLTRESOLVE', 'XSLTDB4TO5')
@@ -54,3 +56,9 @@ DOCTYPE = r"""<!DOCTYPE {} PUBLIC
   %entities;
 -->
 ]>"""
+
+LOGLEVELS = {None: logging.NOTSET,  # 0
+             0: logging.NOTSET,
+             1: logging.INFO,
+             2: logging.DEBUG,
+             }

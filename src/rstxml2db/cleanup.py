@@ -21,9 +21,11 @@ Collect several cleanup steps
 
 """
 
-from .log import log
+import logging
 from lxml import etree
 from collections import defaultdict
+
+log = logging.getLogger(__name__)
 
 
 def finddoubleids(allids):
@@ -73,8 +75,8 @@ def fix_colspec_width(xml):
         colspecsum = table.xpath('tgroup/colspec/@colwidth')
         colspecsum = sum([int(x) for x in colspecsum])
         for colspec in table.xpath('tgroup/colspec'):
-            colspec.attrib['colwidth'] = "{:.1f}*".format(100*int(colspec.attrib.get('colwidth')) /
-                                                          colspecsum)
+            colwidth = 100*int(colspec.attrib.get('colwidth'))
+            colspec.attrib['colwidth'] = "{:.1f}*".format(colwidth/colspecsum)
 
 
 def add_pi_in_screen(xml, limit=83, target='dbsuse-fo', fontsize='8pt'):
@@ -105,7 +107,7 @@ def remove_double_ids(xml, usedoubleids=True):
     linkends = set([i.attrib['linkend'] for i in xml.iter('xref')])
     unusedattr = [item for item in allelementswithid(xml)
                   if item.attrib['id'] not in linkends]
-    idattrs = [item.attrib['id'] for item in unusedattr]
+    # idattrs = [item.attrib['id'] for item in unusedattr]
     for item in unusedattr:
         del item.attrib['id']
     # log.debug('Unused IDs, removed from output: %s', ', '.join(idattrs))

@@ -26,12 +26,6 @@ API-Reference
    :members:
 
 
-:mod:`rstxml2db.log` -- Logging Module
-----------------------------------------
-.. automodule:: rstxml2db.log
-   :members:
-
-
 :mod:`rstxml2db.version` -- Version
 ------------------------------------
 .. automodule:: rstxml2db.version

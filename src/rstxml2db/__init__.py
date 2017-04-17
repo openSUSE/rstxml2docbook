@@ -21,16 +21,17 @@ Converts RST XML (Sphinx/ReST XML) into DocBook XML
 
 """
 
+import logging
 
 from .cli import parsecli
 from .common import ERROR_CODES
-from .log import log
 from .version import __version__, __author__
 from .xml import process
 from lxml import etree
-import sys
 
-__all__ = ('__version__', 'main', 'parsecli')  # flake8: noqa
+__all__ = ('__author__', '__version__', 'main', 'parsecli')  # flake8: noqa
+
+logging.getLogger().addHandler(logging.NullHandler())
 
 
 def main(cliargs=None):
@@ -39,6 +40,7 @@ def main(cliargs=None):
     :param list cliargs: Arguments to parse or None (=use sys.argv)
     :return: True or False
     """
+    log = logging.getLogger(__name__)
     try:
         args = parsecli(cliargs)
         return process(args)
