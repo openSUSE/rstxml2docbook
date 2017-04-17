@@ -21,11 +21,16 @@ Core variables, used in other modules.
 """
 
 import os
-import logging
-
-
-__all__ = ('DOCTYPE', 'HERE', 'NSMAP',
-           'XSLTRST2DB', 'XSLTRESOLVE', 'XSLTDB4TO5')
+from logging import (BASIC_FORMAT,
+                     CRITICAL,
+                     DEBUG,
+                     FATAL,
+                     ERROR,
+                     INFO,
+                     NOTSET,
+                     WARN,
+                     WARNING,
+                     )
 
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -57,8 +62,62 @@ DOCTYPE = r"""<!DOCTYPE {} PUBLIC
 -->
 ]>"""
 
-LOGLEVELS = {None: logging.NOTSET,  # 0
-             0: logging.NOTSET,
-             1: logging.INFO,
-             2: logging.DEBUG,
+#: Map verbosity to log levels
+LOGLEVELS = {None: WARNING,  # 0
+             0: WARNING,
+             1: INFO,
+             2: DEBUG,
              }
+
+#: Map log numbers to log names
+LOGNAMES = { NOTSET: 'NOTSET',     # 0
+             None:  'NOTSET',
+             DEBUG:  'DEBUG',      # 10
+             INFO:   'INFO',       # 20
+             WARN:    'WARNING',   # 30
+             WARNING: 'WARNING',   # 30
+             ERROR:  'ERROR',      # 40
+             CRITICAL: 'CRITICAL', # 50
+             FATAL: 'CRITICAL',    # 50
+             }
+
+#: log config files to search for
+LOGFILECONFIGS = (os.path.join(os.path.dirname(__file__),
+                               'logging.conf'),
+                  os.path.expanduser("~/.config/rstxml2db/logging.conf"),
+                  )
+
+DEBUG_FORMAT = "[%(levelname)s] %(name)s:%(lineno)s %(message)s"
+# SIMPLE_FORMAT = "%(levelname)s:%(name)s:%(message)s"
+
+LOG_CONFIG = {
+        'version': 1,
+        'formatters': {'rstxml2db': {'format': DEBUG_FORMAT,
+                                     'datefmt': '%Y%m%dT%H:%M:%S'},
+                       'default': {'format': BASIC_FORMAT,
+                                   'datefmt': '%Y-%m-%d %H:%M:%S'},
+                       },
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
+                'level': 'NOTSET',
+                'formatter': 'default',
+            },
+            'rstxml2db': {
+                'class': 'logging.StreamHandler',
+                'level': 'DEBUG',
+                'formatter': 'rstxml2db',
+            },
+        },
+        'loggers': {
+            'rstxml2db': {
+                'handlers': ['rstxml2db'],
+                'propagate': False,
+            }
+        },
+        'root': {
+            'level': 'DEBUG',
+            # Default %(levelname)s:%(name)s:%(message)s
+            # 'handlers': ['console'],
+        },
+    }

@@ -31,5 +31,6 @@ __email__ = "toms (AT) suse DOT de"
 __license__ = "GPL-3.0"
 __summary__ = __doc__
 
+
 # Set default logging handler to avoid "No handler found" warnings.
 logging.getLogger().addHandler(logging.NullHandler())
