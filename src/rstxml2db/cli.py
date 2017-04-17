@@ -24,8 +24,12 @@ import argparse
 import logging
 from logging.config import fileConfig
 from os.path import dirname, join
+from lxml import etree
+
+from .common import ERROR_CODES
 from .core import LOGLEVELS
-from .version import __version__, __author__
+from . import __author__, __version__
+from .xml import process
 
 
 # fileConfig needs to come first
@@ -138,3 +142,22 @@ def parsecli(cliargs=None):
 
     log.info(args)
     return args
+
+
+def main(cliargs=None):
+    """Entry point for the application script
+
+    :param list cliargs: Arguments to parse or None (=use sys.argv)
+    :return: True or False
+    """
+    try:
+        args = parsecli(cliargs)
+        return process(args)
+
+    except (etree.XMLSyntaxError, etree.XSLTApplyError) as error:
+        log.fatal(error, exc_info=error, stack_info=True)
+        return ERROR_CODES.get(repr(type(error)), 255)
+
+    except (FileNotFoundError, OSError) as error:
+        log.fatal(error)
+        return ERROR_CODES.get(repr(type(error)), 255)

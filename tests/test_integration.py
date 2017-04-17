@@ -221,7 +221,7 @@ def test_integration_with_productname(tmpdir, args):
 
 
 def test_wrong_xml(tmpdir):
-    from rstxml2db import main
+    from rstxml2db.cli import main
     badxml = str(tmpdir / 'bad.xml')
     with open(badxml, 'w') as fh:
         fh.write("<bad_tag>")
