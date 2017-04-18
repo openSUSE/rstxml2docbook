@@ -23,7 +23,7 @@ from setuptools import setup, find_packages
 
 setupdict = dict(
    name='rstxml2docbook',
-   version='0.4.4',
+   version='0.4.5',
    description='Converts RST XML files back to DocBook XML',
    url='https://github.com/tomschr/rstxml2docbook',
    # Author details
