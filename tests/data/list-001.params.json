@@ -1,0 +1,6 @@
+[
+    ["boolean(//d:itemizedlist)", true],
+    ["count(//d:itemizedlist/d:listitem)", 2.0],
+    ["//d:itemizedlist/d:listitem[1]/d:para/text()", ["First item"]],
+    ["//d:itemizedlist/d:listitem[2]/d:para/text()", ["Second item"]]
+]

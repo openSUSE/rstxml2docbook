@@ -16,11 +16,16 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-"""Collect several cleanup steps"""
+"""
+Collect several cleanup steps
 
-from .log import log
+"""
+
+import logging
 from lxml import etree
 from collections import defaultdict
+
+log = logging.getLogger(__name__)
 
 
 def finddoubleids(allids):
@@ -70,8 +75,8 @@ def fix_colspec_width(xml):
         colspecsum = table.xpath('tgroup/colspec/@colwidth')
         colspecsum = sum([int(x) for x in colspecsum])
         for colspec in table.xpath('tgroup/colspec'):
-            colspec.attrib['colwidth'] = "{:.1f}*".format(100*int(colspec.attrib.get('colwidth')) /
-                                                          colspecsum)
+            colwidth = 100*int(colspec.attrib.get('colwidth'))
+            colspec.attrib['colwidth'] = "{:.1f}*".format(colwidth/colspecsum)
 
 
 def add_pi_in_screen(xml, limit=83, target='dbsuse-fo', fontsize='8pt'):
@@ -96,22 +101,20 @@ def remove_double_ids(xml, usedoubleids=True):
     """Cleanup step to remove all IDs with no corresponding xref
 
     :param xml: :class:`lxml.etree._ElementTree`
-    :param finddoubleids: boolean to execute additional check to find
+    :param usedoubleids: boolean to execute additional check to find
            double ids or not (default True)
     """
     linkends = set([i.attrib['linkend'] for i in xml.iter('xref')])
-
-    unusedattr = []
-    for item in allelementswithid(xml):
-        idattr = item.attrib['id']
-        if idattr not in linkends:
-            del item.attrib['id']
-            unusedattr.append(idattr)
-    log.debug('Unused IDs, removed from output: %s', ', '.join(unusedattr))
+    unusedattr = [item for item in allelementswithid(xml)
+                  if item.attrib['id'] not in linkends]
+    # idattrs = [item.attrib['id'] for item in unusedattr]
+    for item in unusedattr:
+        del item.attrib['id']
+    # log.debug('Unused IDs, removed from output: %s', ', '.join(idattrs))
 
     if usedoubleids:
         double = finddoubleids(xml.xpath("//*[@id]"))
-        if double:
+        if double:  # pragma: no cover
             log.warning("Double IDs found: %s", double)
 
 

@@ -16,21 +16,15 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-"""
-Converts RST XML (Sphinx/ReST XML) into DocBook XML
-"""
-
-import logging
+from lxml import etree
 
 
-__author__ = "Thomas Schraitle"
-__version__ = "0.4.5"
-__name__ = "rstxml2db"
-__url__ = "https://github.com/openSUSE/rstxml2docbook"
-__email__ = "toms (AT) suse DOT de"
-__license__ = "GPL-3.0"
-__summary__ = __doc__
+def quoteparams(args):
+    """Quote parameters with :func:`etree.XSLT.strparam`
 
-
-# Set default logging handler to avoid "No handler found" warnings.
-logging.getLogger().addHandler(logging.NullHandler())
+    :param args: result from :class:`argparse` parser
+    :return: parameter list with quoted values
+    :rtype: list
+    """
+    return [(p[0], p[1] if p[0].startswith('_') else etree.XSLT.strparam(p[1]))
+            for p in args.params]

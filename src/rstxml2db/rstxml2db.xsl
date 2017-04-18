@@ -92,8 +92,8 @@
         <xsl:when test="$node/preceding-sibling::section[1]/section[1]/section[1]/*[last()][self::target]">
           <xsl:value-of select="$node/preceding-sibling::section[1]/section[1]/section[1]/*[last()][self::target]/@refid"/>
         </xsl:when>
-        <xsl:when test="$node/preceding-sibling::section[1]/section[1]/*[last()][self::target]">
-          <xsl:value-of select="$node/preceding-sibling::section[1]/section[1]/*[last()][self::target]/@refid"/>
+        <xsl:when test="$node/preceding-sibling::section[1]/section[last()]/*[last()][self::target]">
+          <xsl:value-of select="$node/preceding-sibling::section[1]/section[last()]/*[last()][self::target]/@refid"/>
         </xsl:when>
         <xsl:when test="$node/preceding-sibling::section[1]/*[last()][self::target]">
           <xsl:value-of select="$node/preceding-sibling::section[1]/*[last()][self::target]/@refid"/>
@@ -192,6 +192,11 @@
   <xsl:template match="target"/>
   <xsl:template match="substitution_definition"/>
 
+  <!-- =================================================================== -->
+  <!-- Skipped elements                                                    -->
+  <xsl:template match="hlist|hlistcol">
+   <xsl:apply-templates/>
+  </xsl:template>
 
   <!-- =================================================================== -->
   <xsl:template match="document">
@@ -248,12 +253,6 @@
     </abstract>
   </xsl:template>
 
-  <xsl:template match="section[@names='glossary']">
-    <glossary>
-      <xsl:apply-templates mode="glossary"/>
-    </glossary>
-  </xsl:template>
-
   <xsl:template match="section">
     <xsl:variable name="name">
       <xsl:call-template name="create.structural.name"/>
@@ -273,10 +272,6 @@
         <xsl:with-param name="root" select="$name"/>
       </xsl:apply-templates>
     </xsl:element>
-  </xsl:template>
-
-  <xsl:template match="section/title" mode="glossary">
-    <xsl:apply-templates select="."/>
   </xsl:template>
 
   <xsl:template match="section/title">
@@ -351,7 +346,7 @@
     </para>
   </xsl:template>
 
-  <xsl:template match="bullet_list[@bullet='-' or @bullet='*']">
+  <xsl:template match="bullet_list[@bullet='-' or @bullet='*']|bullet_list">
     <itemizedlist>
       <xsl:apply-templates/>
     </itemizedlist>
@@ -408,6 +403,35 @@
 
 
   <!-- =================================================================== -->
+  <xsl:template match="section[@names='glossary'][document/section[@names='glossary']]">
+   <!-- Just skip this double entry: -->
+   <xsl:message>INFO: skipping document for glossary</xsl:message>
+   <xsl:apply-templates select="document/section[@names='glossary']"/>
+  </xsl:template>
+
+  <xsl:template match="document/section[@names='glossary']">
+   <glossary>
+    <xsl:apply-templates/>
+   </glossary>
+  </xsl:template>
+
+ <xsl:template match="section[@names='glossary']/section">
+  <xsl:variable name="name">
+   <xsl:call-template name="create.structural.name"/>
+  </xsl:variable>
+  <xsl:variable name="idattr">
+   <xsl:call-template name="get.target4section.id"/>
+  </xsl:variable>
+  <xsl:message>INFO: Add glossdiv <xsl:value-of select="$idattr"/></xsl:message>
+  <glossdiv id="{$idattr}">
+   <xsl:apply-templates select="title"/>
+   <xsl:apply-templates select="*[not(self::title)]"/>
+  </glossdiv>
+ </xsl:template>
+
+ <xsl:template match="section[@names='glossary']/section/glossary">
+  <xsl:apply-templates/>
+ </xsl:template>
 
   <xsl:template match="*" mode="glossary">
       <xsl:apply-templates select="."/>
@@ -417,38 +441,36 @@
       <xsl:apply-templates/>
   </xsl:template>
 
-  <xsl:template match="glossary" mode="glossary">
-      <xsl:apply-templates mode="glossary"/>
-  </xsl:template>
-
   <xsl:template match="definition_list[@classes='glossary']">
-    <glosslist>
-      <xsl:apply-templates select="definition_list_item"/>
-    </glosslist>
-  </xsl:template>
-
-  <xsl:template match="definition_list[@classes='glossary']" mode="glossary">
       <xsl:apply-templates select="definition_list_item"/>
   </xsl:template>
 
   <xsl:template match="definition_list[@classes='glossary']/definition_list_item">
+   <xsl:variable name="idattr">
+     <xsl:value-of select="term/@ids"/>
+   </xsl:variable>
     <glossentry>
-      <xsl:if test="term/@ids">
+      <xsl:if test="$idattr">
         <xsl:attribute name="id">
-          <xsl:value-of select="term/@ids"/>
+          <xsl:value-of select="$idattr"/>
         </xsl:attribute>
+        <xsl:message>INFO: Add id=<xsl:value-of select="$idattr"/></xsl:message>
       </xsl:if>
-      <xsl:apply-templates/>
+      <xsl:apply-templates select="term"/>
+      <xsl:apply-templates select="definition"/>
     </glossentry>
   </xsl:template>
 
   <xsl:template match="definition_list[@classes='glossary']/definition_list_item/term">
-    <glossterm>
+   <glossterm>
       <xsl:apply-templates/>
-    </glossterm>
+   </glossterm>
   </xsl:template>
 
+  <xsl:template match="definition_list[@classes='glossary']/definition_list_item/term/index"/>
+
   <xsl:template match="definition_list[@classes='glossary']/definition_list_item/definition">
+    <xsl:message>INFO: Add definition of <xsl:value-of select="normalize-space(../term)"/>, id=<xsl:value-of select="../term/@ids"/></xsl:message>
     <glossdef>
       <xsl:apply-templates/>
     </glossdef>
@@ -458,52 +480,75 @@
   <!-- =================================================================== -->
   <xsl:template match="table">
     <xsl:variable name="title">
-      <xsl:if test="preceding-sibling::paragraph[1][strong]">
-        <xsl:apply-templates select="preceding-sibling::paragraph[1]/strong"/>
-      </xsl:if>
+     <xsl:choose>
+      <xsl:when test="title">
+       <xsl:apply-templates select="title"/>
+      </xsl:when>
+      <!--<xsl:when test="preceding-sibling::paragraph[1][strong]">
+       <xsl:apply-templates select="preceding-sibling::paragraph[1]/strong"/>
+      </xsl:when>-->
+     </xsl:choose>
     </xsl:variable>
     <xsl:variable name="id">
       <xsl:call-template name="get.target4table.id"/>
     </xsl:variable>
-    <xsl:variable name="table">
+    <xsl:variable name="tabletype">
       <xsl:choose>
         <xsl:when test="$title != ''">table</xsl:when>
         <xsl:otherwise>informaltable</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
 
-    <!--<xsl:message>table:
+<!--    <xsl:message>table:
     title=<xsl:value-of select="$title"/>
     id=<xsl:value-of select="$id"/>
-    type=<xsl:value-of select="$table"/>
+    type=<xsl:value-of select="$tabletype"/>
     </xsl:message>-->
 
-    <xsl:element name="{$table}">
+    <xsl:element name="{$tabletype}">
       <xsl:if test="$id != ''">
         <xsl:attribute name="id">
           <xsl:value-of select="$id"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="$title != ''">
-        <title><xsl:value-of select="$title"/></title>
+      <xsl:if test="$title != '' and $tabletype = 'table'">
+        <xsl:copy-of select="$title"/>
       </xsl:if>
       <xsl:apply-templates mode="table"/>
     </xsl:element>
   </xsl:template>
 
+  <xsl:template match="table/title">
+   <xsl:variable name="content">
+    <xsl:apply-templates/>
+   </xsl:variable>
+   <title><xsl:value-of select="normalize-space($content)"/></title>
+  </xsl:template>
+
   <xsl:template match="@stub" mode="table"/>
+
+  <xsl:template match="@morecols" mode="table">
+   <xsl:attribute name="namest">c1</xsl:attribute>
+   <xsl:attribute name="nameend">
+    <xsl:text>c</xsl:text>
+    <xsl:value-of select=". +1"/>
+   </xsl:attribute>
+  </xsl:template>
 
   <xsl:template match="node() | @*" mode="table">
     <xsl:copy>
       <xsl:apply-templates select="@* | node()" mode="table"/>
     </xsl:copy>
   </xsl:template>
+ 
+ <xsl:template match="title" mode="table"/>
 
   <xsl:template match="colspec" mode="table">
-    <colspec>
+    <colspec colname="c{position() -1}">
       <xsl:apply-templates select="@*" mode="table"/>
     </colspec>
   </xsl:template>
+
 
   <xsl:template match="paragraph" mode="table">
     <para>
@@ -514,6 +559,39 @@
   <xsl:template match="literal_block|definition_list|bullet_list" mode="table">
     <xsl:apply-templates select="."/>
   </xsl:template>
+
+  <xsl:template match="option_list">
+   <variablelist>
+    <xsl:apply-templates/>
+   </variablelist>
+  </xsl:template>
+
+  <xsl:template match="option_list_item">
+   <varlistentry>
+    <xsl:apply-templates/>
+   </varlistentry>
+  </xsl:template>
+
+  <xsl:template match="option_group">
+   <term>
+    <xsl:apply-templates/>
+   </term>
+  </xsl:template>
+
+  <xsl:template match="option">
+   <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="option_string">
+   <option><xsl:apply-templates/></option>
+  </xsl:template>
+
+  <xsl:template match="description">
+   <listitem>
+    <xsl:apply-templates/>
+   </listitem>
+  </xsl:template>
+
 
   <!-- =================================================================== -->
   <xsl:template match="figure">
@@ -561,14 +639,25 @@
         <xsl:with-param name="filename" select="@uri"></xsl:with-param>
       </xsl:call-template>
     </xsl:variable>
-    <mediaobject>
+    <xsl:variable name="imagedata">
+     <imagedata fileref="{$uri}">
+      <xsl:if test="@width">
+       <xsl:attribute name="width">
+        <xsl:value-of select="@width"/>
+       </xsl:attribute>
+      </xsl:if>
+     </imagedata>
+    </xsl:variable>
+    <informalfigure>
+     <mediaobject>
       <imageobject role="fo">
-        <imagedata fileref="{$uri}" width="{@width}"/>
+       <xsl:copy-of select="$imagedata"/>
       </imageobject>
       <imageobject role="html">
-        <imagedata fileref="{$uri}" width="{@width}"/>
+       <xsl:copy-of select="$imagedata"/>
       </imageobject>
-    </mediaobject>
+     </mediaobject>
+    </informalfigure>
   </xsl:template>
 
   <xsl:template match="paragraph[strong][preceding-sibling::figure]"/>
@@ -579,13 +668,17 @@
     <xsl:copy-of select="."/>
   </xsl:template>
 
-  <xsl:template match="emphasis[@classes='guilabel']">
+  <xsl:template match="inline">
+   <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="emphasis[@classes='guilabel']|inline[@classes='guilabel']">
     <guilabel>
       <xsl:apply-templates/>
     </guilabel>
   </xsl:template>
 
-  <xsl:template match="emphasis[@classes='menuselection']">
+  <xsl:template match="emphasis[@classes='menuselection']|inline[@classes='menuselection']">
     <menuchoice>
       <xsl:call-template name="create.guimenu">
         <xsl:with-param name="text" select="text()"/>
@@ -607,7 +700,7 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="strong[@classes='command']">
+  <xsl:template match="strong[@classes='command']|literal_strong[@classes='command']">
     <command>
       <xsl:apply-templates/>
     </command>
@@ -619,7 +712,7 @@
     </emphasis>
   </xsl:template>
 
-  <xsl:template match="literal">
+  <xsl:template match="literal|literal_strong">
     <literal>
       <xsl:apply-templates/>
     </literal>

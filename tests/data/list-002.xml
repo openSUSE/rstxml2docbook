@@ -1,0 +1,19 @@
+<!--
+<!DOCTYPE document PUBLIC
+  "+//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML"
+  "http://docutils.sourceforge.net/docs/ref/docutils.dtd">
+-->
+
+<document source="list.002.rst">
+ <section ids="enumerate.list">
+  <title>Enumerate List</title>
+  <enumerated_list enumtype="arabic" prefix="" suffix=".">
+   <list_item>
+    <paragraph>First item</paragraph>
+   </list_item>
+   <list_item>
+    <paragraph>Second item</paragraph>
+   </list_item>
+  </enumerated_list>
+ </section>
+</document>

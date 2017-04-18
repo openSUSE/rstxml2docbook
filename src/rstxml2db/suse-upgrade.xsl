@@ -95,7 +95,7 @@
       mode="addNS"/>
   </xsl:template>
 
-  <xsl:template match="appendix|article|book|chapter|bibliography|glossary|part|preface|reference|set">
+  <xsl:template match="appendix|article|book|chapter|bibliography|glossary|glossdiv|part|preface|reference|set">
     <xsl:variable name="info" select="*[concat(local-name(..), 'info') = local-name(.)]"/>
     <xsl:variable name="title.outside.info">
       <xsl:choose>
@@ -181,8 +181,7 @@
 
   <!-- Convert numbered sections into recursive sections, unless
      $keep.numbered.sections is set to '1'  -->
-  <xsl:template match="sect1|sect2|sect3|sect4|sect5|section"
-    priority="200">
+  <xsl:template match="sect1|sect2|sect3|sect4|sect5|section" priority="200">
     <xsl:choose>
       <xsl:when test="$keep.numbered.sections = '1'">
         <xsl:element name="{local-name(.)}">
@@ -789,11 +788,11 @@
   <xsl:template match="ulink" priority="200">
     <xsl:choose>
       <xsl:when test="node()">
-        <xsl:call-template name="emit-message">
+        <!--<xsl:call-template name="emit-message">
           <xsl:with-param name="message">
             <xsl:text>Converting ulink to link.</xsl:text>
           </xsl:with-param>
-        </xsl:call-template>
+        </xsl:call-template>-->
 
         <link xlink:href="{@url}">
           <xsl:call-template name="copy.attributes">
@@ -1382,7 +1381,8 @@
       <xsl:apply-templates/>
     </varname>
   </xsl:template>
-  <!-- ====================================================================== -->
+
+ <!-- ====================================================================== -->
   <!-- glossterm and term have broader content models in 4.x than 5.0.
      Warn when an unsupported element is found under glossterm.
      Because the synopsis elements can contain things that phrase cannot,
@@ -1394,6 +1394,26 @@
       <xsl:call-template name="copy.attributes"/>
       <xsl:apply-templates mode="clean-terms"/>
     </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="glossentry">
+   <xsl:call-template name="emit-message">
+      <xsl:with-param name="message">
+       <xsl:text>Copy glossentry with </xsl:text>
+       <xsl:value-of select="@id"/>
+      </xsl:with-param>
+   </xsl:call-template>
+   <glossentry>
+      <xsl:call-template name="copy.attributes"/>
+      <xsl:apply-templates />
+   </glossentry>
+  </xsl:template>
+
+  <xsl:template match="*" mode="clean-terms">
+   <xsl:element name="{local-name()}" namespace="http://docbook.org/ns/docbook">
+    <xsl:copy-of select="@*"/>
+    <xsl:apply-templates mode="clean-terms"/>
+   </xsl:element>
   </xsl:template>
 
   <xsl:template match="varlistentry/term">
@@ -1757,6 +1777,7 @@
   <xsl:template name="emit-message">
     <xsl:param name="message"/>
     <xsl:message>
+      <xsl:text>INFO: </xsl:text>
       <xsl:value-of select="$message"/>
       <xsl:text> (</xsl:text>
       <xsl:value-of select="$rootid"/>

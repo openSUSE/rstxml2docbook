@@ -1,0 +1,6 @@
+[
+    ["boolean(//d:procedure)", true],
+    ["count(//d:procedure/d:step)", 2.0],
+    ["//d:procedure/d:step[1]/d:para/text()", ["First item"]],
+    ["//d:procedure/d:step[2]/d:para/text()", ["Second item"]]
+]

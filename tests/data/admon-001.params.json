@@ -1,0 +1,10 @@
+[
+    ["namespace-uri(/*)", "http://docbook.org/ns/docbook"],
+    ["boolean(//d:note)", true],
+    ["local-name(/*)", "book"],
+    ["/*/@xml:lang", ["en"]],
+    ["/d:book/d:chapter/d:title/text()", ["Nothing"]],
+    ["/d:book/d:chapter/d:note/d:para/text()", ["A note."]],
+    ["/d:book/d:chapter/d:important/d:para/text()", ["Important."]],
+    ["/d:book/d:chapter/d:tip/d:para/text()", ["A tip."]]
+]

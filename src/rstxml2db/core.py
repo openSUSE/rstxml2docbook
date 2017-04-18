@@ -16,26 +16,42 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-"""Core variables"""
+"""
+Core variables, used in other modules.
+"""
 
 import os
-
-__all__ = ('DOCTYPE', 'HERE', 'NSMAP',
-           'XSLTRST2DB', 'XSLTRESOLVE', 'XSLTDB4TO5')
+from logging import (BASIC_FORMAT,
+                     CRITICAL,
+                     DEBUG,
+                     FATAL,
+                     ERROR,
+                     INFO,
+                     NOTSET,
+                     WARN,
+                     WARNING,
+                     )
 
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-# Stylesheets
+#: Stylesheet to transform RST XML tree into DocBook 4
 XSLTRST2DB = os.path.join(HERE, 'rstxml2db.xsl')
+
+#: Stylesheet to resolves RST XML :file:``index.xml``
+#: file into one, single RST XML file
 XSLTRESOLVE = os.path.join(HERE, 'resolve.xsl')
+
+#: Stylesheet to transform DocBook4 -> DocBook 5
 XSLTDB4TO5 = os.path.join(HERE, 'suse-upgrade.xsl')
 
+#: Namespace mappings
 NSMAP = dict(xi='http://www.w3.org/2001/XInclude',
              d='http://docbook.org/ns/docbook',
              xl='http://www.w3.org/1999/xlink',
              )
 
+#: DOCTYPE declaration with placeholders
 DOCTYPE = r"""<!DOCTYPE {} PUBLIC
 "-//OASIS//DTD DocBook XML V4.5//EN"
 "http://docbook.org/xml/4.5/docbookx.dtd"
@@ -45,3 +61,64 @@ DOCTYPE = r"""<!DOCTYPE {} PUBLIC
   %entities;
 -->
 ]>"""
+
+#: Map verbosity to log levels
+LOGLEVELS = {None: WARNING,  # 0
+             0: WARNING,
+             1: INFO,
+             2: DEBUG,
+             }
+
+#: Map log numbers to log names
+LOGNAMES = {NOTSET: 'NOTSET',      # 0
+            None:  'NOTSET',
+            DEBUG:  'DEBUG',       # 10
+            INFO:   'INFO',        # 20
+            WARN:    'WARNING',    # 30
+            WARNING: 'WARNING',    # 30
+            ERROR:  'ERROR',       # 40
+            CRITICAL: 'CRITICAL',  # 50
+            FATAL: 'CRITICAL',     # 50
+            }
+
+#: log config files to search for
+LOGFILECONFIGS = (os.path.join(os.path.dirname(__file__),
+                               'logging.conf'),
+                  os.path.expanduser("~/.config/rstxml2db/logging.conf"),
+                  )
+
+#: logging format for debugging purposes
+DEBUG_FORMAT = "[%(levelname)s] %(name)s:%(lineno)s %(message)s"
+
+#: fallback logging configuration
+LOG_CONFIG = {
+        'version': 1,
+        'formatters': {'rstxml2db': {'format': DEBUG_FORMAT,
+                                     'datefmt': '%Y%m%dT%H:%M:%S'},
+                       'default': {'format': BASIC_FORMAT,
+                                   'datefmt': '%Y-%m-%d %H:%M:%S'},
+                       },
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
+                'level': 'NOTSET',
+                'formatter': 'default',
+            },
+            'rstxml2db': {
+                'class': 'logging.StreamHandler',
+                'level': 'DEBUG',
+                'formatter': 'rstxml2db',
+            },
+        },
+        'loggers': {
+            'rstxml2db': {
+                'handlers': ['rstxml2db'],
+                'propagate': False,
+            }
+        },
+        'root': {
+            'level': 'DEBUG',
+            # Default %(levelname)s:%(name)s:%(message)s
+            # 'handlers': ['console'],
+        },
+    }

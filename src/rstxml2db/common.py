@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2016 SUSE Linux GmbH
+# Copyright (c) 2017 SUSE Linux GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of version 3 of the GNU General Public License as
@@ -16,7 +16,20 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-"""Contains __version__ and __author__"""
 
-__version__ = "0.4.4"  # flake8: noqa
-__author__ = "Thomas Schraitle <toms (AT) suse DOT de>"  # flake8: noqa
+from lxml.etree import (XMLSyntaxError,
+                        XSLTApplyError,
+                        XSLTParseError,
+                        )
+
+__all__ = ['ERROR_CODES']
+
+ERROR_CODES = dict()
+for _error, _rc in [(XMLSyntaxError, 20),
+                    (XSLTApplyError, 20),
+                    (XSLTParseError, 30),
+                    (FileNotFoundError, 40),
+                    (OSError, 40),
+                    ]:
+    ERROR_CODES[_error] = _rc
+    ERROR_CODES[repr(_error)] = _rc

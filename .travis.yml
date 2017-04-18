@@ -1,9 +1,10 @@
 # config file for automatic testing at travis-ci.org
 language: python
+cache: pip
 python:
-    - "3.3"
     - "3.4"
     - "3.5"
+    - "3.6"
 
 env:
     global:
@@ -15,13 +16,17 @@ install:
     - pip install -U pip setuptools
     - pip install .
     - pip install -r travis_requirements.txt
-    - pip install  travis-sphinx
 
 # command to run tests
 script:
     - py.test -l -vv --no-cov-on-fail --cov=rstxml2db --cov-report=term-missing
     #- coverage run $VIRTUAL_ENV/bin/py.test -l -v
     - travis-sphinx --nowarn --source=doc build
+
+
+addons:
+    code_climate:
+        repo_token: $CODECLIMATE_REPO_TOKEN
 
 after_success:
     - codecov
