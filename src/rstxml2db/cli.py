@@ -181,7 +181,7 @@ def main(cliargs=None):
         return process(args)
 
     except (etree.XMLSyntaxError, etree.XSLTApplyError) as error:
-        log.fatal(error, exc_info=error, stack_info=True)
+        log.fatal("%s in file %r", error, args.indexfile)  #, exc_info=error, stack_info=True
         return ERROR_CODES.get(repr(type(error)), 255)
 
     except (FileNotFoundError, OSError) as error:
