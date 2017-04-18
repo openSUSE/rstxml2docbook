@@ -23,18 +23,30 @@ This module implements the cli parser.
 import argparse
 import logging
 from logging.config import fileConfig
-from os.path import dirname, join
+from os.path import dirname, exists, expanduser, join
 from lxml import etree
 
-from .common import ERROR_CODES
-from .core import LOGLEVELS
 from . import __author__, __version__
+from .common import ERROR_CODES
+from .core import LOG_CONFIG, LOGFILECONFIGS, LOGLEVELS, LOGNAMES
 from .xml import process
 
 
-# fileConfig needs to come first
-_logfile = join(dirname(__file__), 'logging.conf')
-fileConfig(_logfile)
+# fileConfig needs to come first before
+lastfound = None
+# We iterate from the last item as the
+for s in reversed(LOGFILECONFIGS):
+    if exists(s):
+        # If a file could be found, we are finish so break the loop
+        lastfound = s
+        break
+
+if lastfound:
+    fileConfig(lastfound)
+else:
+    # Provide minimum logging setup, if config files not found
+    logging.config.dictConfig(LOG_CONFIG)
+
 log = logging.getLogger(__name__)
 
 
@@ -70,7 +82,9 @@ def parsecli(cliargs=None):
                                      epilog="Version %s written by %s " % (__version__, __author__)
                                      )
 
-    parser.add_argument('-v', '--verbose', action='count',
+    parser.add_argument('-v', '--verbose',
+                        action='count',
+                        default=0,
                         help="increase verbosity level")
 
     parser.add_argument('--version',
@@ -127,8 +141,20 @@ def parsecli(cliargs=None):
                              '(usually something like \'index.xml\')'
                         )
     args = parser.parse_args(args=cliargs)
-    log.setLevel(LOGLEVELS.get(args.verbose, logging.DEBUG))
+    log.setLevel(LOGLEVELS.get(args.verbose, logging.NOTSET))
     args.params = prepareparams(args.params)
+    # if False:
+    #    log.debug("Arguments: %s", args)
+    #    log.debug('test debug message')
+    #    log.info('test info message')
+    #    log.warning('test warn message')
+    #    log.error('test error message')
+    #    log.critical('test critical message')
+    # log.critical('effective verbose=%s, level=%s',
+    #             args.verbose, level2name())
+    # log.error('test error message')
+    # log.debug("Yes!")
+    # log.info("Info")
 
     if args.productname:
         # We save productname in _productname because as soon as etree.XSLT.strparam
