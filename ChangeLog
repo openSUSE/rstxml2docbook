@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Tue Apr 18 08:51:00 UTC 2017 - toms@opensuse.org
+
+Version 0.4.5:
+ * Use good logging practise
+   * Get rid of rstxml2db.log and in doc
+   * Introduce "logging.conf" file
+     * Add *.conf to package_data key (setup.py)
+     * Include *.conf in MANIFEST.in
+   * Use "log = logging.getLogger(__name__)" mantra
+   * Only investigate functions from our modules in
+     test_docstrings.py
+   * Add pycodestyle section
+   * Use log config files and fallback
+ * Refactoring: move main() into cli.py
+
+
+-------------------------------------------------------------------
 Son Feb 21 19:30:00 UTC 2016 - toms@opensuse.org
 
 Version 0.4.4:
