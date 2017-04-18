@@ -49,26 +49,6 @@ else:
 
 log = logging.getLogger(__name__)
 
-## Just for testing the two loggers:
-# log.error("This is an error message!")
-# log.warning("This is a warning message")
-# log.debug("Debug message")
-# log.info("Info message")
-#
-# logging.info("root info")
-# logging.debug("root debug")
-# logging.warning("root warning")
-# logging.error("root error!")
-# logging.critical("root critical!")
-
-
-# def level2name():
-#    """Map level to log name
-#    """
-#    log = logging.getLogger(__name__)
-#    level = log.getEffectiveLevel()
-#    return "%s(%s)" % (LOGNAMES.get(level, 'NOTSET'), level)
-
 
 def prepareparams(params):
     """Convert the list with "NAME=VALUE" entries into
@@ -163,13 +143,13 @@ def parsecli(cliargs=None):
     args = parser.parse_args(args=cliargs)
     log.setLevel(LOGLEVELS.get(args.verbose, logging.NOTSET))
     args.params = prepareparams(args.params)
-    #if False:
-        #log.debug("Arguments: %s", args)
-        #log.debug('test debug message')
-        #log.info('test info message')
-        #log.warning('test warn message')
-        #log.error('test error message')
-        #log.critical('test critical message')
+    # if False:
+    #    log.debug("Arguments: %s", args)
+    #    log.debug('test debug message')
+    #    log.info('test info message')
+    #    log.warning('test warn message')
+    #    log.error('test error message')
+    #    log.critical('test critical message')
     # log.critical('effective verbose=%s, level=%s',
     #             args.verbose, level2name())
     # log.error('test error message')

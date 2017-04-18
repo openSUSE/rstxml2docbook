@@ -70,16 +70,16 @@ LOGLEVELS = {None: WARNING,  # 0
              }
 
 #: Map log numbers to log names
-LOGNAMES = { NOTSET: 'NOTSET',     # 0
-             None:  'NOTSET',
-             DEBUG:  'DEBUG',      # 10
-             INFO:   'INFO',       # 20
-             WARN:    'WARNING',   # 30
-             WARNING: 'WARNING',   # 30
-             ERROR:  'ERROR',      # 40
-             CRITICAL: 'CRITICAL', # 50
-             FATAL: 'CRITICAL',    # 50
-             }
+LOGNAMES = {NOTSET: 'NOTSET',      # 0
+            None:  'NOTSET',
+            DEBUG:  'DEBUG',       # 10
+            INFO:   'INFO',        # 20
+            WARN:    'WARNING',    # 30
+            WARNING: 'WARNING',    # 30
+            ERROR:  'ERROR',       # 40
+            CRITICAL: 'CRITICAL',  # 50
+            FATAL: 'CRITICAL',     # 50
+            }
 
 #: log config files to search for
 LOGFILECONFIGS = (os.path.join(os.path.dirname(__file__),
@@ -87,9 +87,10 @@ LOGFILECONFIGS = (os.path.join(os.path.dirname(__file__),
                   os.path.expanduser("~/.config/rstxml2db/logging.conf"),
                   )
 
+#: logging format for debugging purposes
 DEBUG_FORMAT = "[%(levelname)s] %(name)s:%(lineno)s %(message)s"
-# SIMPLE_FORMAT = "%(levelname)s:%(name)s:%(message)s"
 
+#: fallback logging configuration
 LOG_CONFIG = {
         'version': 1,
         'formatters': {'rstxml2db': {'format': DEBUG_FORMAT,
