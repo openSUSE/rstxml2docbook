@@ -189,6 +189,8 @@
 
   <xsl:template match="comment"/>
   <xsl:template match="index"/>
+  <xsl:template match="meta"/>
+  <xsl:template match="raw"/>
   <xsl:template match="target"/>
   <xsl:template match="substitution_definition"/>
 
