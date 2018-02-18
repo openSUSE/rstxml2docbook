@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
    Purpose:
-     Transforms RST XML into DocBook
+     Transforms RST XML tree into DocBook
 
    Parameters:
      * productname
@@ -24,7 +24,7 @@
 
    Author:
      Thomas Schraitle <toms AT opensuse.org>
-     Copyright 2016 SUSE Linux GmbH
+     Copyright 2016-2018 SUSE Linux GmbH
 
 -->
 <xsl:stylesheet version="1.0"
@@ -305,6 +305,14 @@
   <!-- =================================================================== -->
   <xsl:template match="block_quote">
     <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="seealso">
+    <formalpara>
+       <title>See also</title>
+       <xsl:apply-templates select="paragraph[1]"/>
+    </formalpara>
+    <xsl:apply-templates select="paragraph[position()>1]"/>
   </xsl:template>
 
   <xsl:template match="literal_block[@language='shell' or @language='console']">

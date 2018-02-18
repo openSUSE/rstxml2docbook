@@ -1,0 +1,5 @@
+[
+    ["boolean(//d:formalpara)", true],
+    ["count(//d:formalpara/d:para)", 1.0],
+    ["boolean(//d:formalpara/following-sibling::d:para)", true]
+]
