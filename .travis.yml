@@ -19,7 +19,7 @@ install:
 
 # command to run tests
 script:
-    - py.test -l -vv --no-cov-on-fail --cov=rstxml2db --cov-report=term-missing
+    - pytest -l -vv --no-cov-on-fail --cov=rstxml2db --cov-report=term-missing
     #- coverage run $VIRTUAL_ENV/bin/py.test -l -v
     - travis-sphinx --nowarn --source=doc build
 
