@@ -42,7 +42,13 @@ It's important that you name your testcase with the extensions :file:`.xml`
 and :file:`.params.json`. The testing framework searches for these extensions.
 When it cannot find a corresponding file, it will skip the test.
 
-For example, if you want to create a new test case, proceed as follows:
+The idea behind this structure was to avoid issues with formatting. Comparing
+two XML structures which only distinguish between formatting may show differences.
+However, from a XML perspective, these differences are not important due to
+formatting issues. For example, attribute order, order of namespaces, indendation
+etc. are not relevant to XML.
+
+If you want to create a new test case, proceed as follows:
 
 #. Create a XML file and use the extension :file:`.xml`. It's easier if
    you use the DTD from the Docutils project.
