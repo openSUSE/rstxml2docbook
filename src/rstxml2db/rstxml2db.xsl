@@ -315,6 +315,10 @@
     <xsl:apply-templates select="paragraph[position()>1]"/>
   </xsl:template>
 
+  <xsl:template match="manpage">
+    <xsl:apply-templates/>
+  </xsl:template>
+
   <xsl:template match="literal_block[@language='shell' or @language='console']">
     <screen>
       <xsl:apply-templates/>

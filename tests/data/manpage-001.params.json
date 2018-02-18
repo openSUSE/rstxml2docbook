@@ -1,0 +1,3 @@
+[
+    ["contains(//d:para, 'bind(2)')", true]
+]
