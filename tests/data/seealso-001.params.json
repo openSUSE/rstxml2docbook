@@ -1,0 +1,4 @@
+[
+    ["boolean(//d:formalpara)", true],
+    ["count(//d:formalpara/d:para)", 1.0]
+]
