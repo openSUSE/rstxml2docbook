@@ -17,12 +17,21 @@ install:
     - pip install .
     - pip install -r travis_requirements.pip
 
+before_script:
+    - python3 --version
+    - uname -a
+    - lsb_release -a
+    - virtualenv --version
+    - easy_install --version
+    - pip --version
+    - tox --version
 
 # command to run tests
 script:
-    - pytest -l -vv --no-cov-on-fail --cov=rstxml2db --cov-report=term-missing
-    #- coverage run $VIRTUAL_ENV/bin/py.test -l -v
-    - travis-sphinx --nowarn --source=doc build
+    - tox -v
+    #- pytest -l -vv --no-cov-on-fail --cov=rstxml2db --cov-report=term-missing
+    ##- coverage run $VIRTUAL_ENV/bin/py.test -l -v
+    #- travis-sphinx --nowarn --source=doc build
 
 
 addons:
