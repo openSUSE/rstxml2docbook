@@ -1,8 +1,8 @@
 # Requirements file for pip
 # Use it with pip install -r devel_requirements.txt
 
--r requirements.txt
--r travis_requirements.txt
+-r requirements.pip
+-r travis_requirements.pip
 flake8
 bumpversion
 # prospector

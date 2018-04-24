@@ -15,7 +15,8 @@ env:
 install:
     - pip install -U pip setuptools
     - pip install .
-    - pip install -r travis_requirements.txt
+    - pip install -r travis_requirements.pip
+
 
 # command to run tests
 script:
