@@ -16,6 +16,8 @@ jobs:
         - stage: check
           python: 3.4
           env: TOXENV=check
+          install: skip
+          script: pip install tox && tox -v
         - stage: test
           python: 3.4
           env: TOXENV=py34
