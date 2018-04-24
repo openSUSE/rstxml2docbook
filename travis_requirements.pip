@@ -2,6 +2,7 @@
 
 -r requirements.pip
 pytest
+tox
 # flake8
 coverage
 codecov
