@@ -23,12 +23,12 @@ This module implements the cli parser.
 import argparse
 import logging
 from logging.config import fileConfig
-from os.path import dirname, exists, expanduser, join
+from os.path import exists
 from lxml import etree
 
 from . import __author__, __version__
 from .common import ERROR_CODES
-from .core import LOG_CONFIG, LOGFILECONFIGS, LOGLEVELS, LOGNAMES
+from .core import LOG_CONFIG, LOGFILECONFIGS, LOGLEVELS
 from .xml import process
 
 
@@ -181,7 +181,7 @@ def main(cliargs=None):
         return process(args)
 
     except (etree.XMLSyntaxError, etree.XSLTApplyError) as error:
-        log.fatal("%s in file %r", error, args.indexfile)  #, exc_info=error, stack_info=True
+        log.fatal("%s in file %r", error, args.indexfile)  # exc_info=error, stack_info=True
         return ERROR_CODES.get(repr(type(error)), 255)
 
     except (FileNotFoundError, OSError) as error:
