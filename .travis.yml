@@ -1,33 +1,62 @@
 # config file for automatic testing at travis-ci.org
 language: python
 cache: pip
-python:
-    - "3.4"
-    - "3.5"
-    - "3.6"
 
 env:
     global:
         - LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
+
+stages:
+    - check
+    - test
+    - doc
+
+jobs:
+    include:
+        - stage: check
+          python: 3.4
+          env: TOXENV=check
+          install: skip
+          script: tox -v
+        - stage: test
+          python: 3.4
+          env: TOXENV=py34
+        - stage: test
+          python: 3.5
+          env: TOXENV=py35
+        - stage: test
+          python: 3.6
+          env: TOXENV=py36
+        - stage: doc
+          python: 3.6
+          script: travis-sphinx --nowarn --source=doc build
 
 
 # command to install dependencies
 install:
     - pip install -U pip setuptools
     - pip install .
-    - pip install -r travis_requirements.txt
+    - pip install -r travis_requirements.pip
+
+before_script:
+    - python3 --version
+    - uname -a
+    - lsb_release -a
+    - virtualenv --version
+    - easy_install --version
+    - pip --version
+    - pip install tox
+    - tox --version
+    - pip list
 
 # command to run tests
 script:
-    - pytest -l -vv --no-cov-on-fail --cov=rstxml2db --cov-report=term-missing
-    #- coverage run $VIRTUAL_ENV/bin/py.test -l -v
-    - travis-sphinx --nowarn --source=doc build
-
+    - tox -v
 
 addons:
     code_climate:
         repo_token: $CODECLIMATE_REPO_TOKEN
 
 after_success:
-    - codecov
+#    - codecov
     - travis-sphinx deploy

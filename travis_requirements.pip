@@ -1,7 +1,8 @@
 # Requirements file for pip (only for Travis CI)
 
--r requirements.txt
+-r requirements.pip
 pytest
+tox
 # flake8
 coverage
 codecov
@@ -13,3 +14,4 @@ sphinx-rtd-theme
 # See https://github.com/Syntaf/travis-sphinx/pull/5
 travis-sphinx==1.2.0
 pytest-travis-fold
+-e .
