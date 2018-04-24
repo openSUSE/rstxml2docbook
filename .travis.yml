@@ -15,7 +15,7 @@ jobs:
     include:
         - stage: check
           python: 3.4
-          env: TOXENV=flake8
+          env: TOXENV=check
         - stage: test
           python: 3.4
           env: TOXENV=py34
