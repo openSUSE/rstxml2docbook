@@ -25,7 +25,6 @@ import logging
 from logging.config import fileConfig
 from os.path import exists
 from lxml import etree
-import sys
 
 from . import __author__, __version__
 from .common import ERROR_CODES
@@ -76,7 +75,10 @@ def prepareparams(params):
 
 
 def print_all_xsl_params(parser):
-    """
+    """Prints all availalbe XSLT parameters that can be used in -p/--param
+
+    :param parser: the argument parser
+    :type parser: :class:`argparse.ArgumentParse`
     """
     from .core import NSMAP, XSLTRST2DB
     print("--- Available XSLT Parameters, used with -p/--param ---")
@@ -90,6 +92,40 @@ def print_all_xsl_params(parser):
             print("{:>15}: {}".format(name, descr))
 
     parser.exit(0)
+
+
+def check_arguments(parser, args):
+    """Checks the parsed arguments for consistency
+
+    :param parser: the argument parser
+    :type parser: :class:`argparse.ArgumentParse`
+
+    :param args: parsed arguments
+    :type args: :class:`argparse.Namespace`
+
+    :return: parsed arguments, possibly enriched with additional ``_productname`
+             or ``_productnumber`` member variables
+    :rtype: :class:`argparse.Namespace`
+    """
+    # We have to check for --help-xsl-param and a given INDEXFILE;
+    # both can't be used at the same time:
+    if args.help_xsl_params and args.indexfile:
+        parser.error("Option--help-xsl-params and a INDEXFILE is mutually exclusive")
+
+    if args.help_xsl_params:
+        print_all_xsl_params(parser)
+
+    if args.productname:
+        # We save productname in _productname because as soon as etree.XSLT.strparam
+        # is called, the original value cannot be retrieved anymore
+        args._productname = args.productname
+        args.params.append(('productname', args.productname))
+
+    if args.productnumber:
+        args._productnumber = args.productnumber
+        args.params.append(('productnumber', args.productnumber))
+
+    return args
 
 
 def parsecli(cliargs=None):
@@ -177,37 +213,7 @@ def parsecli(cliargs=None):
     args.params = prepareparams(args.params)
     log.info(args)
 
-    if args.help_xsl_params and args.indexfile:
-        parser.error("Option--help-xsl-params and a INDEXFILE is mutually exclusive")
-
-    if args.help_xsl_params:
-        print_all_xsl_params(parser)
-
-    # if False:
-    #    log.debug("Arguments: %s", args)
-    #    log.debug('test debug message')
-    #    log.info('test info message')
-    #    log.warning('test warn message')
-    #    log.error('test error message')
-    #    log.critical('test critical message')
-    # log.critical('effective verbose=%s, level=%s',
-    #             args.verbose, level2name())
-    # log.error('test error message')
-    # log.debug("Yes!")
-    # log.info("Info")
-
-    if args.productname:
-        # We save productname in _productname because as soon as etree.XSLT.strparam
-        # is called, the original value cannot be retrieved anymore
-        args._productname = args.productname
-        args.params.append(('productname', args.productname))
-
-    if args.productnumber:
-        args._productnumber = args.productnumber
-        args.params.append(('productnumber', args.productnumber))
-
-    log.info(args)
-    return args
+    return check_arguments(args)
 
 
 def main(cliargs=None):
