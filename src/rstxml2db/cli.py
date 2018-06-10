@@ -35,7 +35,7 @@ from .xml import process
 # fileConfig needs to come first before
 lastfound = None
 # We iterate from the last item as the
-for s in reversed(LOGFILECONFIGS):
+for s in reversed(LOGFILECONFIGS):  # pragma: no cover
     if exists(s):
         # If a file could be found, we are finish so break the loop
         lastfound = s
@@ -45,7 +45,7 @@ if lastfound:
     fileConfig(lastfound)
 else:
     # Provide minimum logging setup, if config files not found
-    logging.config.dictConfig(LOG_CONFIG)
+    logging.config.dictConfig(LOG_CONFIG)  # pragma: no cover
 
 log = logging.getLogger(__name__)
 
