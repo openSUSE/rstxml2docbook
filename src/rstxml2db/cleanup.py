@@ -31,20 +31,25 @@ log = logging.getLogger(__name__)
 def finddoubleids(allids):
     """Find all double IDs
 
-    :param allids: list with :class:`etree.Element`
+    :param allids: list with :class:`lxml.etree.Element`
+    :type allids: list
+    :return: all nodes which contains more than one IDs; èach entry
+             represented as ``(node, number)``
+    :rtype: list
     """
     d = defaultdict(int)
-    for i in allids:
-        idattr = i.attrib['id']
+    for node in allids:
+        idattr = node.attrib['id']
         d[idattr] += 1
-    return [(i, k) for i, k in d.items() if k > 1]
+    return [(node, v) for node, v in d.items() if v > 1]
 
 
 def allelementswithid(xml):
     """Generator: yielding all elements with an 'id' attribute
 
     :param xml: root tree or element
-    :return: generator
+    :yield: XML element with ``id``
+    :rtype: Iterator[:class:`lxml.etree.Element`]
     """
     tree = xml.getroottree() if hasattr(xml, 'getroottree') else xml
 
@@ -57,7 +62,8 @@ def alltableelements(xml):
     """Generator: yield all table or informaltable elements
 
     :param xml: root tree or element node
-    :return: generator
+    :yield: XML node, either ``table`` or ``informaltable``
+    :rtype: Iterator[:class:`lxml.etree.Element`]
     """
     tree = xml.getroottree() if hasattr(xml, 'getroottree') else xml
     for item in tree.iter():
@@ -66,10 +72,11 @@ def alltableelements(xml):
 
 
 def fix_colspec_width(xml):
-    """Fix columspec/@width from simple absolute values into the relative
+    """Fix ``columspec/@width`` from simple absolute values into the relative
        star notation
 
     :param xml: root tree or element node
+    :type xml: :class:`lxml.etree.Element`
     """
     for table in alltableelements(xml):
         colspecsum = table.xpath('tgroup/colspec/@colwidth')
@@ -82,10 +89,20 @@ def fix_colspec_width(xml):
 def add_pi_in_screen(xml, limit=83, target='dbsuse-fo', fontsize='8pt'):
     """Add processing-instruction for long texts in screens
 
-    :param xml: :class:`lxml.etree._ElementTree`
+    .. note::
+       This function modifies directly the XML tree
+
+    :param xml: XML tree
+    :type xml: :class:`lxml.etree._ElementTree`
+
     :param limit: maximum number of characters allowed
+    :type limit: int
+
     :param target: name of processing instruction
+    :type target: str
+
     :param fontsize: font size to use
+    :type fontsize: str
     """
     tree = xml.getroottree() if hasattr(xml, 'getroottree') else xml
     for screen in tree.iter('screen'):
@@ -100,9 +117,15 @@ def add_pi_in_screen(xml, limit=83, target='dbsuse-fo', fontsize='8pt'):
 def remove_double_ids(xml, usedoubleids=True):
     """Cleanup step to remove all IDs with no corresponding xref
 
-    :param xml: :class:`lxml.etree._ElementTree`
+    .. note::
+       This function modifies directly the XML tree
+
+    :param xml: XML tree
+    :type xml: :class:`lxml.etree._ElementTree`
+
     :param usedoubleids: boolean to execute additional check to find
            double ids or not (default True)
+    :type usedoubleids: bool
     """
     linkends = set([i.attrib['linkend'] for i in xml.iter('xref')])
     unusedattr = [item for item in allelementswithid(xml)
@@ -121,7 +144,11 @@ def remove_double_ids(xml, usedoubleids=True):
 def cleanupxml(xml):
     """Cleanup steps to execute
 
-    :param xml: :class:`lxml.etree._ElementTree`
+    .. note::
+       This function modifies directly the XML tree
+
+    :param xml: XML tree
+    :type xml: :class:`lxml.etree._ElementTree`
     """
     remove_double_ids(xml)
     fix_colspec_width(xml)
