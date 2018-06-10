@@ -35,7 +35,7 @@ from .xml import process
 # fileConfig needs to come first before
 lastfound = None
 # We iterate from the last item as the
-for s in reversed(LOGFILECONFIGS):
+for s in reversed(LOGFILECONFIGS):  # pragma: no cover
     if exists(s):
         # If a file could be found, we are finish so break the loop
         lastfound = s
@@ -45,7 +45,7 @@ if lastfound:
     fileConfig(lastfound)
 else:
     # Provide minimum logging setup, if config files not found
-    logging.config.dictConfig(LOG_CONFIG)
+    logging.config.dictConfig(LOG_CONFIG)  # pragma: no cover
 
 log = logging.getLogger(__name__)
 
@@ -74,6 +74,60 @@ def prepareparams(params):
     return result
 
 
+def print_all_xsl_params(parser):
+    """Prints all availalbe XSLT parameters that can be used in -p/--param
+
+    :param parser: the argument parser
+    :type parser: :class:`argparse.ArgumentParse`
+    """
+    from .core import NSMAP, XSLTRST2DB
+    print("--- Available XSLT Parameters, used with -p/--param ---")
+    xslt = etree.parse(XSLTRST2DB)
+    descrattr = str(etree.QName(NSMAP['doc'], 'descr'))
+    for param in xslt.iterfind("xsl:param", namespaces=NSMAP):
+        name = param.attrib.get('name')
+        descr = param.attrib.get(descrattr)
+        # Only print xsl:param's which has a doc description:
+        if descr:
+            print("{:>15}: {}".format(name, descr))
+
+    parser.exit(0)
+
+
+def check_arguments(parser, args):
+    """Checks the parsed arguments for consistency
+
+    :param parser: the argument parser
+    :type parser: :class:`argparse.ArgumentParse`
+
+    :param args: parsed arguments
+    :type args: :class:`argparse.Namespace`
+
+    :return: parsed arguments, possibly enriched with additional ``_productname`
+             or ``_productnumber`` member variables
+    :rtype: :class:`argparse.Namespace`
+    """
+    # We have to check for --help-xsl-param and a given INDEXFILE;
+    # both can't be used at the same time:
+    if args.help_xsl_params and args.indexfile:
+        parser.error("Option--help-xsl-params and a INDEXFILE is mutually exclusive")
+
+    if args.help_xsl_params:
+        print_all_xsl_params(parser)
+
+    if args.productname:
+        # We save productname in _productname because as soon as etree.XSLT.strparam
+        # is called, the original value cannot be retrieved anymore
+        args._productname = args.productname
+        args.params.append(('productname', args.productname))
+
+    if args.productnumber:
+        args._productnumber = args.productnumber
+        args.params.append(('productnumber', args.productnumber))
+
+    return args
+
+
 def parsecli(cliargs=None):
     """Parse CLI with :class:`argparse.ArgumentParser` and return parsed result
 
@@ -85,6 +139,11 @@ def parsecli(cliargs=None):
                                      epilog="Version %s written by %s " % (__version__, __author__)
                                      )
 
+    parser.add_argument('--help-xsl-params',
+                        help="Output all available parameters and their description",
+                        action='store_true',
+                        default=False,
+                        )
     parser.add_argument('-v', '--verbose',
                         action='count',
                         default=0,
@@ -135,42 +194,26 @@ def parsecli(cliargs=None):
                         dest='params',
                         action='append',
                         help='single XSLT parameter; use the syntax "NAME=VALUE" '
-                             'Can be used multiple times',
+                             'Can be used multiple times. '
+                             'Use --help-xsl-params to show all available parameters.',
                         )
 
     parser.add_argument('indexfile',
                         metavar="INDEXFILE",
+                        # Currently, we have to mark INDEXFILE as optional here,
+                        # because we can't use a mutually exclusive group with
+                        # --help-xsl-param. :-(
+                        nargs='?',
                         help='index file (XML) which refer all other files '
                              '(usually something like \'index.xml\')'
                         )
+
     args = parser.parse_args(args=cliargs)
     log.setLevel(LOGLEVELS.get(args.verbose, logging.NOTSET))
     args.params = prepareparams(args.params)
-    # if False:
-    #    log.debug("Arguments: %s", args)
-    #    log.debug('test debug message')
-    #    log.info('test info message')
-    #    log.warning('test warn message')
-    #    log.error('test error message')
-    #    log.critical('test critical message')
-    # log.critical('effective verbose=%s, level=%s',
-    #             args.verbose, level2name())
-    # log.error('test error message')
-    # log.debug("Yes!")
-    # log.info("Info")
-
-    if args.productname:
-        # We save productname in _productname because as soon as etree.XSLT.strparam
-        # is called, the original value cannot be retrieved anymore
-        args._productname = args.productname
-        args.params.append(('productname', args.productname))
-
-    if args.productnumber:
-        args._productnumber = args.productnumber
-        args.params.append(('productnumber', args.productnumber))
-
     log.info(args)
-    return args
+
+    return check_arguments(parser, args)
 
 
 def main(cliargs=None):
