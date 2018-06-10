@@ -28,4 +28,6 @@ Welcome to the |project| Documentation
    :maxdepth: 3
 
    rstxml2docbook
-   reference
+   apidoc/modules
+
+..   reference
