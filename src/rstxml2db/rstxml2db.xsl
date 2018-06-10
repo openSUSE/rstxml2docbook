@@ -30,23 +30,23 @@
 <xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:exsl="http://exslt.org/common"
-  exclude-result-prefixes="exsl">
+  xmlns:doc="urn:x-suse:xslt-doc"
+  exclude-result-prefixes="exsl doc">
 
   <xsl:output indent="yes"/>
   <xsl:strip-space elements="*"/>
 
+  <!-- Keys =============================================================-->
   <xsl:key name="id" match="*" use="@ids"/>
   <xsl:key name="documents" match="document" use="@source"/>
 
-  <xsl:param name="xml.ext">.xml</xsl:param>
+  <!-- Parameters =======================================================-->
+  <xsl:param name="xml.ext" doc:descr="Extension for referenced files">.xml</xsl:param>
+  <xsl:param name="rootlang" doc:descr="Natural language for root element">en</xsl:param>
+  <xsl:param name="productname" doc:descr="The product name, empty by default"/>
+  <xsl:param name="productnumber" doc:descr="The product number, empty by default"/>
 
-  <!-- Natural language for root element -->
-  <xsl:param name="rootlang">en</xsl:param>
-
-  <xsl:param name="productname"/>
-  <xsl:param name="productnumber"/>
-
-
+  <!-- Templates ======================================================= -->
   <xsl:template match="*">
     <xsl:message>WARN: Unknown element '<xsl:value-of select="local-name()"/>'</xsl:message>
   </xsl:template>

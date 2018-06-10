@@ -25,6 +25,7 @@ import logging
 from logging.config import fileConfig
 from os.path import exists
 from lxml import etree
+import sys
 
 from . import __author__, __version__
 from .common import ERROR_CODES
@@ -74,6 +75,23 @@ def prepareparams(params):
     return result
 
 
+def print_all_xsl_params(parser):
+    """
+    """
+    from .core import NSMAP, XSLTRST2DB
+    print("--- Available XSLT Parameters, used with -p/--param ---")
+    xslt = etree.parse(XSLTRST2DB)
+    descrattr = str(etree.QName(NSMAP['doc'], 'descr'))
+    for param in xslt.iterfind("xsl:param", namespaces=NSMAP):
+        name = param.attrib.get('name')
+        descr = param.attrib.get(descrattr)
+        # Only print xsl:param's which has a doc description:
+        if descr:
+            print("{:>15}: {}".format(name, descr))
+
+    parser.exit(0)
+
+
 def parsecli(cliargs=None):
     """Parse CLI with :class:`argparse.ArgumentParser` and return parsed result
 
@@ -85,6 +103,11 @@ def parsecli(cliargs=None):
                                      epilog="Version %s written by %s " % (__version__, __author__)
                                      )
 
+    parser.add_argument('--help-xsl-params',
+                        help="Output all available parameters and their description",
+                        action='store_true',
+                        default=False,
+                        )
     parser.add_argument('-v', '--verbose',
                         action='count',
                         default=0,
@@ -135,17 +158,31 @@ def parsecli(cliargs=None):
                         dest='params',
                         action='append',
                         help='single XSLT parameter; use the syntax "NAME=VALUE" '
-                             'Can be used multiple times',
+                             'Can be used multiple times. '
+                             'Use --help-xsl-params to show all available parameters.',
                         )
 
     parser.add_argument('indexfile',
                         metavar="INDEXFILE",
+                        # Currently, we have to mark INDEXFILE as optional here,
+                        # because we can't use a mutually exclusive group with
+                        # --help-xsl-param. :-(
+                        nargs='?',
                         help='index file (XML) which refer all other files '
                              '(usually something like \'index.xml\')'
                         )
+
     args = parser.parse_args(args=cliargs)
     log.setLevel(LOGLEVELS.get(args.verbose, logging.NOTSET))
     args.params = prepareparams(args.params)
+    log.info(args)
+
+    if args.help_xsl_params and args.indexfile:
+        parser.error("Option--help-xsl-params and a INDEXFILE is mutually exclusive")
+
+    if args.help_xsl_params:
+        print_all_xsl_params(parser)
+
     # if False:
     #    log.debug("Arguments: %s", args)
     #    log.debug('test debug message')
