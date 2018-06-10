@@ -1,0 +1,6 @@
+# Currently, we need to freeze Sphinx to version below 1.7 due
+# to issue https://github.com/Syntaf/travis-sphinx/issues/34
+
+sphinx
+# sphinx-rtd-theme
+guzzle_sphinx_theme

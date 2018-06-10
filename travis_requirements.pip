@@ -1,16 +1,14 @@
 # Requirements file for pip (only for Travis CI)
 
 -r requirements.pip
+-r doc/requirements.pip
 pytest
 tox
 # flake8
 coverage
 codecov
 pytest-cov
-# Currently, we need to freeze Sphinx to version below 1.7 due
-# to issue https://github.com/Syntaf/travis-sphinx/issues/34
-Sphinx < 1.7
-sphinx-rtd-theme
+
 # See https://github.com/Syntaf/travis-sphinx/pull/5
 travis-sphinx==1.2.0
 pytest-travis-fold

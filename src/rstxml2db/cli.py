@@ -17,7 +17,7 @@
 # you may find current contact information at www.suse.com
 
 """
-This module implements the cli parser.
+Implements CLI parsing
 """
 
 import argparse
@@ -51,11 +51,13 @@ log = logging.getLogger(__name__)
 
 
 def prepareparams(params):
-    """Convert the list with "NAME=VALUE" entries into
-       a tuple with ('NAME', 'VALUE')
+    """Convert the list with ``NAME=VALUE`` strings into
+       tuples of ``('NAME', 'VALUE')``
 
-       :param params: a list with "NAME=VALUE" entries
-       :return: a tuple with ('NAME', 'VALUE') entries
+       :param params: a list with ``NAME=VALUE`` entries
+       :type params: list
+       :return: a new list with ``('NAME', 'VALUE')`` entries
+       :rtype: list
     """
     result = []
     if params is None:
@@ -73,10 +75,11 @@ def prepareparams(params):
 
 
 def parsecli(cliargs=None):
-    """Parse CLI and return ArgumentParser result
+    """Parse CLI with :class:`argparse.ArgumentParser` and return parsed result
 
     :param list cliargs: Arguments to parse or None (=use sys.argv)
-    :return: `argparse` result
+    :return: parsed CLI result
+    :rtype: :class:`argparse.Namespace`
     """
     parser = argparse.ArgumentParser(description=__doc__,
                                      epilog="Version %s written by %s " % (__version__, __author__)
@@ -173,8 +176,9 @@ def parsecli(cliargs=None):
 def main(cliargs=None):
     """Entry point for the application script
 
-    :param list cliargs: Arguments to parse or None (=use sys.argv)
+    :param list cliargs: Arguments to parse or None (=use :class:`sys.argv`)
     :return: True or False
+    :rtype: bool
     """
     try:
         args = parsecli(cliargs)
