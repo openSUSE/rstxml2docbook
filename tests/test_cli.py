@@ -1,6 +1,7 @@
 
+import argparse
 import pytest
-from rstxml2db.cli import prepareparams, parsecli
+from rstxml2db.cli import prepareparams, parsecli, print_all_xsl_params
 
 
 @pytest.mark.parametrize('params, expected', [
@@ -92,3 +93,11 @@ def test_parsecli(cli, expected):
     diff = set(result.__dict__) & set(expected)
     result = {i: getattr(result, i) for i in diff}
     assert result == expected
+
+
+def test_print_all_xsl_params(capsys):
+    parser = argparse.ArgumentParser(description="test")
+    with pytest.raises(SystemExit):
+        print_all_xsl_params(parser)
+    captured = capsys.readouterr()
+    assert len(captured.out.split('\n')) > 1

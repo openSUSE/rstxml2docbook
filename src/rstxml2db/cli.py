@@ -213,7 +213,7 @@ def parsecli(cliargs=None):
     args.params = prepareparams(args.params)
     log.info(args)
 
-    return check_arguments(args)
+    return check_arguments(parser, args)
 
 
 def main(cliargs=None):
