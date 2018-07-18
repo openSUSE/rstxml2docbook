@@ -45,6 +45,9 @@ XSLTRESOLVE = os.path.join(HERE, 'resolve.xsl')
 #: Stylesheet to transform DocBook4 -> DocBook 5
 XSLTDB4TO5 = os.path.join(HERE, 'suse-upgrade.xsl')
 
+#: Stylesheet to spli up the XML file
+XSLTSPLIT = os.path.join(HERE, 'split_xml.xsl')
+
 #: Namespace mappings
 NSMAP = dict(xi='http://www.w3.org/2001/XInclude',
              d='http://docbook.org/ns/docbook',

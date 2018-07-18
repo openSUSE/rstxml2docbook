@@ -48,7 +48,7 @@
 
   <!-- Templates ======================================================= -->
   <xsl:template match="*">
-    <xsl:message>WARN: Unknown element '<xsl:value-of select="local-name()"/>'</xsl:message>
+    <!-- <xsl:message>WARN: Unknown element '<xsl:value-of select="local-name()"/>'</xsl:message> -->
   </xsl:template>
 
   <xsl:template name="include.xmlbase">

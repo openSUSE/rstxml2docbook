@@ -28,7 +28,7 @@
   <!-- ================================================================== -->
   <xsl:param name="xml.ext">.xml</xsl:param>
   <xsl:param name="root.role">big</xsl:param>
-
+  
   <!-- ================================================================== -->
   <xsl:template match="node() | @*">
     <xsl:copy>
@@ -38,7 +38,8 @@
 
   <!-- ================================================================== -->
   <xsl:template match="/document">
-    <document role="{$root.role}">
+    <xsl:param name="xmlbase"></xsl:param>
+    <document role="{$root.role}" xml:base="{$xmlbase}">
       <xsl:copy-of select="@*"/>
       <xsl:apply-templates>
         <xsl:with-param name="role" select="''"/>
@@ -57,10 +58,12 @@
   <xsl:template match="text()" mode="xinclude"/>
 
   <xsl:template match="list_item[@classes='toctree-l1']" mode="xinclude">
-    <xsl:variable name="ref" select="concat(*/reference/@refuri, $xml.ext)"/>
+    <xsl:variable name="refuri" select="*/reference/@refuri"/>
+    <xsl:variable name="ref" select="concat($refuri, $xml.ext)"/>
     <xsl:message>INFO: Including "<xsl:value-of select="$ref"/>"...</xsl:message>
     <xsl:apply-templates select="document($ref, .)">
       <xsl:with-param name="role" select="''"/>
+      <xsl:with-param name="xmlbase" select="$ref"/>
     </xsl:apply-templates>
   </xsl:template>
 
