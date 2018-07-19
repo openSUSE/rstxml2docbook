@@ -312,7 +312,7 @@
   <xsl:template match="text()" mode="xinclude"/>
 
   <xsl:template match="list_item[@classes='toctree-l1']" mode="xinclude">
-    <xsl:variable name="xiref" select="concat(*/reference/@refuri, $xml.ext)"/>
+    <xsl:variable name="xiref" select="*/reference/@refuri"/>
     <!--<xi:include href="{$xiref}" xmlns:xi="http://www.w3.org/2001/XInclude"/>-->
     <xsl:element name="xi:include" namespace="http://www.w3.org/2001/XInclude">
       <xsl:attribute name="href">

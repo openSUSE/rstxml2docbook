@@ -52,18 +52,6 @@
     </xsl:if>
 </xsl:template>
 
-<xsl:template match="/">
-    <xsl:choose>
-        <xsl:when test="element-available('exsl:document')">
-            <xsl:message>INFO: ESXLT:Document available!</xsl:message>
-        </xsl:when>
-        <xsl:otherwise>
-            <xsl:message>WARNING: ESXLT:Document NOT available!</xsl:message>
-        </xsl:otherwise>
-    </xsl:choose>
-    <xsl:apply-templates/>
-</xsl:template>
-
 <xsl:template match="/*|*[@xml:base]">
     <xsl:variable name="xml_base_name" select="@xml:base"/>
     <xsl:variable name="xml_base_file">

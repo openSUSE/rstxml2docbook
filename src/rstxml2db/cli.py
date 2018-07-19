@@ -200,6 +200,7 @@ def parsecli(cliargs=None):
 
     parser.add_argument('-ns', '--no-split',
                         dest='nsplit',
+                        action='store_true',
                         default=False,
                         help='parameter which enables the splitting of the result XML file.',
                         )

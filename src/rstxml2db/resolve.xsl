@@ -63,7 +63,7 @@
     <xsl:message>INFO: Including "<xsl:value-of select="$ref"/>"...</xsl:message>
     <xsl:apply-templates select="document($ref, .)">
       <xsl:with-param name="role" select="''"/>
-      <xsl:with-param name="xmlbase" select="$ref"/>
+      <xsl:with-param name="xmlbase" select="$refuri"/>
     </xsl:apply-templates>
   </xsl:template>
 

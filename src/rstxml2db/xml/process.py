@@ -64,22 +64,22 @@ def transform(doc, args):
     # (1) Resolve multiple RST XML -> single RST XML structure...
     #
     rst = resolve_trans(doc)
-    log.warning("DEBUUUUUG >>>>>>>>")
-    log.debug("DOGS GO WOOOF!")
     # logging_xslt(resolve_trans)
     # log.debug("Resolved all external references")
-    # rst.write('/tmp/resolve-tree.xml',
-    #           encoding='utf-8',
-    #           pretty_print=True,
-    #           )
+    # rst.write(
+    #    '/tmp/trees/resolve-tree.xml',
+    #    encoding='utf-8',
+    #    pretty_print=True,
+    #    )
     # log.debug("Wrote resolved tree to '/tmp/tree.xml'")
 
     # (2) Transform RST XML -> DocBook 4
     xml = rst2db_trans(rst, **dict(args.params))
-    xml.write('/tmp/db4-tree.xml',
-              encoding='utf-8',
-              pretty_print=True,
-              )
+    # xml.write(
+    #    '/tmp/trees/db4-tree.xml',
+    #    encoding='utf-8',
+    #    pretty_print=True,
+    #    )
     # log.debug("Wrote result tree to '/tmp/result-tree.xml'")
 
     logging_xslt(rst2db_trans)
@@ -97,10 +97,11 @@ def transform(doc, args):
         db4o5_trans = etree.XSLT(db4o5_xslt)
         xml = db4o5_trans(xml, **dict(args.params))
         logging_xslt(db4o5_trans)
-        # xml.write('/tmp/result-db5-tree.xml',
-        #           encoding='utf-8',
-        #           pretty_print=True,
-        #           )
+    #    xml.write(
+    #        '/tmp/trees/result-db5-tree.xml',
+    #        encoding='utf-8',
+    #        pretty_print=True,
+    #       )
         # log.info("Wrote DB5 result tree to '/tmp/result-db5-tree.xml'")
 
     if args.nsplit:
@@ -109,10 +110,11 @@ def transform(doc, args):
         xml_split_tree = etree.parse(XSLTSPLIT)
         xml_split_trans = etree.XSLT(xml_split_tree)
         xml_split_trans(xml, **dict(args.params))
-        # xml.write('/tmp/split-tree.xml',
-        #        encoding='utf-8',
-        #        pretty_print=True,
-        #        )
+    #   xml.write(
+    #        '/tmp/trees/split-tree.xml',
+    #        encoding='utf-8',
+    #        pretty_print=True,
+    #        )
         logging_xslt(xml_split_trans)
         return None
 
@@ -131,9 +133,10 @@ def process(args):
     #
     xml = transform(doc, args)
 
-    xmldict = dict(encoding='unicode',
-                   pretty_print=True,
-                   )
+    xmldict = dict(
+        encoding='unicode',
+        pretty_print=True,
+        )
     if args.db4:
         xmldict.update(doctype=DOCTYPE.format(xml.getroot().tag))
 
