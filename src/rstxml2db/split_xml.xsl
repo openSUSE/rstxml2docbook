@@ -64,7 +64,7 @@
     <xsl:apply-templates/>
 </xsl:template>
 
-<xsl:template match="*[@xml:base]">
+<xsl:template match="/*|*[@xml:base]">
     <xsl:variable name="xml_base_name" select="@xml:base"/>
     <xsl:variable name="xml_base_file">
         <xsl:variable name="tmp">
