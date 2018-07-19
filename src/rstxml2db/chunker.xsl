@@ -95,7 +95,7 @@
     <xsl:if test="not($message-prolog = '')">
      <xsl:value-of select="$message-prolog"/>
     </xsl:if>
-    <xsl:text>Writing </xsl:text>
+    <xsl:text>INFO: Writing </xsl:text>
     <xsl:value-of select="$filename"/>
     <xsl:if test="name(.) != '' and $suppress-context-node-name = 0">
      <xsl:text> for </xsl:text>
@@ -207,7 +207,7 @@
    <xsl:otherwise>
     <!-- it doesn't matter since we won't be making chunks... -->
     <xsl:message terminate="yes">
-     <xsl:text>Can't make chunks with </xsl:text>
+     <xsl:text>ERROR: Can't make chunks with </xsl:text>
      <xsl:value-of select="system-property('xsl:vendor')"/>
      <xsl:text>'s processor.</xsl:text>
     </xsl:message>
