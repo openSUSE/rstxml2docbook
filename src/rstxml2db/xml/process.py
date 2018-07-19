@@ -68,7 +68,7 @@ def transform(doc, args):
     log.debug("DOGS GO WOOOF!")
     # logging_xslt(resolve_trans)
     # log.debug("Resolved all external references")
-    #rst.write('/tmp/resolve-tree.xml',
+    # rst.write('/tmp/resolve-tree.xml',
     #           encoding='utf-8',
     #           pretty_print=True,
     #           )
@@ -77,9 +77,9 @@ def transform(doc, args):
     # (2) Transform RST XML -> DocBook 4
     xml = rst2db_trans(rst, **dict(args.params))
     xml.write('/tmp/db4-tree.xml',
-               encoding='utf-8',
-               pretty_print=True,
-               )
+              encoding='utf-8',
+              pretty_print=True,
+              )
     # log.debug("Wrote result tree to '/tmp/result-tree.xml'")
 
     logging_xslt(rst2db_trans)
@@ -109,7 +109,7 @@ def transform(doc, args):
         xml_split_tree = etree.parse(XSLTSPLIT)
         xml_split_trans = etree.XSLT(xml_split_tree)
         xml_split_trans(xml, **dict(args.params))
-        #xml.write('/tmp/split-tree.xml',
+        # xml.write('/tmp/split-tree.xml',
         #        encoding='utf-8',
         #        pretty_print=True,
         #        )
@@ -117,6 +117,7 @@ def transform(doc, args):
         return None
 
     return xml
+
 
 def process(args):
     """Process arguments from CLI parser
@@ -137,6 +138,7 @@ def process(args):
         xmldict.update(doctype=DOCTYPE.format(xml.getroot().tag))
 
     if args.output is not None and xml is not None:
+        outstring = etree.tostring(xml, **xmldict)
         with open(args.output, 'w') as f:
             log.info("Writing results to %r...", args.output)
             f.write(outstring)
