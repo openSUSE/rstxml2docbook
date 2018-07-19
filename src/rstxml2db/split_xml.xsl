@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:exsl="http://exslt.org/common" extension-element-prefixes="exsl"  exclude-result-prefixes="exsl">
+<!--
+
+-->
+<xsl:stylesheet version="1.0"
+ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+ xmlns:exsl="http://exslt.org/common"
+ extension-element-prefixes="exsl"
+ exclude-result-prefixes="exsl">
+
 <xsl:import href="chunker.xsl"/>
+
 <xsl:output method="xml"/>
 <xsl:param name="xml.ext">.xml</xsl:param>
-<xsl:param name="base.dir">out/</xsl:param>
-<xsl:param name="chunk.quietly" select="0"/>
 <xsl:param name="rootbasename">book</xsl:param>
 
 <xsl:template match="node()|@*">
