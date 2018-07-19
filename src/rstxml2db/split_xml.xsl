@@ -61,7 +61,7 @@
             <xsl:message>WARNING: ESXLT:Document NOT available!</xsl:message>
         </xsl:otherwise>
     </xsl:choose>
-    <xsl:apply-ftemplates/>
+    <xsl:apply-templates/>
 </xsl:template>
 
 <xsl:template match="*[@xml:base]">
