@@ -92,10 +92,6 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:variable>
-    <xsl:message>
-            XML_BASE_FILE: <xsl:value-of select="$filename"/>
-            XML_ID: <xsl:value-of select="@id"/>
-    </xsl:message>
     <xsl:call-template name='write.chunk'>
         <xsl:with-param name="method">xml</xsl:with-param>
         <xsl:with-param name="filename" select="concat($base.dir, $filename, $xml.ext)"/>
