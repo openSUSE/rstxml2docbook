@@ -24,6 +24,7 @@ def args():
                      _productnumber=number,
                      output=None,
                      db4=False,
+                     nsplit=True,
                      conventions=None,
                      verbose=0,
                      params=[],

@@ -83,7 +83,6 @@ def transform(doc, args):
     # log.debug("Wrote result tree to '/tmp/result-tree.xml'")
 
     logging_xslt(rst2db_trans)
-    log.debug("DEBUUUUUG >>>>>>>>")
     if args.legalnotice is not None:
         addlegalnotice(xml, args.legalnotice)
     if args.conventions is not None:
@@ -104,9 +103,7 @@ def transform(doc, args):
     #       )
         # log.info("Wrote DB5 result tree to '/tmp/result-db5-tree.xml'")
 
-    if args.nsplit:
-        return xml
-    else:
+    if not args.nsplit:
         xml_split_tree = etree.parse(XSLTSPLIT)
         xml_split_trans = etree.XSLT(xml_split_tree)
         xml_split_trans(xml, **dict(args.params))
