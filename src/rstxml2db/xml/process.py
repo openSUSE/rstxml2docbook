@@ -126,21 +126,29 @@ def process(args):
     :return: True or False
     :rtype: bool
     """
-    args.params = quoteparams(args)
     doc = etree.parse(args.indexfile)
     #
     # FIXME: create output dir
-    args.outputdir = os.path.dirname(args.output)
-    os.makedirs(args.outputdir, exist_ok=True)
-
-    if not args.nsplit:
-        args.params.append(('base.dir', args.outputdir))
-    xml = transform(doc, args)
 
     xmldict = dict(
         encoding='unicode',
         pretty_print=True,
         )
+
+    if args.output is None:
+        if args.nsplit:
+            pass
+        else:
+            os.makedirs('out/', exist_ok=True)
+    else:
+        if args.nsplit:
+            args.outputdir = os.path.dirname(args.output)
+            os.makedirs(args.outputdir, exist_ok=True)
+        else:
+            args.outputdir = os.path.dirname(args.output)
+            args.params.append(('basedir',  args.outputdir))
+    args.params = quoteparams(args)
+    xml = transform(doc, args)
 
     if args.db4:
         xmldict.update(doctype=DOCTYPE.format(xml.getroot().tag))
