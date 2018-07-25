@@ -128,6 +128,8 @@ def process(args):
     args.params = quoteparams(args)
     doc = etree.parse(args.indexfile)
     #
+
+    # FIXME: create output dir
     xml = transform(doc, args)
 
     xmldict = dict(
