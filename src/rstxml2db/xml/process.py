@@ -22,6 +22,7 @@ Transform the RSTXML file into DocBook
 
 from lxml import etree
 import logging
+import os
 
 from .util import quoteparams
 from .struct import addchapter, addlegalnotice
@@ -128,14 +129,19 @@ def process(args):
     args.params = quoteparams(args)
     doc = etree.parse(args.indexfile)
     #
-
     # FIXME: create output dir
+    args.outputdir = os.path.dirname(args.output)
+    os.makedirs(args.outputdir, exist_ok=True)
+
+    if not args.nsplit:
+        args.params.append(('base.dir', args.outputdir))
     xml = transform(doc, args)
 
     xmldict = dict(
         encoding='unicode',
         pretty_print=True,
         )
+
     if args.db4:
         xmldict.update(doctype=DOCTYPE.format(xml.getroot().tag))
 
