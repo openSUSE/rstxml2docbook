@@ -240,28 +240,23 @@ def test_wrong_xml(tmpdir):
     result = main(['-o', 'result.xml', badxml])
     assert result != 0
 
-def test_nosplit(tmpdir, args):
+
+def test_split(tmpdir, args):
    #set the tmpdir and the indexfile
    DOCDIR = HERE / 'doc.002'
    DOCDIR.copy(tmpdir)
    indexfile = tmpdir / 'index.xml'
-   outdir = tmpdir.mkdir("out")
-   result_index = outdir / 'book.xml'
-   result_section = outdir / 'testsection.xml'
    #arguments...
-   args.output = str(outdir)
+   args.output = str(tmpdir / "out/foo.xml" )
    args.indexfile = str(indexfile)
-   args.db4 = True
-   args.nsplit = False
-   print("<<", args)
+   # args.db4 = True
+   args.nsplit = True
    process(args)
-   assert result_index.exists()
-   xml_index = etree.parse(str(result_index))
-   assert xml_index.xpath('/book')
-   assert result_section.exists()
-   xml_section = etree.parse(str(result_section))
-   assert xml_section.xpath('/section')
 
-   
+   assert local(args.output).exists()
+   tree = etree.parse(args.output)
+   assert tree.xpath('/d:book', namespaces=NSMAP)
+
+
 
 
