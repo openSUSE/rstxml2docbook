@@ -8,8 +8,6 @@ from py.path import local
 import pytest
 
 HERE = local(local(__file__).dirname)
-DOCDIR = HERE / 'doc.001'
-DOCDIR_SPLIT = HERE / 'doc.002'
 
 
 def assert_xpaths(xml, xpath, args):
@@ -41,6 +39,7 @@ def assert_xpaths(xml, xpath, args):
      ),
 ])
 def test_integration(xpath, db4, tmpdir, args):
+    DOCDIR = HERE / 'doc.001'
     DOCDIR.copy(tmpdir)
     result = tmpdir / 'result.xml'
     indexfile = tmpdir / 'index.xml'
@@ -74,6 +73,7 @@ def test_integration(xpath, db4, tmpdir, args):
      ),
 ])
 def test_integration_figure(xpath, db4, tmpdir, args):
+    DOCDIR = HERE / 'doc.001'
     DOCDIR.copy(tmpdir)
     result = tmpdir / 'result.xml'
     indexfile = tmpdir / 'index.xml'
@@ -110,6 +110,7 @@ def test_integration_figure(xpath, db4, tmpdir, args):
      False),
 ])
 def test_integration_with_conventions(xpath, db4, tmpdir, args):
+    DOCDIR = HERE / 'doc.001'
     DOCDIR.copy(tmpdir)
     result = tmpdir / 'result.xml'
     indexfile = tmpdir / 'index.xml'
@@ -154,6 +155,7 @@ def test_integration_with_conventions(xpath, db4, tmpdir, args):
      ),
 ])
 def test_integration_with_stdout(xpath, db4, tmpdir, capsys, args):
+    DOCDIR = HERE / 'doc.001'
     DOCDIR.copy(tmpdir)
     # result = str(tmpdir / 'result.xml')
     indexfile = tmpdir / 'index.xml'
@@ -188,6 +190,7 @@ def test_integration_with_stdout(xpath, db4, tmpdir, capsys, args):
      ),
 ])
 def test_integration_with_legalnotice(xpath, db4, tmpdir, args):
+    DOCDIR = HERE / 'doc.001'
     DOCDIR.copy(tmpdir)
     result = tmpdir / 'result.xml'
     indexfile = tmpdir / 'index.xml'
@@ -211,6 +214,7 @@ def test_integration_with_legalnotice(xpath, db4, tmpdir, args):
 
 
 def test_integration_with_productname(tmpdir, args):
+    DOCDIR = HERE / 'doc.001'
     DOCDIR.copy(tmpdir)
     result = tmpdir / 'result.xml'
     indexfile = tmpdir / 'index.xml'
@@ -238,7 +242,8 @@ def test_wrong_xml(tmpdir):
 
 def test_nosplit(tmpdir, args):
    #set the tmpdir and the indexfile
-   DOCDIR_SPLIT.copy(tmpdir)
+   DOCDIR = HERE / 'doc.002'
+   DOCDIR.copy(tmpdir)
    indexfile = tmpdir / 'index.xml'
    outdir = tmpdir.mkdir("out")
    result_index = outdir / 'book.xml'
