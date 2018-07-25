@@ -9,6 +9,7 @@ import pytest
 
 HERE = local(local(__file__).dirname)
 DOCDIR = HERE / 'doc.001'
+DOCDIR_SPLIT = HERE / 'doc.002'
 
 
 def assert_xpaths(xml, xpath, args):
@@ -234,3 +235,28 @@ def test_wrong_xml(tmpdir):
 
     result = main(['-o', 'result.xml', badxml])
     assert result != 0
+
+def test_nosplit(tmpdir, args):
+   #set the tmpdir and the indexfile
+   DOCDIR_SPLIT.copy(tmpdir)
+   indexfile = tmpdir / 'index.xml'
+   outdir = tmpdir.mkdir("out")
+   result_index = outdir / 'book.xml'
+   result_section = outdir / 'testsection.xml'
+   #arguments...
+   args.output = str(outdir)
+   args.indexfile = str(indexfile)
+   args.db4 = True
+   args.nsplit = False
+   print("<<", args)
+   process(args)
+   assert result_index.exists()
+   xml_index = etree.parse(str(result_index))
+   assert xml_index.xpath('/book')
+   assert result_section.exists()
+   xml_section = etree.parse(str(result_section))
+   assert xml_section.xpath('/section')
+
+   
+
+
