@@ -15,7 +15,7 @@
 
  <!-- ==================================================================== -->
 
- <xsl:param name="base.dir">out/</xsl:param>
+ <xsl:param name="basedir">out/</xsl:param>
 
  <xsl:param name="chunk.quietly" select="0"/>
  <xsl:param name="chunker.output.method" select="'html'"/>
@@ -28,17 +28,17 @@
  <xsl:param name="chunker.output.media-type" select="''"/>
  <xsl:param name="chunker.output.cdata-section-elements" select="''"/>
 
- <!-- Make sure base.dir has a trailing slash. -->
- <!-- This is an internal-only variable. Customize $base.dir instead. -->
+ <!-- Make sure basedir has a trailing slash. -->
+ <!-- This is an internal-only variable. Customize $basedir instead. -->
  <xsl:variable name="chunk.base.dir">
   <xsl:choose>
-   <xsl:when test="string-length($base.dir) = 0"/>
+   <xsl:when test="string-length($basedir) = 0"/>
    <!-- make sure to add trailing slash if omitted by user -->
-   <xsl:when test="substring($base.dir, string-length($base.dir), 1) = '/'">
-    <xsl:value-of select="$base.dir"/>
+   <xsl:when test="substring($basedir, string-length($basedir), 1) = '/'">
+    <xsl:value-of select="$basedir"/>
    </xsl:when>
    <xsl:otherwise>
-    <xsl:value-of select="concat($base.dir, '/')"/>
+    <xsl:value-of select="concat($basedir, '/')"/>
    </xsl:otherwise>
   </xsl:choose>
  </xsl:variable>
@@ -47,18 +47,18 @@
  <!-- ==================================================================== -->
 
  <xsl:template name="make-relative-filename">
-  <xsl:param name="base.dir" select="'./'"/>
-  <xsl:param name="base.name" select="''"/>
+  <xsl:param name="bdir" select="'./'"/>
+  <xsl:param name="bname" select="''"/>
 
   <xsl:choose>
    <xsl:when test="element-available('exsl:document')">
     <!-- EXSL document does make the chunks relative, I think -->
     <xsl:choose>
      <xsl:when test="count(parent::*) = 0">
-      <xsl:value-of select="concat($base.dir, $base.name)"/>
+      <xsl:value-of select="concat($bdir, $bname)"/>
      </xsl:when>
      <xsl:otherwise>
-      <xsl:value-of select="$base.name"/>
+      <xsl:value-of select="$bname"/>
      </xsl:otherwise>
     </xsl:choose>
    </xsl:when>

@@ -80,9 +80,10 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:variable>
+
     <xsl:call-template name='write.chunk'>
         <xsl:with-param name="method">xml</xsl:with-param>
-        <xsl:with-param name="filename" select="concat($base.dir, $filename, $xml.ext)"/>
+        <xsl:with-param name="filename" select="concat($basedir, $filename, $xml.ext)"/>
         <xsl:with-param name="indent">yes</xsl:with-param>
         <xsl:with-param name="encoding">UTF-8</xsl:with-param>
         <xsl:with-param name="content">
