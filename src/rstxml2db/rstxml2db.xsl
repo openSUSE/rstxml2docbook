@@ -30,6 +30,7 @@
 <xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:exsl="http://exslt.org/common"
+  xmlns="http://docbook.org/ns/docbook"
   xmlns:doc="urn:x-suse:xslt-doc"
   exclude-result-prefixes="exsl doc">
 
@@ -210,6 +211,7 @@
   <xsl:template match="target"/>
   <xsl:template match="substitution_definition"/>
 
+
   <!-- =================================================================== -->
   <!-- Skipped elements                                                    -->
   <xsl:template match="hlist|hlistcol">
@@ -331,9 +333,17 @@
   <xsl:template match="seealso">
     <formalpara>
        <title>See also</title>
-       <xsl:apply-templates select="paragraph[1]"/>
+       <xsl:choose>
+        <xsl:when test="paragraph">
+          <xsl:apply-templates select="paragraph[1]"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <para/>
+        </xsl:otherwise>
+       </xsl:choose>
     </formalpara>
     <xsl:apply-templates select="paragraph[position()>1]"/>
+     <xsl:apply-templates select="*[not(self::paragraph)]"/>
   </xsl:template>
 
   <xsl:template match="manpage">
