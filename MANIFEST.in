@@ -6,9 +6,9 @@ prune doc/_build
 include ChangeLog
 include README*
 include *.pip
-include src/rstxml2db/rstxml2db.xsl
-include src/rstxml2db/resolve.xsl
-include src/rstxml2db/suse-upgrade.xsl
+recursive-include src/rstxml2db/  *.xsl
 include src/rstxml2db/*.conf
+
+
 
 global-exclude *.py[cod] __pycache__ *.so *.dylib
