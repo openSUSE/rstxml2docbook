@@ -127,8 +127,6 @@ def process(args):
     :rtype: bool
     """
     doc = etree.parse(args.indexfile)
-    #
-    # FIXME: create output dir
 
     xmldict = dict(
         encoding='unicode',
