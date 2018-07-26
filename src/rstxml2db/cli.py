@@ -47,7 +47,7 @@ else:
     # Provide minimum logging setup, if config files not found
     logging.config.dictConfig(LOG_CONFIG)  # pragma: no cover
 
-log = logging.getLogger(__name__)
+log = logging.getLogger(__package__)
 
 
 def prepareparams(params):
@@ -198,6 +198,13 @@ def parsecli(cliargs=None):
                              'Use --help-xsl-params to show all available parameters.',
                         )
 
+    parser.add_argument('-ns', '--no-split',
+                        dest='nsplit',
+                        action='store_true',
+                        default=False,
+                        help='parameter which enables the splitting of the result XML file.',
+                        )
+
     parser.add_argument('indexfile',
                         metavar="INDEXFILE",
                         # Currently, we have to mark INDEXFILE as optional here,
@@ -227,7 +234,7 @@ def main(cliargs=None):
         args = parsecli(cliargs)
         return process(args)
 
-    except (etree.XMLSyntaxError, etree.XSLTApplyError) as error:
+    except (etree.XMLSyntaxError) as error:
         log.fatal("%s in file %r", error, args.indexfile)  # exc_info=error, stack_info=True
         return ERROR_CODES.get(repr(type(error)), 255)
 

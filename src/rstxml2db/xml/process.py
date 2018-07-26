@@ -26,7 +26,7 @@ import logging
 from .util import quoteparams
 from .struct import addchapter, addlegalnotice
 from ..cleanup import cleanupxml
-from ..core import DOCTYPE, XSLTRST2DB, XSLTRESOLVE, XSLTDB4TO5
+from ..core import DOCTYPE, XSLTRST2DB, XSLTRESOLVE, XSLTDB4TO5, XSLTSPLIT
 
 
 log = logging.getLogger(__name__)
@@ -66,22 +66,23 @@ def transform(doc, args):
     rst = resolve_trans(doc)
     # logging_xslt(resolve_trans)
     # log.debug("Resolved all external references")
-    # rst.write('/tmp/rsttree.xml',
-    #           encoding='utf-8',
-    #           pretty_print=True,
-    #           )
+    # rst.write(
+    #    '/tmp/trees/resolve-tree.xml',
+    #    encoding='utf-8',
+    #    pretty_print=True,
+    #    )
     # log.debug("Wrote resolved tree to '/tmp/tree.xml'")
 
     # (2) Transform RST XML -> DocBook 4
     xml = rst2db_trans(rst, **dict(args.params))
-    # xml.write('/tmp/result-tree.xml',
-    #           encoding='utf-8',
-    #           pretty_print=True,
-    #           )
+    # xml.write(
+    #    '/tmp/trees/db4-tree.xml',
+    #    encoding='utf-8',
+    #    pretty_print=True,
+    #    )
     # log.debug("Wrote result tree to '/tmp/result-tree.xml'")
 
     logging_xslt(rst2db_trans)
-
     if args.legalnotice is not None:
         addlegalnotice(xml, args.legalnotice)
     if args.conventions is not None:
@@ -95,11 +96,24 @@ def transform(doc, args):
         db4o5_trans = etree.XSLT(db4o5_xslt)
         xml = db4o5_trans(xml, **dict(args.params))
         logging_xslt(db4o5_trans)
-        # xml.write('/tmp/result-db5-tree.xml',
-        #           encoding='utf-8',
-        #           pretty_print=True,
-        #           )
+    #    xml.write(
+    #        '/tmp/trees/result-db5-tree.xml',
+    #        encoding='utf-8',
+    #        pretty_print=True,
+    #       )
         # log.info("Wrote DB5 result tree to '/tmp/result-db5-tree.xml'")
+
+    if not args.nsplit:
+        xml_split_tree = etree.parse(XSLTSPLIT)
+        xml_split_trans = etree.XSLT(xml_split_tree)
+        xml_split_trans(xml, **dict(args.params))
+    #   xml.write(
+    #        '/tmp/trees/split-tree.xml',
+    #        encoding='utf-8',
+    #        pretty_print=True,
+    #        )
+        logging_xslt(xml_split_trans)
+        return None
 
     return xml
 
@@ -116,17 +130,21 @@ def process(args):
     #
     xml = transform(doc, args)
 
-    xmldict = dict(encoding='unicode',
-                   pretty_print=True,
-                   )
+    xmldict = dict(
+        encoding='unicode',
+        pretty_print=True,
+        )
     if args.db4:
         xmldict.update(doctype=DOCTYPE.format(xml.getroot().tag))
-    outstring = etree.tostring(xml, **xmldict)
 
-    if args.output is not None:
+    if args.output is not None and xml is not None:
+        outstring = etree.tostring(xml, **xmldict)
         with open(args.output, 'w') as f:
             log.info("Writing results to %r...", args.output)
             f.write(outstring)
-    else:
+    elif xml is not None:
+        outstring = etree.tostring(xml, **xmldict)
         print(outstring)
+    else:
+        pass
     return 0

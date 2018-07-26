@@ -49,6 +49,7 @@ def test_integration(xpath, db4, tmpdir, args):
     args.indexfile = str(indexfile)
     args.params.append(('productname',   args.productname))
     args.params.append(('productnumber', args.productnumber))
+    args.nsplit = True
     args.db4 = db4
 
     process(args)
@@ -80,6 +81,7 @@ def test_integration_figure(xpath, db4, tmpdir, args):
     args.output = str(result)
     args.indexfile = str(indexfile)
     args.db4 = db4
+    args.nsplit = True
 
     process(args)
 
@@ -119,6 +121,7 @@ def test_integration_with_conventions(xpath, db4, tmpdir, args):
     args.db4 = db4
     args.params.append(('productname',   args.productname))
     args.params.append(('productnumber', args.productnumber))
+    args.nsplit = True
 
     process(args)
 
@@ -159,6 +162,7 @@ def test_integration_with_stdout(xpath, db4, tmpdir, capsys, args):
     args.indexfile = str(indexfile)
     args.params.append(('productname',   args.productname))
     args.params.append(('productnumber', args.productnumber))
+    args.nsplit = True
     process(args)
     out, err = capsys.readouterr()
     assert out
@@ -193,6 +197,7 @@ def test_integration_with_legalnotice(xpath, db4, tmpdir, args):
     args.indexfile = str(indexfile)
     args.legalnotice = str(legalfile)
     args.db4 = db4
+    args.nsplit = True
 
     process(args)
     assert result.exists()
@@ -214,6 +219,7 @@ def test_integration_with_productname(tmpdir, args):
     args.indexfile = str(indexfile)
     args.params.append(('productname',   args.productname))
     args.db4 = True
+    args.nsplit = True
     process(args)
     assert result.exists()
     xml = etree.parse(str(result))
