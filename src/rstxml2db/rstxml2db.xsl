@@ -48,9 +48,25 @@
 
   <!-- Templates ======================================================= -->
   <xsl:template match="*">
-    <xsl:message>WARN: Unknown element '<xsl:value-of select="local-name()"/>'</xsl:message>
+    <!-- <xsl:message>WARN: Unknown element '<xsl:value-of select="local-name()"/>'</xsl:message> -->
   </xsl:template>
 
+  <xsl:template name="include.xmlbase">
+   <xsl:param name="node" select="."/>
+   <xsl:variable name="xmlbase">
+    <xsl:choose>
+     <xsl:when test="$node/parent::*/@xml:base">
+      <xsl:value-of select="$node/parent::*/@xml:base"/>
+     </xsl:when>
+    </xsl:choose>
+   </xsl:variable>
+
+   <xsl:if test="$xmlbase != ''">
+    <xsl:attribute name="xml:base">
+     <xsl:value-of select="$xmlbase"/>
+    </xsl:attribute>
+   </xsl:if>
+  </xsl:template>
 
   <xsl:template name="get.structural.name">
     <xsl:param name="level"/>
@@ -216,6 +232,7 @@
           <xsl:value-of select="$idattr"/>
         </xsl:attribute>
       </xsl:if>
+      <xsl:call-template name="include.xmlbase"/>
       <xsl:apply-templates select="title"/>
       <bookinfo>
         <xsl:apply-templates select="section[@names='abstract']" mode="bookinfo"/>
@@ -245,6 +262,7 @@
           <xsl:value-of select="$idattr"/>
         </xsl:attribute>
       </xsl:if>
+     <xsl:call-template name="include.xmlbase"/>
       <xsl:apply-templates/>
     </chapter>
   </xsl:template>
@@ -270,6 +288,7 @@
           <xsl:value-of select="$idattr"/>
         </xsl:attribute>
       </xsl:if>
+     <xsl:call-template name="include.xmlbase"/>
       <xsl:apply-templates>
         <xsl:with-param name="root" select="$name"/>
       </xsl:apply-templates>
@@ -293,7 +312,7 @@
   <xsl:template match="text()" mode="xinclude"/>
 
   <xsl:template match="list_item[@classes='toctree-l1']" mode="xinclude">
-    <xsl:variable name="xiref" select="concat(*/reference/@refuri, $xml.ext)"/>
+    <xsl:variable name="xiref" select="*/reference/@refuri"/>
     <!--<xi:include href="{$xiref}" xmlns:xi="http://www.w3.org/2001/XInclude"/>-->
     <xsl:element name="xi:include" namespace="http://www.w3.org/2001/XInclude">
       <xsl:attribute name="href">
@@ -425,6 +444,7 @@
 
   <xsl:template match="document/section[@names='glossary']">
    <glossary>
+    <xsl:call-template name="include.xmlbase"/>
     <xsl:apply-templates/>
    </glossary>
   </xsl:template>
@@ -438,6 +458,7 @@
   </xsl:variable>
   <xsl:message>INFO: Add glossdiv <xsl:value-of select="$idattr"/></xsl:message>
   <glossdiv id="{$idattr}">
+   <xsl:call-template name="include.xmlbase"/>
    <xsl:apply-templates select="title"/>
    <xsl:apply-templates select="*[not(self::title)]"/>
   </glossdiv>
@@ -470,6 +491,7 @@
         </xsl:attribute>
         <xsl:message>INFO: Add id=<xsl:value-of select="$idattr"/></xsl:message>
       </xsl:if>
+      <xsl:call-template name="include.xmlbase"/>
       <xsl:apply-templates select="term"/>
       <xsl:apply-templates select="definition"/>
     </glossentry>

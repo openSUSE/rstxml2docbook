@@ -8,7 +8,6 @@ from py.path import local
 import pytest
 
 HERE = local(local(__file__).dirname)
-DOCDIR = HERE / 'doc.001'
 
 
 def assert_xpaths(xml, xpath, args):
@@ -40,6 +39,7 @@ def assert_xpaths(xml, xpath, args):
      ),
 ])
 def test_integration(xpath, db4, tmpdir, args):
+    DOCDIR = HERE / 'doc.001'
     DOCDIR.copy(tmpdir)
     result = tmpdir / 'result.xml'
     indexfile = tmpdir / 'index.xml'
@@ -49,6 +49,7 @@ def test_integration(xpath, db4, tmpdir, args):
     args.indexfile = str(indexfile)
     args.params.append(('productname',   args.productname))
     args.params.append(('productnumber', args.productnumber))
+    args.nsplit = True
     args.db4 = db4
 
     process(args)
@@ -72,6 +73,7 @@ def test_integration(xpath, db4, tmpdir, args):
      ),
 ])
 def test_integration_figure(xpath, db4, tmpdir, args):
+    DOCDIR = HERE / 'doc.001'
     DOCDIR.copy(tmpdir)
     result = tmpdir / 'result.xml'
     indexfile = tmpdir / 'index.xml'
@@ -80,6 +82,7 @@ def test_integration_figure(xpath, db4, tmpdir, args):
     args.output = str(result)
     args.indexfile = str(indexfile)
     args.db4 = db4
+    args.nsplit = True
 
     process(args)
 
@@ -107,6 +110,7 @@ def test_integration_figure(xpath, db4, tmpdir, args):
      False),
 ])
 def test_integration_with_conventions(xpath, db4, tmpdir, args):
+    DOCDIR = HERE / 'doc.001'
     DOCDIR.copy(tmpdir)
     result = tmpdir / 'result.xml'
     indexfile = tmpdir / 'index.xml'
@@ -119,6 +123,7 @@ def test_integration_with_conventions(xpath, db4, tmpdir, args):
     args.db4 = db4
     args.params.append(('productname',   args.productname))
     args.params.append(('productnumber', args.productnumber))
+    args.nsplit = True
 
     process(args)
 
@@ -150,6 +155,7 @@ def test_integration_with_conventions(xpath, db4, tmpdir, args):
      ),
 ])
 def test_integration_with_stdout(xpath, db4, tmpdir, capsys, args):
+    DOCDIR = HERE / 'doc.001'
     DOCDIR.copy(tmpdir)
     # result = str(tmpdir / 'result.xml')
     indexfile = tmpdir / 'index.xml'
@@ -159,6 +165,7 @@ def test_integration_with_stdout(xpath, db4, tmpdir, capsys, args):
     args.indexfile = str(indexfile)
     args.params.append(('productname',   args.productname))
     args.params.append(('productnumber', args.productnumber))
+    args.nsplit = True
     process(args)
     out, err = capsys.readouterr()
     assert out
@@ -183,6 +190,7 @@ def test_integration_with_stdout(xpath, db4, tmpdir, capsys, args):
      ),
 ])
 def test_integration_with_legalnotice(xpath, db4, tmpdir, args):
+    DOCDIR = HERE / 'doc.001'
     DOCDIR.copy(tmpdir)
     result = tmpdir / 'result.xml'
     indexfile = tmpdir / 'index.xml'
@@ -193,6 +201,7 @@ def test_integration_with_legalnotice(xpath, db4, tmpdir, args):
     args.indexfile = str(indexfile)
     args.legalnotice = str(legalfile)
     args.db4 = db4
+    args.nsplit = True
 
     process(args)
     assert result.exists()
@@ -205,6 +214,7 @@ def test_integration_with_legalnotice(xpath, db4, tmpdir, args):
 
 
 def test_integration_with_productname(tmpdir, args):
+    DOCDIR = HERE / 'doc.001'
     DOCDIR.copy(tmpdir)
     result = tmpdir / 'result.xml'
     indexfile = tmpdir / 'index.xml'
@@ -214,6 +224,7 @@ def test_integration_with_productname(tmpdir, args):
     args.indexfile = str(indexfile)
     args.params.append(('productname',   args.productname))
     args.db4 = True
+    args.nsplit = True
     process(args)
     assert result.exists()
     xml = etree.parse(str(result))
@@ -228,3 +239,24 @@ def test_wrong_xml(tmpdir):
 
     result = main(['-o', 'result.xml', badxml])
     assert result != 0
+
+
+def test_split(tmpdir, args):
+   #set the tmpdir and the indexfile
+   DOCDIR = HERE / 'doc.002'
+   DOCDIR.copy(tmpdir)
+   indexfile = tmpdir / 'index.xml'
+   #arguments...
+   args.output = str(tmpdir / "out/foo.xml" )
+   args.indexfile = str(indexfile)
+   # args.db4 = True
+   args.nsplit = True
+   process(args)
+
+   assert local(args.output).exists()
+   tree = etree.parse(args.output)
+   assert tree.xpath('/d:book', namespaces=NSMAP)
+
+
+
+
