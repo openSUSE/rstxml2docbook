@@ -155,6 +155,5 @@ def process(args):
     elif xml is not None:
         outstring = etree.tostring(xml, **xmldict)
         print(outstring)
-    else:
-        pass
+
     return 0
