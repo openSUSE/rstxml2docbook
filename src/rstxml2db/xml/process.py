@@ -138,6 +138,7 @@ def process(args):
             os.makedirs('out/', exist_ok=True)
     else:
         args.outputdir = os.path.dirname(args.output)
+        args.outputdir = args.outputdir if args.outputdir else "."
         os.makedirs(args.outputdir, exist_ok=True)
         if not args.nsplit:
             args.params.append(('basedir',  "%s/" % args.outputdir))
