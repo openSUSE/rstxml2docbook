@@ -1,0 +1,6 @@
+[
+    ["boolean(//d:formalpara)", true],
+    ["boolean(//d:formalpara/d:title)", true],
+    ["boolean(//d:formalpara/d:para)", true],
+    ["boolean(//d:formalpara/following-sibling::d:itemizedlist)", true]
+]
