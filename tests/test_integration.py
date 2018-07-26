@@ -241,7 +241,7 @@ def test_wrong_xml(tmpdir):
     assert result != 0
 
 
-def test_split(tmpdir, args):
+def test_single_output_file(tmpdir, args):
    #set the tmpdir and the indexfile
    DOCDIR = HERE / 'doc.002'
    DOCDIR.copy(tmpdir)
@@ -258,5 +258,17 @@ def test_split(tmpdir, args):
    assert tree.xpath('/d:book', namespaces=NSMAP)
 
 
+def test_multiple_output_files(tmpdir, args):
+   #set the tmpdir and the indexfile
+   DOCDIR = HERE / 'doc.002'
+   DOCDIR.copy(tmpdir)
+   indexfile = tmpdir / 'index.xml'
+   outdir = tmpdir / "out"
+   #arguments...
+   args.indexfile = str(indexfile)
+   args.output = str(tmpdir / "out/foo.xml" )
+   args.nsplit = False
+   process(args)
 
-
+   assert outdir.exists()
+   assert len(outdir.listdir()) == 2
