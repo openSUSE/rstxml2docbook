@@ -134,17 +134,13 @@ def process(args):
         )
 
     if args.output is None:
-        if args.nsplit:
-            pass
-        else:
+        if not args.nsplit:
             os.makedirs('out/', exist_ok=True)
     else:
-        if args.nsplit:
-            args.outputdir = os.path.dirname(args.output)
-            os.makedirs(args.outputdir, exist_ok=True)
-        else:
-            args.outputdir = os.path.dirname(args.output)
-            args.params.append(('basedir',  args.outputdir))
+        args.outputdir = os.path.dirname(args.output)
+        os.makedirs(args.outputdir, exist_ok=True)
+        if not args.nsplit:
+            args.params.append(('basedir',  "%s/" % args.outputdir))
     args.params = quoteparams(args)
     xml = transform(doc, args)
 
