@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+<!DOCTYPE document PUBLIC
+  "+//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML"
+  "http://docutils.sourceforge.net/docs/ref/docutils.dtd">
+-->
+
+<document source="seealso.002.rst">
+ <section ids="seealso">
+  <title>Seealso Test</title>
+  <seealso>
+   <bullet_list bullet="*">
+    <list_item>
+     <paragraph><reference internal="True" refuri="#seealso"
+        ><inline classes="std std-ref">Seealso Test</inline></reference> A short
+      guide to getting started with using seealso.</paragraph>
+    </list_item>
+   </bullet_list>
+  </seealso>
+ </section>
+</document>

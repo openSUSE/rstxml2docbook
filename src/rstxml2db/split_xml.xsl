@@ -81,6 +81,7 @@
         </xsl:choose>
     </xsl:variable>
 
+
     <xsl:call-template name='write.chunk'>
         <xsl:with-param name="method">xml</xsl:with-param>
         <xsl:with-param name="filename" select="concat($basedir, $filename, $xml.ext)"/>
@@ -96,5 +97,7 @@
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="{$filename}{$xml.ext}"/>
 </xsl:template>
+
+<xsl:template match="@xml:base"/>
 
 </xsl:stylesheet>
