@@ -1,0 +1,5 @@
+[
+    ["count(/*/*/d:para/d:link)", 2],
+    ["/*/*/d:para[1]/d:link/text()", []],
+    ["/*/*/d:para[2]/d:link/text()", ["Tux"]]
+]

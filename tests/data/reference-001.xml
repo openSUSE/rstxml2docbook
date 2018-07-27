@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document source="reference-001.rst">
+ <section ids="reference">
+  <title>Test References</title>
+  <section>
+   <title>References</title>
+   <paragraph>See <reference refuri="http://www.example.org"
+     >http://www.example.org</reference>. </paragraph>
+   <paragraph>See <reference refuri="http://tux.example.org">Tux</reference>.
+   </paragraph>
+  </section>
+ </section>
+</document>

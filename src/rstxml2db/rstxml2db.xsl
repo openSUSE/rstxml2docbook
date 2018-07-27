@@ -771,13 +771,14 @@
 
   <xsl:template match="reference[@refuri]">
     <ulink url="{@refuri}">
-      <xsl:value-of select="."/>
+      <xsl:if test="@refuri != .">
+       <xsl:value-of select="."/>
+      </xsl:if>
     </ulink>
   </xsl:template>
 
   <xsl:template match="reference[@refuri][@internal='True']">
     <xsl:variable name="uri" select="substring-after(@refuri, '#')"/>
-
     <xsl:choose>
       <xsl:when test="$uri != ''">
         <xref linkend="{$uri}"/>
