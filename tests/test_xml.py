@@ -95,4 +95,5 @@ def test_xmltestcases(xmltestcase, args):
     resultxmlstr = etree.tostring(resultxml, encoding="unicode")
 
     for xpath, expected in params:
-        assert resultxml.xpath(xpath, namespaces=NSMAP) == expected
+        result = resultxml.xpath(xpath, namespaces=NSMAP)
+        assert result == expected
