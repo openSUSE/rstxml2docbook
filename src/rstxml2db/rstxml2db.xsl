@@ -705,8 +705,50 @@
     </informalfigure>
   </xsl:template>
 
-  <xsl:template match="paragraph[strong][preceding-sibling::figure]"/>
+	<xsl:template match="paragraph[strong][preceding-sibling::figure]"/>
 
+	<xsl:template match="desc">
+    <xsl:variable name="id" select="desc_signature/@ids"/>
+	  <variablelist>
+      <xsl:message>INFO: ID <xsl:value-of select="desc_signature/@ids"/></xsl:message>
+			<varlistentry xml:id="{$id}">
+          <xsl:apply-templates/>
+			</varlistentry>
+		</variablelist>
+	</xsl:template>
+	
+	<xsl:template match="desc_signature">
+    <xsl:variable name="name">
+      <xsl:choose>
+        <xsl:when test="../@objtype = 'function'">
+          <xsl:text>function</xsl:text>
+        </xsl:when>
+        <xsl:when test="../@objtype = 'attribute'">
+          <xsl:text>property</xsl:text>
+        </xsl:when>
+        <xsl:when test="../@objtype='classmethod'">
+          <xsl:text>property role="classmethod"</xsl:text>
+        </xsl:when>
+        <xsl:when test="../@objtype='staticmethod'">
+          <xsl:text>property role="staticmethod"</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:text>literal</xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+		<varlistentry>
+      <term>
+          <xsl:value-of select="@ids"/>
+      </term> 
+		</varlistentry>
+	</xsl:template>
+
+  <xsl:template match="desc_content">
+    <listitem>
+      <xsl:apply-templates/>
+    </listitem>
+  </xsl:template>
 
   <!-- =================================================================== -->
   <xsl:template match="emphasis">
