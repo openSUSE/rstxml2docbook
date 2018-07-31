@@ -708,10 +708,15 @@
 	<xsl:template match="paragraph[strong][preceding-sibling::figure]"/>
 
 	<xsl:template match="desc">
-    <xsl:variable name="id" select="desc_signature/@ids"/>
+    <xsl:variable name="id" select="normalize-space(desc_signature/@ids)"/>
 	  <variablelist>
-      <xsl:message>INFO: ID <xsl:value-of select="desc_signature/@ids"/></xsl:message>
-			<varlistentry xml:id="{$id}">
+      <xsl:message>INFO: ID "<xsl:value-of select="$id"/>"</xsl:message>
+			<varlistentry><!-- Bug in libxslt with AVT? -->
+			<xsl:if test="$id != ''">
+			  <xsl:attribute name="xml:id">
+			     <xsl:value-of select="$id"/>
+			  </xsl:attribute>
+			</xsl:if>
           <xsl:apply-templates/>
 			</varlistentry>
 		</variablelist>
@@ -737,16 +742,21 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-		<varlistentry>
       <term>
           <xsl:value-of select="@ids"/>
-      </term> 
-		</varlistentry>
+      </term>
 	</xsl:template>
 
   <xsl:template match="desc_content">
     <listitem>
-      <xsl:apply-templates/>
+      <xsl:choose>
+        <xsl:when test="not(*)">
+          <para/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates/>
+        </xsl:otherwise>
+      </xsl:choose>
     </listitem>
   </xsl:template>
 
