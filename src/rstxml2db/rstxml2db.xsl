@@ -710,7 +710,6 @@
 	<xsl:template match="desc">
     <xsl:variable name="id" select="normalize-space(desc_signature/@ids)"/>
 	  <variablelist>
-      <xsl:message>INFO: ID "<xsl:value-of select="$id"/>"</xsl:message>
 			<varlistentry><!-- Bug in libxslt with AVT? -->
 			<xsl:if test="$id != ''">
 			  <xsl:attribute name="xml:id">
@@ -725,17 +724,20 @@
 	<xsl:template match="desc_signature">
     <xsl:variable name="name">
       <xsl:choose>
-        <xsl:when test="../@objtype = 'function'">
+        <xsl:when test="../@objtype='function'">
           <xsl:text>function</xsl:text>
         </xsl:when>
-        <xsl:when test="../@objtype = 'attribute'">
+        <xsl:when test="../@objtype='method'">
+          <xsl:text>property</xsl:text>
+        </xsl:when>
+        <xsl:when test="../@objtype='attribute'">
           <xsl:text>property</xsl:text>
         </xsl:when>
         <xsl:when test="../@objtype='classmethod'">
-          <xsl:text>property role="classmethod"</xsl:text>
+          <xsl:text>property</xsl:text>
         </xsl:when>
         <xsl:when test="../@objtype='staticmethod'">
-          <xsl:text>property role="staticmethod"</xsl:text>
+          <xsl:text>property</xsl:text>
         </xsl:when>
         <xsl:otherwise>
           <xsl:text>literal</xsl:text>
@@ -743,7 +745,9 @@
       </xsl:choose>
     </xsl:variable>
       <term>
+        <xsl:element name="{$name}">
           <xsl:value-of select="@ids"/>
+        </xsl:element>
       </term>
 	</xsl:template>
 
