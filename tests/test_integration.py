@@ -257,7 +257,6 @@ def test_single_output_file(tmpdir, args):
    tree = etree.parse(args.output)
    assert tree.xpath('/d:book', namespaces=NSMAP)
 
-
 def test_multiple_output_files(tmpdir, args):
    #set the tmpdir and the indexfile
    DOCDIR = HERE / 'doc.002'
@@ -272,3 +271,4 @@ def test_multiple_output_files(tmpdir, args):
 
    assert outdir.exists()
    assert len(outdir.listdir()) == 2
+

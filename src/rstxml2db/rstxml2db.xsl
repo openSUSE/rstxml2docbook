@@ -705,8 +705,64 @@
     </informalfigure>
   </xsl:template>
 
-  <xsl:template match="paragraph[strong][preceding-sibling::figure]"/>
+	<xsl:template match="paragraph[strong][preceding-sibling::figure]"/>
 
+	<xsl:template match="desc">
+    <xsl:variable name="id" select="normalize-space(desc_signature/@ids)"/>
+	  <variablelist>
+			<varlistentry><!-- Bug in libxslt with AVT? -->
+			<xsl:if test="$id != ''">
+			  <xsl:attribute name="xml:id">
+			     <xsl:value-of select="$id"/>
+			  </xsl:attribute>
+			</xsl:if>
+          <xsl:apply-templates/>
+			</varlistentry>
+		</variablelist>
+	</xsl:template>
+	
+	<xsl:template match="desc_signature">
+    <xsl:variable name="name">
+      <xsl:choose>
+        <xsl:when test="../@objtype='function'">
+          <xsl:text>function</xsl:text>
+        </xsl:when>
+        <xsl:when test="../@objtype='method'">
+          <xsl:text>property</xsl:text>
+        </xsl:when>
+        <xsl:when test="../@objtype='attribute'">
+          <xsl:text>property</xsl:text>
+        </xsl:when>
+        <xsl:when test="../@objtype='classmethod'">
+          <xsl:text>property</xsl:text>
+        </xsl:when>
+        <xsl:when test="../@objtype='staticmethod'">
+          <xsl:text>property</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:text>literal</xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+      <term>
+        <xsl:element name="{$name}">
+          <xsl:value-of select="@ids"/>
+        </xsl:element>
+      </term>
+	</xsl:template>
+
+  <xsl:template match="desc_content">
+    <listitem>
+      <xsl:choose>
+        <xsl:when test="not(*)">
+          <para/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </listitem>
+  </xsl:template>
 
   <!-- =================================================================== -->
   <xsl:template match="emphasis">
