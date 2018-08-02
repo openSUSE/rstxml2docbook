@@ -109,7 +109,7 @@ def add_pi_in_screen(xml, limit=83, target='dbsuse-fo', fontsize='8pt'):
         if screen.text is not None:
             if any([len(i) > limit for i in screen.text.split("\n")]):
                 pi = etree.ProcessingInstruction(target,
-                                                'font-size="{}"'.format(fontsize))
+                                                 'font-size="{}"'.format(fontsize))
                 pi.tail = screen.text
                 screen.text = ''
                 screen.insert(0, pi)
