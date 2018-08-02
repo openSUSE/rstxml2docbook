@@ -278,13 +278,24 @@ def test_multiple_output_files_with_root_ns(tmpdir):
     #set the tmpdir and the indexfile
     DOCDIR = HERE / 'doc.003'
     DOCDIR.copy(tmpdir)
-    outdir = str(tmpdir / "out") + "/"
+    outdir = tmpdir.mkdir("out")
 
     # params = dict()
-    params = {'basedir':  etree.XSLT.strparam(outdir)}
+    params = {'basedir':  etree.XSLT.strparam(outdir.strpath+"/")}
     xml = etree.parse(str(tmpdir / "docbook.xml"))
     trans = etree.XSLT(etree.parse(XSLTSPLIT))
     trans(xml, **params)
 
     assert outdir.exists()
+    assert len(outdir.listdir()) == 3
+
+    # We need to test, if root element have more than one namespace:
+    for xmlfile in outdir.listdir():
+        xml = etree.parse(xmlfile.strpath)
+        nsmap = (xml.getroot()).nsmap
+        assert xml.getroot().attrib.get('version')
+        assert len(nsmap) > 1
+        set(nsmap.values()) == set(['http://docbook.org/ns/docbook',
+                                    'http://www.w3.org/1999/xlink',
+                                    'http://www.w3.org/2001/XInclude'])
 
