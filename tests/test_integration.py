@@ -1,7 +1,7 @@
 #
 
 from rstxml2db.xml.process import process
-from rstxml2db.core import NSMAP
+from rstxml2db.core import NSMAP, XSLTSPLIT
 
 from lxml import etree
 from py.path import local
@@ -257,6 +257,7 @@ def test_single_output_file(tmpdir, args):
    tree = etree.parse(args.output)
    assert tree.xpath('/d:book', namespaces=NSMAP)
 
+
 def test_multiple_output_files(tmpdir, args):
    #set the tmpdir and the indexfile
    DOCDIR = HERE / 'doc.002'
@@ -271,4 +272,19 @@ def test_multiple_output_files(tmpdir, args):
 
    assert outdir.exists()
    assert len(outdir.listdir()) == 2
+
+
+def test_multiple_output_files_with_root_ns(tmpdir):
+    #set the tmpdir and the indexfile
+    DOCDIR = HERE / 'doc.003'
+    DOCDIR.copy(tmpdir)
+    outdir = str(tmpdir / "out") + "/"
+
+    # params = dict()
+    params = {'basedir':  etree.XSLT.strparam(outdir)}
+    xml = etree.parse(str(tmpdir / "docbook.xml"))
+    trans = etree.XSLT(etree.parse(XSLTSPLIT))
+    trans(xml, **params)
+
+    assert outdir.exists()
 
