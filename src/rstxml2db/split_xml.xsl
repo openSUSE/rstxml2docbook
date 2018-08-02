@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
+   Purpose:
+     Split a (DocBook) document into several chunk files
 
+   Parameters:
+     * productname
+       The name of the product; added inside <bookinfo>
+     * produtnumber
+       The number or any other identification of a product; added inside
+       <bookinfo>
+     * xml.ext
+       References to XML files; this parameter contains the extension
+       (usually '.xml') which is appended for the reference/@refuri part.
+     * rootlang
+       (Natural) language of the document; added into the root element as
+       lang="$rootlang"
+
+   Input:
+     
+
+   Output:
+     DocBook document
+
+   Author:
+     Thomas Schraitle <toms AT opensuse.org>
+     Copyright 2018 SUSE Linux GmbH
 -->
 <xsl:stylesheet version="1.0"
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -11,13 +35,26 @@
 <xsl:import href="chunker.xsl"/>
 
 <xsl:output method="xml"/>
+
+  <!-- =================================================================== -->
 <xsl:param name="xml.ext">.xml</xsl:param>
 <xsl:param name="rootbasename">book</xsl:param>
+<xsl:param name="docbook.version">5.1</xsl:param>
 
+<xsl:variable name="ns.nodes">
+ <!-- These are the nodes which are copied to each root element -->
+ <uris>
+  <uri xmlns:xlink="http://www.w3.org/1999/xlink"/>
+  <uri xmlns:xi="http://www.w3.org/2001/XInclude"/>
+<!--  <uri xmlns:svg="http://www.w3.org/2000/svg"/>-->
+ </uris>
+</xsl:variable>
+  <!-- =================================================================== -->
 <xsl:template match="node()|@*">
     <xsl:copy><xsl:apply-templates select="node()|@*"/></xsl:copy>
 </xsl:template>
 
+  <!-- =================================================================== -->
 <xsl:template name="get_dirname">
     <xsl:param name="path_to_split"/>
     <xsl:param name="sep">-</xsl:param>
@@ -81,7 +118,6 @@
         </xsl:choose>
     </xsl:variable>
 
-
     <xsl:call-template name='write.chunk'>
         <xsl:with-param name="method">xml</xsl:with-param>
         <xsl:with-param name="filename" select="concat($basedir, $filename, $xml.ext)"/>
@@ -90,6 +126,18 @@
         <xsl:with-param name="content">
             <xsl:copy-of select="preceding-sibling::processing-instruction() | preceding-sibling::comment()"/>
             <xsl:copy>
+                <xsl:choose>
+                 <xsl:when test="@version">
+                  <xsl:copy-of select="@version"/>
+                 </xsl:when>
+                 <xsl:otherwise>
+                  <xsl:attribute name="version">
+                   <xsl:value-of select="$docbook.version"/>
+                  </xsl:attribute>
+                 </xsl:otherwise>
+                </xsl:choose>
+                <!-- Copy all namespace nodes into root element -->
+                <xsl:copy-of select="exsl:node-set($ns.nodes)//namespace::*"/>
                 <xsl:apply-templates select="node()|@*"/>
             </xsl:copy>
         </xsl:with-param>
