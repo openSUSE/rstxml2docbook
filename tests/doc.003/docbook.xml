@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xmlns="http://docbook.org/ns/docbook" version="5.1">
+ <title>Hello World</title>
+ <section xml:base="tux">
+  <title>Hello from Tux</title>
+  <para>I'm Tux</para>
+ </section>
+
+ <section xml:base="wilber">
+  <title>Hello from Wilber</title>
+  <para>I'm Wilber</para>
+ </section>
+ 
+</chapter>
