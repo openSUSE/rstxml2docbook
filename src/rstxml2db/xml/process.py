@@ -62,6 +62,7 @@ def transform(doc, args):
     resolve_trans = etree.XSLT(rstresolve_xslt)
     rst2db_trans = etree.XSLT(rst2db_xslt)
 
+    log.debug("Starting to resolve multiple RST XML into a single RST XML file")
     # (1) Resolve multiple RST XML -> single RST XML structure...
     #
     rst = resolve_trans(doc)
@@ -73,6 +74,7 @@ def transform(doc, args):
     #    pretty_print=True,
     #    )
     # log.debug("Wrote resolved tree to '/tmp/tree.xml'")
+    log.debug("Created single RST XML file")
 
     # (2) Transform RST XML -> DocBook 4
     xml = rst2db_trans(rst, **dict(args.params))
@@ -82,6 +84,7 @@ def transform(doc, args):
     #    pretty_print=True,
     #    )
     # log.debug("Wrote result tree to '/tmp/result-tree.xml'")
+    log.debug("Transformed RST XML into DocBook 4")
 
     logging_xslt(rst2db_trans)
     if args.legalnotice is not None:
@@ -103,6 +106,7 @@ def transform(doc, args):
     #        pretty_print=True,
     #       )
         # log.info("Wrote DB5 result tree to '/tmp/result-db5-tree.xml'")
+        log.debug("Transformed DocBook 4 into DocBook 5")
 
     if not args.nsplit:
         xml_split_tree = etree.parse(XSLTSPLIT)

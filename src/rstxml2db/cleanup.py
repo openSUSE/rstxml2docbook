@@ -154,3 +154,4 @@ def cleanupxml(xml):
     remove_double_ids(xml)
     fix_colspec_width(xml)
     add_pi_in_screen(xml)
+    log.debug("Finished cleanup task")
