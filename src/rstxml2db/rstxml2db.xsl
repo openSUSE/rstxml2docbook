@@ -639,6 +639,15 @@
 
 
   <!-- =================================================================== -->
+ <xsl:template match="figure[caption]">
+  <figure>
+   <title>
+    <xsl:apply-templates select="caption"/>
+   </title>
+   <xsl:apply-templates select="node()[not(self::caption)]"/>
+  </figure>
+ </xsl:template>
+
   <xsl:template match="figure">
     <xsl:variable name="title">
       <xsl:choose>
@@ -668,10 +677,21 @@
       </xsl:choose>
     </xsl:variable>
 
-    <figure>
-      <title><xsl:value-of select="normalize-space($title)"/></title>
-      <xsl:apply-templates select="node()[not(self::caption)]"/>
-    </figure>
+    <xsl:choose>
+     <xsl:when test="normalize-space($title) != ''">
+       <figure>
+        <title><xsl:value-of select="normalize-space($title)"/></title>
+        <informalfigure>
+         <xsl:apply-templates select="node()[not(self::caption)]"/>
+        </informalfigure>
+       </figure>
+     </xsl:when>
+     <xsl:otherwise>
+        <informalfigure>
+         <xsl:apply-templates select="node()[not(self::caption)]"/>
+        </informalfigure>
+     </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="caption|caption/strong">
@@ -693,7 +713,6 @@
       </xsl:if>
      </imagedata>
     </xsl:variable>
-    <informalfigure>
      <mediaobject>
       <imageobject role="fo">
        <xsl:copy-of select="$imagedata"/>
@@ -702,7 +721,6 @@
        <xsl:copy-of select="$imagedata"/>
       </imageobject>
      </mediaobject>
-    </informalfigure>
   </xsl:template>
 
 	<xsl:template match="paragraph[strong][preceding-sibling::figure]"/>
