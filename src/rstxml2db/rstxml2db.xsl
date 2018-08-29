@@ -774,9 +774,10 @@
   </xsl:template>
 
   <xsl:template match="emphasis[@classes='guilabel']|inline[@classes='guilabel']">
-    <guilabel>
+    <!-- We use guimenu instead of guilabel here because of GeekoDoc -->
+    <guimenu>
       <xsl:apply-templates/>
-    </guilabel>
+    </guimenu>
   </xsl:template>
 
   <xsl:template match="emphasis[@classes='menuselection']|inline[@classes='menuselection']">
