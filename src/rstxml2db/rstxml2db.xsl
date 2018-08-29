@@ -644,7 +644,9 @@
    <title>
     <xsl:apply-templates select="caption"/>
    </title>
-   <xsl:apply-templates select="node()[not(self::caption)]"/>
+   <xsl:apply-templates select="node()[not(self::caption)]">
+    <xsl:with-param name="use.informalfigure" select="false()"/>
+   </xsl:apply-templates>
   </figure>
  </xsl:template>
 
@@ -682,14 +684,16 @@
        <figure>
         <title><xsl:value-of select="normalize-space($title)"/></title>
         <informalfigure>
-         <xsl:apply-templates select="node()[not(self::caption)]"/>
+         <xsl:apply-templates select="node()[not(self::caption)]">
+          <xsl:with-param name="use.informalfigure" select="false()"/>
+         </xsl:apply-templates>
         </informalfigure>
        </figure>
      </xsl:when>
      <xsl:otherwise>
-        <informalfigure>
-         <xsl:apply-templates select="node()[not(self::caption)]"/>
-        </informalfigure>
+         <xsl:apply-templates select="node()[not(self::caption)]">
+          <xsl:with-param name="use.informalfigure" select="false()"/>
+         </xsl:apply-templates>
      </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -699,6 +703,7 @@
   </xsl:template>
 
   <xsl:template match="image">
+    <xsl:param name="use.informalfigure" select="true()"/>
     <xsl:variable name="uri">
       <xsl:call-template name="filename-basename">
         <xsl:with-param name="filename" select="@uri"></xsl:with-param>
@@ -713,6 +718,7 @@
       </xsl:if>
      </imagedata>
     </xsl:variable>
+    <xsl:variable name="mediaobject">
      <mediaobject>
       <imageobject role="fo">
        <xsl:copy-of select="$imagedata"/>
@@ -721,6 +727,17 @@
        <xsl:copy-of select="$imagedata"/>
       </imageobject>
      </mediaobject>
+    </xsl:variable>
+    <xsl:choose>
+     <xsl:when test="$use.informalfigure = false()">
+     <xsl:copy-of select="$mediaobject"/>
+     </xsl:when>
+     <xsl:otherwise>
+      <informalfigure>
+       <xsl:copy-of select="$mediaobject"/>
+      </informalfigure>
+     </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
 	<xsl:template match="paragraph[strong][preceding-sibling::figure]"/>
