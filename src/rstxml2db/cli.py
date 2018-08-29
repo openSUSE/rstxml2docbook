@@ -24,6 +24,7 @@ import argparse
 import logging
 from logging.config import fileConfig
 from os.path import exists
+import sys
 from lxml import etree
 
 from . import __author__, __version__
@@ -219,6 +220,10 @@ def parsecli(cliargs=None):
     log.setLevel(LOGLEVELS.get(args.verbose, logging.NOTSET))
     args.params = prepareparams(args.params)
     log.info(args)
+
+    if args.indexfile is None and not args.help_xsl_params:
+        parser.print_help()
+        sys.exit(10)
 
     return check_arguments(parser, args)
 
