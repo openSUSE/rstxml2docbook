@@ -113,21 +113,21 @@ def test_print_all_xsl_params_param_without_doc(capsys, monkeypatch):
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:doc="urn:x-suse:xslt-doc"
   exclude-result-prefixes="doc">
-  
+
   <xsl:param name="good" doc:descr="My doc"/>
   <xsl:param name="nodoc"/>
 </xsl:stylesheet>""")
         return tree.getroottree()
 
     monkeypatch.setattr("rstxml2db.cli.etree.parse", mockreturn)
-    
+
     with pytest.raises(SystemExit):
         result = parsecli(['--help-xsl-param'])
-    
+
     captured = capsys.readouterr()
     out = captured.out.strip().split('\n')
     assert len(out) == 2
     out = out[1]
     out = [i.strip() for i in out.split(":") ]
     assert out == ['good', 'My doc']
-    
+
