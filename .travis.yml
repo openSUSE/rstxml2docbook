@@ -36,7 +36,7 @@ jobs:
 install:
     - pip install -U pip setuptools
     - pip install .
-    - pip install -r travis_requirements.pip
+    - pip install -r travis_requirements.txt
 
 before_script:
     - python3 --version
