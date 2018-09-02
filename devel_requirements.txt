@@ -1,8 +1,8 @@
 # Requirements file for pip
 # Use it with pip install -r devel_requirements.txt
 
--r requirements.pip
--r travis_requirements.pip
+-r requirements.txt
+-r travis_requirements.txt
 flake8
 bumpversion
 tox

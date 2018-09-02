@@ -67,7 +67,7 @@ setupdict = dict(
    # simple. Or you can use find_packages().
    packages=find_packages('src'),
    package_dir={'': 'src'},
-   install_requires=requires('requirements.pip'),
+   install_requires=requires('requirements.txt'),
 
    # If there are data files included in your packages that need to be
    # installed, specify them here.  If using Python 2.6 or less, then these

@@ -1,7 +1,7 @@
 # Requirements file for pip (only for Travis CI)
 
--r requirements.pip
--r doc/requirements.pip
+-r requirements.txt
+-r doc/requirements.txt
 pytest
 tox
 # flake8

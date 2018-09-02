@@ -5,7 +5,7 @@ prune doc/_build
 
 include ChangeLog
 include README*
-include *.pip
+include *.txt
 recursive-include src/rstxml2db/  *.xsl
 include src/rstxml2db/*.conf
 
