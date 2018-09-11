@@ -43,7 +43,7 @@ use the following steps:
 
 #. Create a Python 3 environment and activate it::
 
-    $ pyvenv .env
+    $ python3 -m venv .env
     $ source .env/bin/activate
 
 #. Update the ``pip`` and ``setuptools`` modules::
