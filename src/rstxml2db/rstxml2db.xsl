@@ -222,6 +222,15 @@
     <xsl:apply-templates/>
   </xsl:template>
 
+  <xsl:template match="/document[@role='big']">
+   <set>
+    <xsl:call-template name="include.xmlbase"/>
+    <title></title>
+    <setinfo></setinfo>
+    <xsl:apply-templates select="*[not(self::title)]"/>
+   </set>
+  </xsl:template>
+
   <xsl:template match="/document[@role='big']/section">
     <xsl:variable name="idattr">
       <xsl:call-template name="get.target4section.id"/>
