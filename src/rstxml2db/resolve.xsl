@@ -53,7 +53,7 @@
         </xsl:apply-templates>
        </xsl:when>
        <xsl:otherwise>
-        <xsl:attribute name="role" namespace="urn:x-suse:ns:os:convertion">part</xsl:attribute>
+        <xsl:attribute name="role">part</xsl:attribute>
         <xsl:apply-templates select="$root.element">
          <xsl:with-param name="role" select="''"/>
         </xsl:apply-templates>
