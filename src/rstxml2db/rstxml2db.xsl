@@ -277,6 +277,8 @@
     </chapter>
   </xsl:template>
 
+  <xsl:template match="document[@role='big']/paragraph[inline[contains(@classes, 'xref')]]"/>
+
   <xsl:template match="section[@names = 'abstract']" mode="bookinfo">
      <abstract>
       <xsl:apply-templates/>
