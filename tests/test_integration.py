@@ -39,7 +39,7 @@ def assert_xpaths(xml, xpath, args):
      ),
 ])
 def test_integration(xpath, db4, tmpdir, args):
-    DOCDIR = HERE / 'doc.001'
+    DOCDIR = HERE / 'data/doc.001'
     DOCDIR.copy(tmpdir)
     result = tmpdir / 'result.xml'
     indexfile = tmpdir / 'index.xml'
@@ -73,7 +73,7 @@ def test_integration(xpath, db4, tmpdir, args):
      ),
 ])
 def test_integration_figure(xpath, db4, tmpdir, args):
-    DOCDIR = HERE / 'doc.001'
+    DOCDIR = HERE / 'data/doc.001'
     DOCDIR.copy(tmpdir)
     result = tmpdir / 'result.xml'
     indexfile = tmpdir / 'index.xml'
@@ -110,7 +110,7 @@ def test_integration_figure(xpath, db4, tmpdir, args):
      False),
 ])
 def test_integration_with_conventions(xpath, db4, tmpdir, args):
-    DOCDIR = HERE / 'doc.001'
+    DOCDIR = HERE / 'data/doc.001'
     DOCDIR.copy(tmpdir)
     result = tmpdir / 'result.xml'
     indexfile = tmpdir / 'index.xml'
@@ -155,7 +155,7 @@ def test_integration_with_conventions(xpath, db4, tmpdir, args):
      ),
 ])
 def test_integration_with_stdout(xpath, db4, tmpdir, capsys, args):
-    DOCDIR = HERE / 'doc.001'
+    DOCDIR = HERE / 'data/doc.001'
     DOCDIR.copy(tmpdir)
     # result = str(tmpdir / 'result.xml')
     indexfile = tmpdir / 'index.xml'
@@ -190,7 +190,7 @@ def test_integration_with_stdout(xpath, db4, tmpdir, capsys, args):
      ),
 ])
 def test_integration_with_legalnotice(xpath, db4, tmpdir, args):
-    DOCDIR = HERE / 'doc.001'
+    DOCDIR = HERE / 'data/doc.001'
     DOCDIR.copy(tmpdir)
     result = tmpdir / 'result.xml'
     indexfile = tmpdir / 'index.xml'
@@ -214,7 +214,7 @@ def test_integration_with_legalnotice(xpath, db4, tmpdir, args):
 
 
 def test_integration_with_productname(tmpdir, args):
-    DOCDIR = HERE / 'doc.001'
+    DOCDIR = HERE / 'data/doc.001'
     DOCDIR.copy(tmpdir)
     result = tmpdir / 'result.xml'
     indexfile = tmpdir / 'index.xml'
@@ -243,7 +243,7 @@ def test_wrong_xml(tmpdir):
 
 def test_single_output_file(tmpdir, args):
    #set the tmpdir and the indexfile
-   DOCDIR = HERE / 'doc.002'
+   DOCDIR = HERE / 'data/doc.002'
    DOCDIR.copy(tmpdir)
    indexfile = tmpdir / 'index.xml'
    #arguments...
@@ -260,7 +260,7 @@ def test_single_output_file(tmpdir, args):
 
 def test_multiple_output_files(tmpdir, args):
    #set the tmpdir and the indexfile
-   DOCDIR = HERE / 'doc.002'
+   DOCDIR = HERE / 'data/doc.002'
    DOCDIR.copy(tmpdir)
    indexfile = tmpdir / 'index.xml'
    outdir = tmpdir / "out"
@@ -276,7 +276,7 @@ def test_multiple_output_files(tmpdir, args):
 
 def test_multiple_output_files_with_root_ns(tmpdir):
     #set the tmpdir and the indexfile
-    DOCDIR = HERE / 'doc.003'
+    DOCDIR = HERE / 'data/doc.003'
     DOCDIR.copy(tmpdir)
     outdir = tmpdir.mkdir("out")
 
