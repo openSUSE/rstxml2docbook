@@ -135,8 +135,6 @@ The workflow from converting RST XML files into DocBook involves these steps:
    c. Add processing instruction in :code:`<screen>`, if the maximum characters
       inside screen exceeds a certain value.
 
-#. Transform DocBook 4 tree into DocBook 5, if option :option:`--db4` is not set.
-
 #. Output tree, either by saving it or by printing it to std out.
 
 
@@ -146,7 +144,7 @@ is referenced is used as a file for inclusion. Everything else is copied
 as it is.
 
 
-The transformation from the single RST XML tree into DocBook 4 use the
+The transformation from the single RST XML tree into DocBook 5 uses the
 :file:`rstxml2db.xsl` stylesheet.
 
 
