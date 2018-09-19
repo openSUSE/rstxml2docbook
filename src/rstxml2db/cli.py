@@ -176,11 +176,6 @@ def parsecli(cliargs=None):
                         help='number/release etc. of the product '
                              '(included into `book/bookinfo`)',
                         )
-    parser.add_argument('-4', '--db4',
-                        action='store_true',
-                        default=False,
-                        help='Create DocBook 4 version (default %(default)s)',
-                        )
     parser.add_argument('-c', '--conventions',
                         # default='',
                         help='path to filename which contains doc conventions '
