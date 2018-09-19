@@ -232,8 +232,8 @@ def main(cliargs=None):
     """Entry point for the application script
 
     :param list cliargs: Arguments to parse or None (=use :class:`sys.argv`)
-    :return: True or False
-    :rtype: bool
+    :return: error code
+    :rtype: int
     """
     try:
         args = parsecli(cliargs)
