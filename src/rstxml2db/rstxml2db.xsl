@@ -468,7 +468,6 @@
   </xsl:variable>
   <xsl:variable name="idattr">
    <xsl:call-template name="get.target4section.id"/>
-   <!--  <xsl:text>foo</xsl:text>-->
   </xsl:variable>
   <xsl:message>INFO: Add glossdiv <xsl:value-of select="$idattr"/></xsl:message>
   <glossdiv>
