@@ -20,7 +20,7 @@
      RST XML file, converted with sphinx-build using option -b xml
 
    Output:
-     DocBook 4 document
+     DocBook 5 document
 
    Author:
      Thomas Schraitle <toms AT opensuse.org>
@@ -28,9 +28,12 @@
 
 -->
 <xsl:stylesheet version="1.0"
+  xmlns="http://docbook.org/ns/docbook"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:exsl="http://exslt.org/common"
   xmlns:doc="urn:x-suse:xslt-doc"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
   exclude-result-prefixes="exsl doc">
 
   <xsl:output indent="yes"/>
@@ -235,8 +238,8 @@
       </xsl:if>
       <xsl:call-template name="include.xmlbase"/>
       <xsl:apply-templates select="title"/>
-      <bookinfo>
-        <xsl:apply-templates select="section[@names='abstract']" mode="bookinfo"/>
+      <info>
+        <xsl:apply-templates select="section[@names='abstract']" mode="info"/>
         <xsl:if test="$productname != ''">
           <productname>
             <xsl:value-of select="$productname"/>
@@ -247,7 +250,7 @@
             <xsl:value-of select="$productnumber"/>
           </productnumber>
         </xsl:if>
-      </bookinfo>
+      </info>
       <xsl:apply-templates select="*[not(self::title)]"/>
     </book>
   </xsl:template>
@@ -268,7 +271,7 @@
     </chapter>
   </xsl:template>
 
-  <xsl:template match="section[@names = 'abstract']" mode="bookinfo">
+  <xsl:template match="section[@names = 'abstract']" mode="info">
      <abstract>
       <xsl:apply-templates/>
     </abstract>
@@ -706,7 +709,7 @@
     <xsl:param name="use.informalfigure" select="true()"/>
     <xsl:variable name="uri">
       <xsl:call-template name="filename-basename">
-        <xsl:with-param name="filename" select="@uri"></xsl:with-param>
+        <xsl:with-param name="filename" select="@uri"/>
       </xsl:call-template>
     </xsl:variable>
     <xsl:variable name="imagedata">
@@ -862,11 +865,11 @@
   </xsl:template>
 
   <xsl:template match="reference[@refuri]">
-    <ulink url="{@refuri}">
+    <link xlink:href="{@refuri}">
       <xsl:if test="@refuri != .">
        <xsl:value-of select="."/>
       </xsl:if>
-    </ulink>
+    </link>
   </xsl:template>
 
   <xsl:template match="reference[@refuri][@internal='True']">
