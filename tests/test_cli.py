@@ -78,14 +78,8 @@ def test_prepareparams(params, expected):
   (['--param', 'a=2', '--param', 'b=4', 'a.xml'],
    dict(params=[('a', '2'), ('b', '4')])
    ),
-  #
-  (['-4', 'a.xml'],
-   dict(db4=True)
-   ),
-  (['--db4', 'a.xml'],
-   dict(db4=True)
-   ),
 ])
+
 def test_parsecli(cli, expected):
     result = parsecli(cli)
     # Create set difference and only compare this with the expected dictionary
