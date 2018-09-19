@@ -295,7 +295,7 @@ def test_multiple_output_files_with_root_ns(tmpdir):
         nsmap = (xml.getroot()).nsmap
         assert xml.getroot().attrib.get('version')
         assert len(nsmap) > 1
-        set(nsmap.values()) == set(['http://docbook.org/ns/docbook',
-                                    'http://www.w3.org/1999/xlink',
-                                    'http://www.w3.org/2001/XInclude'])
+        assert set(nsmap.values()) == set(['http://docbook.org/ns/docbook',
+                                           'http://www.w3.org/1999/xlink',
+                                           'http://www.w3.org/2001/XInclude'])
 
