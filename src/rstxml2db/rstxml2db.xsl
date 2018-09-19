@@ -29,11 +29,12 @@
 -->
 <xsl:stylesheet version="1.0"
   xmlns="http://docbook.org/ns/docbook"
+  xmlns:d="http://docbook.org/ns/docbook"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:exsl="http://exslt.org/common"
   xmlns:doc="urn:x-suse:xslt-doc"
   xmlns:xi="http://www.w3.org/2001/XInclude"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xl="http://www.w3.org/1999/xlink"
   exclude-result-prefixes="exsl doc">
 
   <xsl:output indent="yes"/>
@@ -230,9 +231,9 @@
       <xsl:call-template name="get.target4section.id"/>
     </xsl:variable>
 
-    <book lang="{$rootlang}">
+    <book xml:lang="{$rootlang}">
       <xsl:if test="$idattr != ''">
-        <xsl:attribute name="id">
+        <xsl:attribute name="xml:id">
           <xsl:value-of select="$idattr"/>
         </xsl:attribute>
       </xsl:if>
@@ -262,7 +263,7 @@
 
     <chapter>
       <xsl:if test="$idattr != ''">
-        <xsl:attribute name="id">
+        <xsl:attribute name="xml:id">
           <xsl:value-of select="$idattr"/>
         </xsl:attribute>
       </xsl:if>
@@ -288,7 +289,7 @@
 
     <xsl:element name="{$name}">
       <xsl:if test="@ids">
-        <xsl:attribute name="id">
+        <xsl:attribute name="xml:id">
           <xsl:value-of select="$idattr"/>
         </xsl:attribute>
       </xsl:if>
@@ -415,7 +416,7 @@
     </xsl:variable>
     <step>
       <xsl:if test="$id != ''">
-        <xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute>
+        <xsl:attribute name="xml:id"><xsl:value-of select="$id"/></xsl:attribute>
       </xsl:if>
       <xsl:apply-templates/>
     </step>
@@ -467,9 +468,11 @@
   </xsl:variable>
   <xsl:variable name="idattr">
    <xsl:call-template name="get.target4section.id"/>
+   <!--  <xsl:text>foo</xsl:text>-->
   </xsl:variable>
   <xsl:message>INFO: Add glossdiv <xsl:value-of select="$idattr"/></xsl:message>
-  <glossdiv id="{$idattr}">
+  <glossdiv>
+    <xsl:attribute name="xml:id"><xsl:value-of select="$idattr"/></xsl:attribute>
    <xsl:call-template name="include.xmlbase"/>
    <xsl:apply-templates select="title"/>
    <xsl:apply-templates select="*[not(self::title)]"/>
@@ -498,10 +501,10 @@
    </xsl:variable>
     <glossentry>
       <xsl:if test="$idattr">
-        <xsl:attribute name="id">
+        <xsl:attribute name="xml:id">
           <xsl:value-of select="$idattr"/>
         </xsl:attribute>
-        <xsl:message>INFO: Add id=<xsl:value-of select="$idattr"/></xsl:message>
+        <xsl:message>INFO: Add xml:id=<xsl:value-of select="$idattr"/></xsl:message>
       </xsl:if>
       <xsl:call-template name="include.xmlbase"/>
       <xsl:apply-templates select="term"/>
@@ -518,7 +521,7 @@
   <xsl:template match="definition_list[@classes='glossary']/definition_list_item/term/index"/>
 
   <xsl:template match="definition_list[@classes='glossary']/definition_list_item/definition">
-    <xsl:message>INFO: Add definition of <xsl:value-of select="normalize-space(../term)"/>, id=<xsl:value-of select="../term/@ids"/></xsl:message>
+    <xsl:message>INFO: Add definition of <xsl:value-of select="normalize-space(../term)"/>, xml:id=<xsl:value-of select="../term/@ids"/></xsl:message>
     <glossdef>
       <xsl:apply-templates/>
     </glossdef>
@@ -549,13 +552,13 @@
 
 <!--    <xsl:message>table:
     title=<xsl:value-of select="$title"/>
-    id=<xsl:value-of select="$id"/>
+    xml:id=<xsl:value-of select="$id"/>
     type=<xsl:value-of select="$tabletype"/>
     </xsl:message>-->
 
     <xsl:element name="{$tabletype}">
       <xsl:if test="$id != ''">
-        <xsl:attribute name="id">
+        <xsl:attribute name="xml:id">
           <xsl:value-of select="$id"/>
         </xsl:attribute>
       </xsl:if>
@@ -865,7 +868,7 @@
   </xsl:template>
 
   <xsl:template match="reference[@refuri]">
-    <link xlink:href="{@refuri}">
+    <link xl:href="{@refuri}">
       <xsl:if test="@refuri != .">
        <xsl:value-of select="."/>
       </xsl:if>
