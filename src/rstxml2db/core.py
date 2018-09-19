@@ -35,15 +35,12 @@ from logging import (BASIC_FORMAT,
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-#: Stylesheet to transform RST XML tree into DocBook 4
+#: Stylesheet to transform RST XML tree into DocBook 5
 XSLTRST2DB = os.path.join(HERE, 'rstxml2db.xsl')
 
 #: Stylesheet to resolves RST XML :file:``index.xml``
 #: file into one, single RST XML file
 XSLTRESOLVE = os.path.join(HERE, 'resolve.xsl')
-
-#: Stylesheet to transform DocBook4 -> DocBook 5
-XSLTDB4TO5 = os.path.join(HERE, 'suse-upgrade.xsl')
 
 #: Stylesheet to spli up the XML file
 XSLTSPLIT = os.path.join(HERE, 'split_xml.xsl')
@@ -58,9 +55,7 @@ NSMAP = dict(xi='http://www.w3.org/2001/XInclude',
              )
 
 #: DOCTYPE declaration with placeholders
-DOCTYPE = r"""<!DOCTYPE {} PUBLIC
-"-//OASIS//DTD DocBook XML V4.5//EN"
-"http://docbook.org/xml/4.5/docbookx.dtd"
+DOCTYPE = r"""<!DOCTYPE {}
 [
 <!--
   <!ENTITY % entities SYSTEM "entity-decl.ent">
