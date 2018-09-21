@@ -47,10 +47,6 @@ script with the XML builder (option ``-b xml``). Standard options are:
 Options
 -------
 
-.. option:: -4, --db4
-
-   Create DocBook 4 version (default False).
-
 .. option:: -c <CONVENTIONS>, --conventions <CONVENTIONS>
 
    Path to filename which contains doc conventions about the
@@ -92,11 +88,6 @@ Examples
 * Create a DocBook 5 XML file rom :file:`index.xml` and save it to :file:`output.xml`::
 
     $ rstxml2db -o output.xml index.xml
-
-* Create a DocBook 4 XML file from :file:`index.xml`, use the option :option:`--db4`
-  and save it to :file:`output.xml`::
-
-    $ rstxml2db --db4 -o output.xml index.xml
 
 * Create a DocBook 5 XML file from :file:`index.xml` and use ``FooObfuscator`` as
   productname::

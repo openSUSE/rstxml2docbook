@@ -20,7 +20,7 @@ Welcome to the |project| Documentation
 
 .. sidebar:: Features
 
-    - supports DocBook 4.x and 5.x
+    - supports DocBook 5.x
     - extensible with own stylesheet
     - covered by test cases
 

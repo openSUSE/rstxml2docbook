@@ -27,7 +27,7 @@ import os
 from .util import quoteparams
 from .struct import addchapter, addlegalnotice
 from ..cleanup import cleanupxml
-from ..core import DOCTYPE, XSLTRST2DB, XSLTRESOLVE, XSLTDB4TO5, XSLTSPLIT
+from ..core import XSLTRST2DB, XSLTRESOLVE, XSLTSPLIT
 
 
 log = logging.getLogger(__name__)
@@ -39,7 +39,7 @@ def logging_xslt(resultxslt, logger=log):
     :param resultxslt:
     :type resultxslt: :class:`etree._XSLTResultTree`
     :param logger:
-    :type logger: :clas:`logging.Logger`
+    :type logger: :class:`logging.Logger`
     """
     for entry in resultxslt.error_log:
         level, msg = entry.message.split(':', maxsplit=1)
@@ -76,15 +76,15 @@ def transform(doc, args):
     # log.debug("Wrote resolved tree to '/tmp/tree.xml'")
     log.debug("Created single RST XML file")
 
-    # (2) Transform RST XML -> DocBook 4
+    # (2) Transform RST XML -> DocBook 5
     xml = rst2db_trans(rst, **dict(args.params))
     # xml.write(
-    #    '/tmp/trees/db4-tree.xml',
+    #    '/tmp/trees/db5-tree.xml',
     #    encoding='utf-8',
     #    pretty_print=True,
     #    )
     # log.debug("Wrote result tree to '/tmp/result-tree.xml'")
-    log.debug("Transformed RST XML into DocBook 4")
+    log.debug("Transformed RST XML into DocBook 5")
 
     logging_xslt(rst2db_trans)
     if args.legalnotice is not None:
@@ -94,19 +94,6 @@ def transform(doc, args):
 
     # Cleanup
     cleanupxml(xml)
-
-    if not args.db4:
-        db4o5_xslt = etree.parse(XSLTDB4TO5)
-        db4o5_trans = etree.XSLT(db4o5_xslt)
-        xml = db4o5_trans(xml, **dict(args.params))
-        logging_xslt(db4o5_trans)
-    #    xml.write(
-    #        '/tmp/trees/result-db5-tree.xml',
-    #        encoding='utf-8',
-    #        pretty_print=True,
-    #       )
-        # log.info("Wrote DB5 result tree to '/tmp/result-db5-tree.xml'")
-        log.debug("Transformed DocBook 4 into DocBook 5")
 
     if not args.nsplit:
         xml_split_tree = etree.parse(XSLTSPLIT)
@@ -148,9 +135,6 @@ def process(args):
             args.params.append(('basedir',  "%s/" % args.outputdir))
     args.params = quoteparams(args)
     xml = transform(doc, args)
-
-    if args.db4:
-        xmldict.update(doctype=DOCTYPE.format(xml.getroot().tag))
 
     if args.output is not None and xml is not None:
         outstring = etree.tostring(xml, **xmldict)
