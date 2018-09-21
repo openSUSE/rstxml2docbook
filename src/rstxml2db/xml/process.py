@@ -27,7 +27,7 @@ import os
 from .util import quoteparams
 from .struct import addchapter, addlegalnotice
 from ..cleanup import cleanupxml
-from ..core import DOCTYPE, XSLTRST2DB, XSLTRESOLVE, XSLTSPLIT
+from ..core import XSLTRST2DB, XSLTRESOLVE, XSLTSPLIT
 
 
 log = logging.getLogger(__name__)
