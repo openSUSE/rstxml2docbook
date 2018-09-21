@@ -50,9 +50,42 @@
   <xsl:param name="productname" doc:descr="The product name, empty by default"/>
   <xsl:param name="productnumber" doc:descr="The product number, empty by default"/>
 
+  <xsl:variable name="basepath">
+   <xsl:call-template name="getdir">
+    <xsl:with-param name="filename" select="/document/@source"/>
+   </xsl:call-template>
+  </xsl:variable>
+
+  <!-- Named Templates ================================================= -->
+  <xsl:template name="get.book.id">
+   <xsl:param name="node"/>
+   <xsl:variable name="document" select="$node/ancestor-or-self::document[@role='big'][last() -1]"/>
+
+   <xsl:choose>
+    <xsl:when test="$document/section/@ids">
+     <xsl:value-of select="$document/section/@ids"/>
+    </xsl:when>
+    <xsl:otherwise>
+     <xsl:message>WARN: No id on document/section found.</xsl:message>
+    </xsl:otherwise>
+   </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="getdir">
+   <xsl:param name="filename" select="''"/>
+   <xsl:if test="contains($filename, '/')">
+    <xsl:value-of select="substring-before($filename, '/')"/>
+    <xsl:text>/</xsl:text>
+    <xsl:call-template name="getdir">
+     <xsl:with-param name="filename" select="substring-after($filename, '/')"/>
+    </xsl:call-template>
+   </xsl:if>
+  </xsl:template>
+
+
   <!-- Templates ======================================================= -->
   <xsl:template match="*">
-    <!-- <xsl:message>WARN: Unknown element '<xsl:value-of select="local-name()"/>'</xsl:message> -->
+<!--     <xsl:message>WARN: Unknown element '<xsl:value-of select="local-name()"/>'</xsl:message>-->
   </xsl:template>
 
   <xsl:template name="include.xmlbase">
@@ -222,7 +255,13 @@
   </xsl:template>
 
   <!-- =================================================================== -->
-  <xsl:template match="document">
+ <xsl:template match="/document">
+  <xsl:message>INFO: dir of @source=<xsl:value-of select="$basepath"/></xsl:message>
+  <xsl:apply-templates/>
+ </xsl:template>
+ 
+ 
+ <xsl:template match="document">
     <xsl:apply-templates/>
   </xsl:template>
 
@@ -599,7 +638,6 @@
     </colspec>
   </xsl:template>
 
-
   <xsl:template match="paragraph" mode="table">
     <para>
       <xsl:apply-templates/>
@@ -874,8 +912,51 @@
     </link>
   </xsl:template>
 
+  <xsl:template name="remove-dots">
+   <xsl:param name="path"/>
+   
+   <xsl:choose>
+    <xsl:when test="starts-with($path, '../')">
+     <xsl:call-template name="remove-dots">
+      <xsl:with-param name="path" select="substring($path, 4)"/>
+     </xsl:call-template>
+    </xsl:when>
+    <xsl:otherwise>
+     <xsl:value-of select="$path"/>
+    </xsl:otherwise>
+   </xsl:choose>
+  </xsl:template>
+
   <xsl:template match="reference[@refuri][@internal='True']">
     <xsl:variable name="uri" select="substring-after(@refuri, '#')"/>
+    <xsl:variable name="relpath">
+     <xsl:call-template name="remove-dots">
+      <xsl:with-param name="path" select="@refuri"/>
+     </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="prefix">
+     <xsl:call-template name="get.book.id">
+      <xsl:with-param name="node" select="."/>
+     </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="target">
+     <xsl:choose>
+      <xsl:when test="contains($relpath, '#')">
+       <xsl:value-of select="substring-before($relpath, '#')"/>
+      </xsl:when>
+      <xsl:otherwise>
+       <xsl:value-of select="$relpath"/>
+      </xsl:otherwise>
+     </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="docref" select="key('documents', concat($basepath, $target, '.rst'))"/>
+
+    <xsl:message>reference/@refuri=<xsl:value-of select="@refuri"/>
+     prefix=<xsl:value-of select="$prefix"/>
+     relpath=<xsl:value-of select="$relpath"/>
+     target=<xsl:value-of select="$target"/>
+     docref=<xsl:value-of select="count($docref)"/>
+    </xsl:message>
     <xsl:choose>
       <xsl:when test="$uri != ''">
         <xref linkend="{$uri}"/>

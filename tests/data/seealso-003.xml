@@ -11,7 +11,7 @@
   <seealso>
    <bullet_list bullet="*">
     <list_item>
-     <paragraph><reference internal="True" refuri="#seealso"
+     <paragraph><reference internal="True" refid="seealso"
         ><inline classes="std std-ref">Seealso Test</inline></reference> A short
       guide to getting started with using seealso.</paragraph>
     </list_item>

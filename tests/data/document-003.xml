@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document source="document-003.rst">
+ <section ids="reference">
+  <title>The Reference Project</title>
+  <section>
+   <title>Introduction</title>
+   <paragraph>This is a document about intra-references</paragraph>
+   <section>
+    <title>Using References</title>
+    <paragraph>How to use References in your own projects.</paragraph>
+    <document role="big" xml:base="install/index" source="install/index.rst">
+     <section ids="installation-guide" names="installation\ guide">
+      <title>Installation Guide</title>
+      <paragraph>For a more in-depth look, see the
+     <reference internal="True" refuri="contributor/intro#contributor-intro"
+      ><inline classes="std std-ref">Horizon
+    Basics</inline></reference>.</paragraph>
+     </section>
+    </document>
+
+    <document role="big" xml:base="admin/index" source="admin/index.rst">
+     <target refid="contributor-intro"/>
+     <section ids="administration-guide" names="administration\ guide">
+      <title>Administration Guide</title>
+      <paragraph/>
+     </section>
+    </document>
+   </section>
+  </section>
+ </section>
+</document>

@@ -28,7 +28,20 @@
   <!-- ================================================================== -->
   <xsl:param name="xml.ext">.xml</xsl:param>
   <xsl:param name="root.role">big</xsl:param>
-  
+
+
+  <!-- ================================================================== -->
+  <xsl:template name="getdir">
+   <xsl:param name="filename" select="''"/>
+   <xsl:if test="contains($filename, '/')">
+    <xsl:value-of select="substring-before($filename, '/')"/>
+    <xsl:text>/</xsl:text>
+    <xsl:call-template name="getdir">
+     <xsl:with-param name="filename" select="substring-after($filename, '/')"/>
+    </xsl:call-template>
+   </xsl:if>
+  </xsl:template>
+
   <!-- ================================================================== -->
   <xsl:template match="node() | @*">
     <xsl:copy>
@@ -36,10 +49,21 @@
     </xsl:copy>
   </xsl:template>
 
+
+  <!-- ================================================================== -->
+  <xsl:variable name="basepath">
+   <xsl:call-template name="getdir">
+    <xsl:with-param name="filename" select="/document/@source"/>
+   </xsl:call-template>
+  </xsl:variable>
+
   <!-- ================================================================== -->
   <xsl:template match="/document">
-    <xsl:param name="xmlbase"></xsl:param>
+    <xsl:param name="xmlbase"/>
     <document role="{$root.role}" xml:base="{$xmlbase}">
+     <xsl:attribute name="relsource">
+      <xsl:value-of select="substring-after(@source, $basepath)"/>
+     </xsl:attribute>
       <xsl:copy-of select="@*"/>
       <xsl:apply-templates>
         <xsl:with-param name="role" select="''"/>
