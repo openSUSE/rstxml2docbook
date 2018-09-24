@@ -875,7 +875,16 @@
   </xsl:template>
 
   <xsl:template match="reference[@refuri][@internal='True']">
-    <xsl:variable name="uri" select="substring-after(@refuri, '#')"/>
+    <xsl:variable name="uri">
+    <xsl:choose>
+      <xsl:when test="contains(@refuri,'#')">
+        <xsl:value-of select="substring-after(@refuri, '#')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="@refuri"/>
+      </xsl:otherwise>
+    </xsl:choose>
+    </xsl:variable>
     <xsl:choose>
       <xsl:when test="$uri != ''">
         <xref linkend="{$uri}"/>
