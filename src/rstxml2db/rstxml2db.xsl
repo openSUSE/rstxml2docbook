@@ -806,7 +806,9 @@
 
   <!-- =================================================================== -->
   <xsl:template match="emphasis">
-    <xsl:copy-of select="."/>
+    <emphasis>
+      <xsl:apply-templates/>
+    </emphasis>
   </xsl:template>
 
   <xsl:template match="inline">
