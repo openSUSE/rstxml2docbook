@@ -1,8 +1,10 @@
 Convert RST to DocBook XML
 **************************
 
-License: GPL 3+
 
+.. image:: https://img.shields.io/badge/license-gpl-blue.svg
+    :target: https://github.com/openSUSE/rstxml2docbook/blob/develop/LICENSE
+    :alt: License GPL 3+
 .. image:: https://travis-ci.org/openSUSE/rstxml2docbook.svg?branch=develop
     :target: https://travis-ci.org/openSUSE/rstxml2docbook
     :alt: Travis CI
@@ -28,10 +30,11 @@ following command after cloning this repository::
     $ PYTHONPATH=src python3 -m rstxml2db -h
 
 
-Installation
-============
+Installing
+==========
 
-To install :program:`rstxml2db`, use the following steps:
+To install :program:`rstxml2db` in a Python virtual environment,
+use the following steps:
 
 #. Clone this repository::
 
@@ -40,7 +43,7 @@ To install :program:`rstxml2db`, use the following steps:
 
 #. Create a Python 3 environment and activate it::
 
-    $ pyvenv .env
+    $ python3 -m venv .env
     $ source .env/bin/activate
 
 #. Update the ``pip`` and ``setuptools`` modules::
@@ -71,9 +74,11 @@ The script does the following steps:
 #. Resolves any references to external files and create a single XML tree
    in memory.
 
-#. Transform the tree with XSLT into DocBook.
+#. Transform the tree with XSLT into DocBook and if requested, split it
+   into several smaller files.
 
-#. Output to stdout or save it into a file.
+#. Output to stdout or save it into one or more file, depending on if
+   splitting mode is activated.
 
 
 .. _sec.build.xml.files:
@@ -101,8 +106,11 @@ creates DocBook files, for example::
 
    $ rstxml2db xml/index.xml
 
-The previous step uses the :file:`index.xml` file and writes all DocBook
-files into the ``out/`` directory.
+By default, the previous step uses the :file:`index.xml` file and
+generates several DocBook files all located in the ``out/`` directory.
+
+If you need one DocBook file, use the option :option:`-ns` to output the
+result DocBook file on stdout.
 
 
 The Internal Workflow
@@ -127,8 +135,6 @@ The workflow from converting RST XML files into DocBook involves these steps:
    c. Add processing instruction in :code:`<screen>`, if the maximum characters
       inside screen exceeds a certain value.
 
-#. Transform DocBook 4 tree into DocBook 5, if option :option:`--db4` is not set.
-
 #. Output tree, either by saving it or by printing it to std out.
 
 
@@ -138,7 +144,7 @@ is referenced is used as a file for inclusion. Everything else is copied
 as it is.
 
 
-The transformation from the single RST XML tree into DocBook 4 use the
+The transformation from the single RST XML tree into DocBook 5 uses the
 :file:`rstxml2db.xsl` stylesheet.
 
 

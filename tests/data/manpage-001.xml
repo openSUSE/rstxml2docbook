@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+<!DOCTYPE document PUBLIC
+  "+//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML"
+  "http://docutils.sourceforge.net/docs/ref/docutils.dtd">
+-->
+
+<document source="manpage.001.rst">
+ <section ids="manpage">
+  <title>Manpage Test</title>
+  <paragraph>See manpage <manpage classes="manpage"
+    page="bind"
+    path="bind(2)"
+    section="2"
+    xml:space="preserve">bind(2)</manpage>.
+  </paragraph>  
+ </section>
+</document>

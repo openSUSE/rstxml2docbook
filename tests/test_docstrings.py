@@ -44,7 +44,7 @@ def getallfunctions(module=rstxml2db):
             yield ff
 
 modfuncs = list(getallfunctions())
-modfuncsnames = [ff.__name__ for ff in modfuncs]
+modfuncsnames = [".".join([ff.__module__, ff.__name__]) for ff in modfuncs]
 
 
 @pytest.mark.parametrize("func",
@@ -76,7 +76,7 @@ def test_docstrings_args(func):
 
     assert doc is not None
     if func.__code__.co_argcount:
-        for arg in inspect.getargspec(func).args:
+        for arg in inspect.getfullargspec(func).args:
             m = re.search(":param\s+\w*\s*%s:" % arg, doc)
             assert m, "Func argument %r " \
                 "not explained in docstring " \

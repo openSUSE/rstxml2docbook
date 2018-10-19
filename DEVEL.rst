@@ -23,7 +23,34 @@ Preparations
     $ ./setup.py develop
 
 After you have completed the previous steps, the scripts :program:`rstxml2db`
-and :program:`rstxml2docbook` are available in your path.
+and :program:`rstxml2docbook` are available in your path (``.env/bin``).
+
+
+Executing the Test Cases
+========================
+
+To execute all the tests, run::
+
+   $ ./setup.py test
+
+To use :command:`pytest`, run::
+
+   $ pytest
+
+In case the :command:`pytest` command fails, use :file:`setup.py`.
+
+To get a more verbose output, use the options ``-l`` and ``-vv``::
+
+   $ pytest -l -vv
+
+To select only a single test, use the complete test filename::
+
+   $ pytest tests/test_foo.py
+
+This will execute *all* tests inside the file :file:`test_foo.py`.
+To execute only a specific test function inside a file, use this notation::
+
+  $ pytest test/test_foo.py::test_bar
 
 
 Writing Test Cases
@@ -42,7 +69,13 @@ It's important that you name your testcase with the extensions :file:`.xml`
 and :file:`.params.json`. The testing framework searches for these extensions.
 When it cannot find a corresponding file, it will skip the test.
 
-For example, if you want to create a new test case, proceed as follows:
+The idea behind this structure was to avoid issues with formatting. Comparing
+two XML structures which only distinguish between formatting may show differences.
+However, from a XML perspective, these differences are not important due to
+formatting issues. For example, attribute order, order of namespaces, indendation
+etc. are not relevant to XML.
+
+If you want to create a new test case, proceed as follows:
 
 #. Create a XML file and use the extension :file:`.xml`. It's easier if
    you use the DTD from the Docutils project.

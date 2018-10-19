@@ -16,6 +16,11 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+"""
+The XML module
+"""
+
+
 from .util import quoteparams
 from .struct import addchapter, addlegalnotice
 from .process import process, transform

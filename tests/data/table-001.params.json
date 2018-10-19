@@ -1,0 +1,8 @@
+[
+    ["count(//d:tgroup/d:colspec)", 4],
+    ["count(//d:entry[d:para])", 4],
+    ["boolean(//d:entry[1]/d:para/d:link/d:emphasis)", true],
+    ["boolean(/*/*/d:tgroup)", true],
+    ["//d:entry[3]/d:para/d:*/d:literal/text()", ["✔"]],
+    ["//d:entry[4]/d:para/d:*/d:literal/text()", ["✔"]]
+]

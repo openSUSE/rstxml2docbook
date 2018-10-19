@@ -1,0 +1,6 @@
+[
+    ["/d:book/d:chapter[1]/@xml:id", ["fox"]],
+    ["/d:book/d:chapter[2]/@xml:id", ["dog"]],
+    ["/d:book/d:chapter[1]/d:para/d:xref/@linkend", ["dog"]],
+    ["/d:book/d:chapter[2]/d:para/d:xref/@linkend", ["fox"]]
+]

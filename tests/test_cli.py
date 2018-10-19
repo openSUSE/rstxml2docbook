@@ -1,6 +1,6 @@
-
+#
 import pytest
-from rstxml2db.cli import prepareparams, parsecli
+from rstxml2db.cli import prepareparams, parsecli, print_all_xsl_params
 
 
 @pytest.mark.parametrize('params, expected', [
@@ -78,17 +78,50 @@ def test_prepareparams(params, expected):
   (['--param', 'a=2', '--param', 'b=4', 'a.xml'],
    dict(params=[('a', '2'), ('b', '4')])
    ),
-  #
-  (['-4', 'a.xml'],
-   dict(db4=True)
-   ),
-  (['--db4', 'a.xml'],
-   dict(db4=True)
-   ),
 ])
+
 def test_parsecli(cli, expected):
     result = parsecli(cli)
     # Create set difference and only compare this with the expected dictionary
     diff = set(result.__dict__) & set(expected)
     result = {i: getattr(result, i) for i in diff}
     assert result == expected
+
+
+def test_mutually_exclusive():
+    with pytest.raises(SystemExit):
+        result = parsecli(['--help-xsl-param', 'index.xml'])
+
+
+def test_print_all_xsl_params_with_cli(capsys):
+    with pytest.raises(SystemExit):
+        result = parsecli(['--help-xsl-param'])
+    captured = capsys.readouterr()
+    assert len(captured.out.split('\n')) > 1
+
+
+def test_print_all_xsl_params_param_without_doc(capsys, monkeypatch):
+    def mockreturn(xmlfile):
+        from lxml import etree
+        tree = etree.XML("""<xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:doc="urn:x-suse:xslt-doc"
+  exclude-result-prefixes="doc">
+
+  <xsl:param name="good" doc:descr="My doc"/>
+  <xsl:param name="nodoc"/>
+</xsl:stylesheet>""")
+        return tree.getroottree()
+
+    monkeypatch.setattr("rstxml2db.cli.etree.parse", mockreturn)
+
+    with pytest.raises(SystemExit):
+        result = parsecli(['--help-xsl-param'])
+
+    captured = capsys.readouterr()
+    out = captured.out.strip().split('\n')
+    assert len(out) == 2
+    out = out[1]
+    out = [i.strip() for i in out.split(":") ]
+    assert out == ['good', 'My doc']
+

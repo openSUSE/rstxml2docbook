@@ -17,6 +17,7 @@
 # you may find current contact information at www.suse.com
 
 from lxml import etree
+from ..core import NSMAP
 
 
 def addchapter(xml, convfile):
@@ -34,7 +35,7 @@ def addchapter(xml, convfile):
     except (KeyError, IndexError):
         pos = 1
 
-    firstchapter = book.find('chapter[1]')
+    firstchapter = book.find('d:chapter[1]', namespaces=NSMAP)
     if firstchapter is not None:
         book.remove(firstchapter)
     book.insert(pos, conv.getroot())
@@ -47,5 +48,5 @@ def addlegalnotice(xml, legalfile):
     :param legalfile: filename with root element ``<legalnotice>``
     """
     legal = etree.parse(legalfile).getroot()
-    bookinfo = xml.getroot().find('bookinfo')
+    bookinfo = xml.getroot().find('d:info', namespaces=NSMAP)
     bookinfo.append(legal)

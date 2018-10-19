@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+<!DOCTYPE document PUBLIC
+  "+//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML"
+  "http://docutils.sourceforge.net/docs/ref/docutils.dtd">
+-->
+
+<document source="seealso.002.rst">
+ <section ids="seealso">
+  <title>Seealso Test</title>
+  <seealso>
+    <paragraph>For more information see Administrator Guide.</paragraph>
+    <paragraph>2nd paragraph.</paragraph>
+  </seealso>
+ </section>
+</document>

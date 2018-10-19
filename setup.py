@@ -21,9 +21,26 @@
 from setuptools import setup, find_packages
 
 
+def requires(filename):
+    """Returns a list of all pip requirements, but ignores empty lines or
+       lines starting with '#' or '-'
+    :param filename: the Pip requirement file (usually 'requirements.txt')
+    :return: list of modules
+    :rtype: list
+    """
+    modules = []
+    with open(filename, 'r') as pipreq:
+        for line in pipreq:
+            line = line.strip()
+            if not line or line[0] in ('-', '#'):
+                continue
+            modules.append(line)
+    return modules
+
+
 setupdict = dict(
    name='rstxml2docbook',
-   version='0.4.5',
+   version='0.4.6',
    description='Converts RST XML files back to DocBook XML',
    url='https://github.com/tomschr/rstxml2docbook',
    # Author details
@@ -50,7 +67,7 @@ setupdict = dict(
    # simple. Or you can use find_packages().
    packages=find_packages('src'),
    package_dir={'': 'src'},
-   install_requires=['lxml'],
+   install_requires=requires('requirements.txt'),
 
    # If there are data files included in your packages that need to be
    # installed, specify them here.  If using Python 2.6 or less, then these

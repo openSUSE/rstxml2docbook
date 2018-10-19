@@ -13,6 +13,7 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+import datetime
 import sys
 # import os
 
@@ -36,6 +37,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
     'sphinx.ext.todo',
+    'sphinx.ext.intersphinx',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -52,14 +54,15 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'rstxml2docbook'
-copyright = '2016, Thomas Schraitle'
+year = datetime.datetime.utcnow().year
+copyright = '2016-{}, Thomas Schraitle'.format(year)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-version = '0.4.5'
+version = '0.4.6'
 # The full version, including alpha/beta/rc tags.
 release = version
 
@@ -108,21 +111,23 @@ pygments_style = 'sphinx'
 # a list of builtin themes.
 
 try:
-    import sphinx_rtd_theme
-    html_theme = "sphinx_rtd_theme"
-    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+#    import sphinx_rtd_theme
+#    html_theme = "sphinx_rtd_theme"
+#    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+    import guzzle_sphinx_theme
+    html_theme = 'guzzle_sphinx_theme'
+    # Add any paths that contain custom themes here, relative to this directory.
+    #html_theme_path = []
+    html_theme_path = guzzle_sphinx_theme.html_theme_path()
+
 except ImportError:
     html_theme = 'default'
-
 
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #html_theme_options = {}
-
-# Add any paths that contain custom themes here, relative to this directory.
-#html_theme_path = []
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
@@ -272,3 +277,10 @@ texinfo_documents = [
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
+
+
+# -- Options for Intersphinx -----------------------------------------------
+intersphinx_mapping = {'python': ('https://docs.python.org/3.4', None),
+                       # 'pytest': ('https://docs.pytest.org', None),
+                       # 'lxml':   ('http://lxml.de/api/index.html', None)
+                       }

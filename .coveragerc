@@ -17,6 +17,7 @@ ignore_errors = True
 omit =
     tests/*
     test/*
+    */rstxml2db/__main__.py
 
 [html]
 title = rstxml2docbook Coverage Report

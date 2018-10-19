@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
    Purpose:
-     Transforms RST XML into DocBook
+     Transforms RST XML tree into DocBook
 
    Parameters:
      * productname
@@ -20,37 +20,57 @@
      RST XML file, converted with sphinx-build using option -b xml
 
    Output:
-     DocBook 4 document
+     DocBook 5 document
 
    Author:
      Thomas Schraitle <toms AT opensuse.org>
-     Copyright 2016 SUSE Linux GmbH
+     Copyright 2016-2018 SUSE Linux GmbH
 
 -->
 <xsl:stylesheet version="1.0"
+  xmlns="http://docbook.org/ns/docbook"
+  xmlns:d="http://docbook.org/ns/docbook"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:exsl="http://exslt.org/common"
-  exclude-result-prefixes="exsl">
+  xmlns:doc="urn:x-suse:xslt-doc"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:xl="http://www.w3.org/1999/xlink"
+  exclude-result-prefixes="exsl doc d xi xl">
 
   <xsl:output indent="yes"/>
   <xsl:strip-space elements="*"/>
 
+  <!-- Keys =============================================================-->
   <xsl:key name="id" match="*" use="@ids"/>
   <xsl:key name="documents" match="document" use="@source"/>
 
-  <xsl:param name="xml.ext">.xml</xsl:param>
+  <!-- Parameters =======================================================-->
+  <xsl:param name="xml.ext" doc:descr="Extension for referenced files">.xml</xsl:param>
+  <xsl:param name="rootlang" doc:descr="Natural language for root element">en</xsl:param>
+  <xsl:param name="productname" doc:descr="The product name, empty by default"/>
+  <xsl:param name="productnumber" doc:descr="The product number, empty by default"/>
 
-  <!-- Natural language for root element -->
-  <xsl:param name="rootlang">en</xsl:param>
-
-  <xsl:param name="productname"/>
-  <xsl:param name="productnumber"/>
-
-
+  <!-- Templates ======================================================= -->
   <xsl:template match="*">
-    <xsl:message>WARN: Unknown element '<xsl:value-of select="local-name()"/>'</xsl:message>
+    <!-- <xsl:message>WARN: Unknown element '<xsl:value-of select="local-name()"/>'</xsl:message> -->
   </xsl:template>
 
+  <xsl:template name="include.xmlbase">
+   <xsl:param name="node" select="."/>
+   <xsl:variable name="xmlbase">
+    <xsl:choose>
+     <xsl:when test="$node/parent::*/@xml:base">
+      <xsl:value-of select="$node/parent::*/@xml:base"/>
+     </xsl:when>
+    </xsl:choose>
+   </xsl:variable>
+
+   <xsl:if test="$xmlbase != ''">
+    <xsl:attribute name="xml:base">
+     <xsl:value-of select="$xmlbase"/>
+    </xsl:attribute>
+   </xsl:if>
+  </xsl:template>
 
   <xsl:template name="get.structural.name">
     <xsl:param name="level"/>
@@ -189,8 +209,11 @@
 
   <xsl:template match="comment"/>
   <xsl:template match="index"/>
+  <xsl:template match="meta"/>
+  <xsl:template match="raw"/>
   <xsl:template match="target"/>
   <xsl:template match="substitution_definition"/>
+
 
   <!-- =================================================================== -->
   <!-- Skipped elements                                                    -->
@@ -208,15 +231,16 @@
       <xsl:call-template name="get.target4section.id"/>
     </xsl:variable>
 
-    <book lang="{$rootlang}">
+    <book xml:lang="{$rootlang}">
       <xsl:if test="$idattr != ''">
-        <xsl:attribute name="id">
+        <xsl:attribute name="xml:id">
           <xsl:value-of select="$idattr"/>
         </xsl:attribute>
       </xsl:if>
+      <xsl:call-template name="include.xmlbase"/>
       <xsl:apply-templates select="title"/>
-      <bookinfo>
-        <xsl:apply-templates select="section[@names='abstract']" mode="bookinfo"/>
+      <info>
+        <xsl:apply-templates select="section[@names='abstract']" mode="info"/>
         <xsl:if test="$productname != ''">
           <productname>
             <xsl:value-of select="$productname"/>
@@ -227,7 +251,7 @@
             <xsl:value-of select="$productnumber"/>
           </productnumber>
         </xsl:if>
-      </bookinfo>
+      </info>
       <xsl:apply-templates select="*[not(self::title)]"/>
     </book>
   </xsl:template>
@@ -239,15 +263,16 @@
 
     <chapter>
       <xsl:if test="$idattr != ''">
-        <xsl:attribute name="id">
+        <xsl:attribute name="xml:id">
           <xsl:value-of select="$idattr"/>
         </xsl:attribute>
       </xsl:if>
+     <xsl:call-template name="include.xmlbase"/>
       <xsl:apply-templates/>
     </chapter>
   </xsl:template>
 
-  <xsl:template match="section[@names = 'abstract']" mode="bookinfo">
+  <xsl:template match="section[@names = 'abstract']" mode="info">
      <abstract>
       <xsl:apply-templates/>
     </abstract>
@@ -264,10 +289,11 @@
 
     <xsl:element name="{$name}">
       <xsl:if test="@ids">
-        <xsl:attribute name="id">
+        <xsl:attribute name="xml:id">
           <xsl:value-of select="$idattr"/>
         </xsl:attribute>
       </xsl:if>
+     <xsl:call-template name="include.xmlbase"/>
       <xsl:apply-templates>
         <xsl:with-param name="root" select="$name"/>
       </xsl:apply-templates>
@@ -291,7 +317,7 @@
   <xsl:template match="text()" mode="xinclude"/>
 
   <xsl:template match="list_item[@classes='toctree-l1']" mode="xinclude">
-    <xsl:variable name="xiref" select="concat(*/reference/@refuri, $xml.ext)"/>
+    <xsl:variable name="xiref" select="*/reference/@refuri"/>
     <!--<xi:include href="{$xiref}" xmlns:xi="http://www.w3.org/2001/XInclude"/>-->
     <xsl:element name="xi:include" namespace="http://www.w3.org/2001/XInclude">
       <xsl:attribute name="href">
@@ -304,6 +330,26 @@
 
   <!-- =================================================================== -->
   <xsl:template match="block_quote">
+    <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="seealso">
+    <formalpara>
+       <title>See also</title>
+       <xsl:choose>
+        <xsl:when test="paragraph">
+          <xsl:apply-templates select="paragraph[1]"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <para/>
+        </xsl:otherwise>
+       </xsl:choose>
+    </formalpara>
+    <xsl:apply-templates select="paragraph[position()>1]"/>
+     <xsl:apply-templates select="*[not(self::paragraph)]"/>
+  </xsl:template>
+
+  <xsl:template match="manpage">
     <xsl:apply-templates/>
   </xsl:template>
 
@@ -370,7 +416,7 @@
     </xsl:variable>
     <step>
       <xsl:if test="$id != ''">
-        <xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute>
+        <xsl:attribute name="xml:id"><xsl:value-of select="$id"/></xsl:attribute>
       </xsl:if>
       <xsl:apply-templates/>
     </step>
@@ -411,6 +457,7 @@
 
   <xsl:template match="document/section[@names='glossary']">
    <glossary>
+    <xsl:call-template name="include.xmlbase"/>
     <xsl:apply-templates/>
    </glossary>
   </xsl:template>
@@ -423,7 +470,9 @@
    <xsl:call-template name="get.target4section.id"/>
   </xsl:variable>
   <xsl:message>INFO: Add glossdiv <xsl:value-of select="$idattr"/></xsl:message>
-  <glossdiv id="{$idattr}">
+  <glossdiv>
+    <xsl:attribute name="xml:id"><xsl:value-of select="$idattr"/></xsl:attribute>
+   <xsl:call-template name="include.xmlbase"/>
    <xsl:apply-templates select="title"/>
    <xsl:apply-templates select="*[not(self::title)]"/>
   </glossdiv>
@@ -451,11 +500,12 @@
    </xsl:variable>
     <glossentry>
       <xsl:if test="$idattr">
-        <xsl:attribute name="id">
+        <xsl:attribute name="xml:id">
           <xsl:value-of select="$idattr"/>
         </xsl:attribute>
-        <xsl:message>INFO: Add id=<xsl:value-of select="$idattr"/></xsl:message>
+        <xsl:message>INFO: Add xml:id=<xsl:value-of select="$idattr"/></xsl:message>
       </xsl:if>
+      <xsl:call-template name="include.xmlbase"/>
       <xsl:apply-templates select="term"/>
       <xsl:apply-templates select="definition"/>
     </glossentry>
@@ -470,7 +520,7 @@
   <xsl:template match="definition_list[@classes='glossary']/definition_list_item/term/index"/>
 
   <xsl:template match="definition_list[@classes='glossary']/definition_list_item/definition">
-    <xsl:message>INFO: Add definition of <xsl:value-of select="normalize-space(../term)"/>, id=<xsl:value-of select="../term/@ids"/></xsl:message>
+    <xsl:message>INFO: Add definition of <xsl:value-of select="normalize-space(../term)"/>, xml:id=<xsl:value-of select="../term/@ids"/></xsl:message>
     <glossdef>
       <xsl:apply-templates/>
     </glossdef>
@@ -501,13 +551,13 @@
 
 <!--    <xsl:message>table:
     title=<xsl:value-of select="$title"/>
-    id=<xsl:value-of select="$id"/>
+    xml:id=<xsl:value-of select="$id"/>
     type=<xsl:value-of select="$tabletype"/>
     </xsl:message>-->
 
     <xsl:element name="{$tabletype}">
       <xsl:if test="$id != ''">
-        <xsl:attribute name="id">
+        <xsl:attribute name="xml:id">
           <xsl:value-of select="$id"/>
         </xsl:attribute>
       </xsl:if>
@@ -549,6 +599,41 @@
     </colspec>
   </xsl:template>
 
+  <xsl:template match="row" mode="table">
+    <row>
+      <xsl:apply-templates mode="table"/>
+    </row>
+  </xsl:template>
+
+  <xsl:template match="tbody" mode="table">
+    <tbody>
+      <xsl:apply-templates mode="table"/>
+    </tbody>
+  </xsl:template>
+  <xsl:template match="thead" mode="table">
+    <thead>
+      <xsl:apply-templates mode="table"/>
+    </thead>
+  </xsl:template>
+
+  <xsl:template match="tgroup" mode="table">
+    <tgroup>
+      <xsl:apply-templates mode="table"/>
+    </tgroup>
+  </xsl:template>
+  
+
+  <xsl:template match="entry" mode="table">
+    <entry>
+      <xsl:apply-templates mode="table"/>
+    </entry>
+  </xsl:template>
+
+  <xsl:template match="entry/*[not(self::paragraph)]" mode="table">
+    <para>
+      <xsl:apply-templates/>
+    </para>
+  </xsl:template>
 
   <xsl:template match="paragraph" mode="table">
     <para>
@@ -560,6 +645,8 @@
     <xsl:apply-templates select="."/>
   </xsl:template>
 
+
+  <!-- =================================================================== -->
   <xsl:template match="option_list">
    <variablelist>
     <xsl:apply-templates/>
@@ -594,6 +681,17 @@
 
 
   <!-- =================================================================== -->
+ <xsl:template match="figure[caption]">
+  <figure>
+   <title>
+    <xsl:apply-templates select="caption"/>
+   </title>
+   <xsl:apply-templates select="node()[not(self::caption)]">
+    <xsl:with-param name="use.informalfigure" select="false()"/>
+   </xsl:apply-templates>
+  </figure>
+ </xsl:template>
+
   <xsl:template match="figure">
     <xsl:variable name="title">
       <xsl:choose>
@@ -623,10 +721,23 @@
       </xsl:choose>
     </xsl:variable>
 
-    <figure>
-      <title><xsl:value-of select="normalize-space($title)"/></title>
-      <xsl:apply-templates select="node()[not(self::caption)]"/>
-    </figure>
+    <xsl:choose>
+     <xsl:when test="normalize-space($title) != ''">
+       <figure>
+        <title><xsl:value-of select="normalize-space($title)"/></title>
+        <informalfigure>
+         <xsl:apply-templates select="node()[not(self::caption)]">
+          <xsl:with-param name="use.informalfigure" select="false()"/>
+         </xsl:apply-templates>
+        </informalfigure>
+       </figure>
+     </xsl:when>
+     <xsl:otherwise>
+         <xsl:apply-templates select="node()[not(self::caption)]">
+          <xsl:with-param name="use.informalfigure" select="false()"/>
+         </xsl:apply-templates>
+     </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="caption|caption/strong">
@@ -634,9 +745,10 @@
   </xsl:template>
 
   <xsl:template match="image">
+    <xsl:param name="use.informalfigure" select="true()"/>
     <xsl:variable name="uri">
       <xsl:call-template name="filename-basename">
-        <xsl:with-param name="filename" select="@uri"></xsl:with-param>
+        <xsl:with-param name="filename" select="@uri"/>
       </xsl:call-template>
     </xsl:variable>
     <xsl:variable name="imagedata">
@@ -648,7 +760,7 @@
       </xsl:if>
      </imagedata>
     </xsl:variable>
-    <informalfigure>
+    <xsl:variable name="mediaobject">
      <mediaobject>
       <imageobject role="fo">
        <xsl:copy-of select="$imagedata"/>
@@ -657,15 +769,83 @@
        <xsl:copy-of select="$imagedata"/>
       </imageobject>
      </mediaobject>
-    </informalfigure>
+    </xsl:variable>
+    <xsl:choose>
+     <xsl:when test="$use.informalfigure = false()">
+     <xsl:copy-of select="$mediaobject"/>
+     </xsl:when>
+     <xsl:otherwise>
+      <informalfigure>
+       <xsl:copy-of select="$mediaobject"/>
+      </informalfigure>
+     </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="paragraph[strong][preceding-sibling::figure]"/>
+	<xsl:template match="paragraph[strong][preceding-sibling::figure]"/>
 
+	<xsl:template match="desc">
+    <xsl:variable name="id" select="normalize-space(desc_signature/@ids)"/>
+	  <variablelist>
+			<varlistentry><!-- Bug in libxslt with AVT? -->
+			<xsl:if test="$id != ''">
+			  <xsl:attribute name="xml:id">
+			     <xsl:value-of select="$id"/>
+			  </xsl:attribute>
+			</xsl:if>
+          <xsl:apply-templates/>
+			</varlistentry>
+		</variablelist>
+	</xsl:template>
+	
+	<xsl:template match="desc_signature">
+    <xsl:variable name="name">
+      <xsl:choose>
+        <xsl:when test="../@objtype='function'">
+          <xsl:text>function</xsl:text>
+        </xsl:when>
+        <xsl:when test="../@objtype='method'">
+          <xsl:text>property</xsl:text>
+        </xsl:when>
+        <xsl:when test="../@objtype='attribute'">
+          <xsl:text>property</xsl:text>
+        </xsl:when>
+        <xsl:when test="../@objtype='classmethod'">
+          <xsl:text>property</xsl:text>
+        </xsl:when>
+        <xsl:when test="../@objtype='staticmethod'">
+          <xsl:text>property</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:text>literal</xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+      <term>
+        <xsl:element name="{$name}">
+          <xsl:value-of select="@ids"/>
+        </xsl:element>
+      </term>
+	</xsl:template>
+
+  <xsl:template match="desc_content">
+    <listitem>
+      <xsl:choose>
+        <xsl:when test="not(*)">
+          <para/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </listitem>
+  </xsl:template>
 
   <!-- =================================================================== -->
   <xsl:template match="emphasis">
-    <xsl:copy-of select="."/>
+    <emphasis>
+      <xsl:apply-templates/>
+    </emphasis>
   </xsl:template>
 
   <xsl:template match="inline">
@@ -673,9 +853,10 @@
   </xsl:template>
 
   <xsl:template match="emphasis[@classes='guilabel']|inline[@classes='guilabel']">
-    <guilabel>
+    <!-- We use guimenu instead of guilabel here because of GeekoDoc -->
+    <guimenu>
       <xsl:apply-templates/>
-    </guilabel>
+    </guimenu>
   </xsl:template>
 
   <xsl:template match="emphasis[@classes='menuselection']|inline[@classes='menuselection']">
@@ -725,34 +906,40 @@
   </xsl:template>
 
   <xsl:template match="reference[@refuri]">
-    <ulink url="{@refuri}">
-      <xsl:value-of select="."/>
-    </ulink>
+    <link xl:href="{@refuri}">
+      <xsl:if test="@refuri != .">
+       <xsl:value-of select="."/>
+      </xsl:if>
+    </link>
   </xsl:template>
 
   <xsl:template match="reference[@refuri][@internal='True']">
-    <xsl:variable name="uri" select="substring-after(@refuri, '#')"/>
-
+    <xsl:variable name="uri">
+    <xsl:choose>
+      <xsl:when test="contains(@refuri,'#')">
+        <xsl:value-of select="substring-after(@refuri, '#')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="@refuri"/>
+      </xsl:otherwise>
+    </xsl:choose>
+    </xsl:variable>
     <xsl:choose>
       <xsl:when test="$uri != ''">
         <xref linkend="{$uri}"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:variable name="refuri" select="concat(@refuri, '.xml')"/>
-<!--        <xsl:variable name="sectid" select="($refs[@href=$refuri])[1]/section[1]/@id"/> -->
         <xsl:variable name="sectid" select="key('documents', @refuri)"/>
         <xsl:choose>
           <xsl:when test="$sectid != ''">
             <xref linkend="{$sectid}"/>
           </xsl:when>
           <xsl:otherwise>
-            <!-- common/cli_set_environment_variables_using_openstack_rc.xml
-              concat(@refuri, '.xml')
-             -->
             <xsl:message>WARNING: could not find referenced ID '<xsl:value-of select="@refuri"/>'!
              sectid="<xsl:value-of select="$sectid"/>"
              refuri=<xsl:value-of select="$refuri"/>
-             <!-- ref section=<xsl:value-of select="$refs[@href='common/cli_set_environment_variables_using_openstack_rc.xml']/section[1]/@id"/>--></xsl:message>
+            </xsl:message>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:otherwise>
@@ -761,6 +948,10 @@
 
   <xsl:template match="reference[@refid]">
     <xref linkend="{@refid}"/>
+  </xsl:template>
+
+  <xsl:template match="entry/inline/reference[@refid]">
+    <link xl:href="#{@refid}"><xsl:apply-templates/></link>
   </xsl:template>
 
   <xsl:template match="title_reference">

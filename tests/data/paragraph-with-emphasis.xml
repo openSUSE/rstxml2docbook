@@ -1,0 +1,12 @@
+
+<!--<!DOCTYPE document PUBLIC
+  "+//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML"
+  "http://docutils.sourceforge.net/docs/ref/docutils.dtd">-->
+
+<document source="paragraph-with-emphasis.rst">
+
+ <section ids="paragraph " names="paragraph\ with\ emphasis emphasis">
+  <title>Manage volumes</title>
+  <paragraph>This is <emphasis>really</emphasis> good!</paragraph>
+ </section>
+</document>

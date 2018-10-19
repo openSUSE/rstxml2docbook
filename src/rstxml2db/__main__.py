@@ -16,7 +16,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-"""Support python -m rstxml2db call with __main__.py"""
+"""Support ``python3 -m rstxml2db`` call with __main__.py"""
 
 import sys
 from .cli import main

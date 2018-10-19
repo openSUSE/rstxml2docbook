@@ -23,8 +23,8 @@ Converts RST XML (Sphinx/ReST XML) into DocBook XML
 import logging
 
 
-__author__ = "Thomas Schraitle"
-__version__ = "0.4.5"
+__author__ = "Thomas Schraitle & Fabian Baumanis"
+__version__ = "0.4.6"
 __name__ = "rstxml2db"
 __url__ = "https://github.com/openSUSE/rstxml2docbook"
 __email__ = "toms (AT) suse DOT de"
