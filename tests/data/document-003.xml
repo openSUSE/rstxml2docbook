@@ -1,0 +1,30 @@
+<!--<!DOCTYPE document PUBLIC
+  "+//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML"
+  "http://docutils.sourceforge.net/docs/ref/docutils.dtd">-->
+
+<!DOCTYPE document SYSTEM "docutils.dtd">
+<document source="document.003.rst">
+  <section ids="foo" names="foo">
+    <title>Foo</title>
+    <paragraph>I'm the foo para.</paragraph>
+    <compound classes="toctree-wrapper">
+      <compact_paragraph toctree="True">
+        <bullet_list>
+          <list_item classes="toctree-l1">
+            <compact_paragraph classes="toctree-l1">
+              <reference anchorname="" internal="True"
+                refuri="document-001">Document 001</reference>
+            </compact_paragraph>
+          </list_item>
+          <!--<list_item classes="toctree-l1">
+                            <compact_paragraph classes="toctree-l1">
+                                <reference anchorname="" internal="False"
+                                    refuri="https://developer.openstack.org/api-ref/baremetal/"
+                                    >API Reference (latest)</reference>
+                            </compact_paragraph>
+                        </list_item>-->
+        </bullet_list>
+      </compact_paragraph>
+    </compound>
+  </section>
+</document>
