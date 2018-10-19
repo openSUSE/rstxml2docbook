@@ -70,4 +70,4 @@ addons:
 
 after_success:
 #    - codecov
-    - travis-sphinx -v deploy
+#    - travis-sphinx -v deploy
