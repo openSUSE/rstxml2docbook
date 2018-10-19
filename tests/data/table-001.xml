@@ -1,0 +1,41 @@
+<!--<!DOCTYPE document PUBLIC
+  "+//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML"
+  "http://docutils.sourceforge.net/docs/ref/docutils.dtd">-->
+
+<document source="table.001.rst">
+  <target refid="table"/>
+  <section ids="table table" names="test\ tables tables">
+    <title>Test Tables</title>
+    <paragraph>The following structure is a table:</paragraph>
+
+    <table>
+      <tgroup cols="4">
+        <colspec colwidth="1"/>
+        <colspec colwidth="1"/>
+        <colspec colwidth="1"/>
+        <colspec colwidth="1"/>
+        <tbody>
+          <row>
+            <entry>
+              <inline><reference refid="operation_create_unscoped_token"
+                    ><strong>Create unscoped token</strong></reference></inline>
+            </entry>
+            <entry>
+              <inline classes="sp_feature_mandatory">mandatory</inline>
+            </entry>
+            <entry>
+              <inline><reference refid="operation_create_unscoped_token_fernet"
+                    ><literal classes="sp_impl_summary sp_impl_complete"
+                    >✔</literal></reference></inline>
+            </entry>
+            <entry>
+              <inline><reference refid="operation_create_unscoped_token_uuid"
+                    ><literal classes="sp_impl_summary sp_impl_complete"
+                    >✔</literal></reference></inline>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+</document>
