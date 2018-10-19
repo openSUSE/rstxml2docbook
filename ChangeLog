@@ -1,4 +1,38 @@
 -------------------------------------------------------------------
+Fri Oct 18 09:50:00 UTC 2017 - toms@opensuse.org
+
+Version 0.4.6
+
+Enhancements:
+ * Transform <seealso> tag in <formalpara> (#16, #17)
+ * Ignore <manpage> tag, but use its text (#18, #19)
+ * Enhance own documentation (#22)
+ * Add --help-xsl-param option (#24)
+ * Improve code coverate & test cases (#2, #26, #27)
+ * When <references> contains both @refuri and text, add text
+   only to <link> when it is different from @refuri (#29)
+ * Support <desc> element (#34)
+ * Rename .pip -> .txt to support GitHub's vulnerability report (#39)
+ * Update deprecated installing step in README.rst (#40)
+ * Adjust exclusions for uniformity in setup.cfg (#45)
+ * Move doc* directories to data (#49, #50)
+ * Switch to DocBook 5 output format (#3, #51)
+ * Correct entry/inline elements (coming from a support_matrix directive) (#55, #56)
+ 
+Bugfixes:
+ * Catch XMLSyntaxError when XML isn't well-formed (#9)
+ * Ignore <meta> and <raw/> (#20, #23)
+ * Fix double '.xml' suffixes (#25)
+ * Ignore xml:base attributes after rst2xml conversion (#28)
+ * Check for empty screen (#38)
+ * Copy namespace nodes to root element (#36)
+ * Update deprecated function:
+   inspect.getargspec(func) -> inspect.getfullargspec(func) (#47)
+ * Fixed internal refuri reference bug (#41, #52)
+ * Remove empty namespace in <emphasis> (#53, 54)
+ * Correct entry/inline elements (#55, #56)
+
+-------------------------------------------------------------------
 Tue Apr 18 08:51:00 UTC 2017 - toms@opensuse.org
 
 Version 0.4.5:
