@@ -9,7 +9,7 @@ coverage
 codecov
 pytest-cov
 
-# See https://github.com/Syntaf/travis-sphinx/pull/5
-travis-sphinx==1.2.0
+travis-sphinx
+ghp-import
 pytest-travis-fold
 -e .
