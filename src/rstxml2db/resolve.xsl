@@ -60,11 +60,19 @@
   <xsl:template match="list_item[@classes='toctree-l1']" mode="xinclude">
     <xsl:variable name="refuri" select="*/reference/@refuri"/>
     <xsl:variable name="ref" select="concat($refuri, $xml.ext)"/>
-    <xsl:message>INFO: Including "<xsl:value-of select="$ref"/>"...</xsl:message>
-    <xsl:apply-templates select="document($ref, .)">
-      <xsl:with-param name="role" select="''"/>
-      <xsl:with-param name="xmlbase" select="$refuri"/>
-    </xsl:apply-templates>
+
+    <xsl:choose>
+      <xsl:when test=" starts-with($refuri, 'http')">
+        <xsl:message>WARNING: Cannot include "<xsl:value-of select="$ref"/>"; ignored</xsl:message>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:message>INFO: Including "<xsl:value-of select="$ref"/>"...</xsl:message>
+        <xsl:apply-templates select="document($ref, .)">
+          <xsl:with-param name="role" select="''"/>
+          <xsl:with-param name="xmlbase" select="$refuri"/>
+        </xsl:apply-templates>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
 </xsl:stylesheet>

@@ -1,6 +1,16 @@
 -------------------------------------------------------------------
 Fri Oct 18 09:50:00 UTC 2017 - toms@opensuse.org
 
+Version 0.4.7
+
+Bugfixes:
+* Ignore references in TOC to remote URL (#57)
+* Fix doc stage in .travis.yml (#59)
+
+
+-------------------------------------------------------------------
+Fri Oct 18 09:50:00 UTC 2017 - toms@opensuse.org
+
 Version 0.4.6
 
 Enhancements:
