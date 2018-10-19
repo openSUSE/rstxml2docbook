@@ -29,7 +29,7 @@ jobs:
           env: TOXENV=py36
         - stage: doc
           python: 3.6
-          env: TOXENV=doc
+          env: TOXENV=doc_travis,doc_travis_deploy
           deploy:
             provider: pages
             skip-cleanup: true
@@ -37,7 +37,7 @@ jobs:
             keep-history: true
             on:
                branch: feature/*
-               local-dir: doc/build/
+               local-dir: doc/build/html/
                verbose: true
           # script:
           #  - travis-sphinx -v build --nowarn --source=doc
