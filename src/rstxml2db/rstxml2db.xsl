@@ -35,7 +35,7 @@
   xmlns:doc="urn:x-suse:xslt-doc"
   xmlns:xi="http://www.w3.org/2001/XInclude"
   xmlns:xl="http://www.w3.org/1999/xlink"
-  exclude-result-prefixes="exsl doc">
+  exclude-result-prefixes="exsl doc d xi xl">
 
   <xsl:output indent="yes"/>
   <xsl:strip-space elements="*"/>
@@ -599,6 +599,41 @@
     </colspec>
   </xsl:template>
 
+  <xsl:template match="row" mode="table">
+    <row>
+      <xsl:apply-templates mode="table"/>
+    </row>
+  </xsl:template>
+
+  <xsl:template match="tbody" mode="table">
+    <tbody>
+      <xsl:apply-templates mode="table"/>
+    </tbody>
+  </xsl:template>
+  <xsl:template match="thead" mode="table">
+    <thead>
+      <xsl:apply-templates mode="table"/>
+    </thead>
+  </xsl:template>
+
+  <xsl:template match="tgroup" mode="table">
+    <tgroup>
+      <xsl:apply-templates mode="table"/>
+    </tgroup>
+  </xsl:template>
+  
+
+  <xsl:template match="entry" mode="table">
+    <entry>
+      <xsl:apply-templates mode="table"/>
+    </entry>
+  </xsl:template>
+
+  <xsl:template match="entry/*[not(self::paragraph)]" mode="table">
+    <para>
+      <xsl:apply-templates/>
+    </para>
+  </xsl:template>
 
   <xsl:template match="paragraph" mode="table">
     <para>
@@ -610,6 +645,8 @@
     <xsl:apply-templates select="."/>
   </xsl:template>
 
+
+  <!-- =================================================================== -->
   <xsl:template match="option_list">
    <variablelist>
     <xsl:apply-templates/>
@@ -911,6 +948,10 @@
 
   <xsl:template match="reference[@refid]">
     <xref linkend="{@refid}"/>
+  </xsl:template>
+
+  <xsl:template match="entry/inline/reference[@refid]">
+    <link xl:href="#{@refid}"><xsl:apply-templates/></link>
   </xsl:template>
 
   <xsl:template match="title_reference">
