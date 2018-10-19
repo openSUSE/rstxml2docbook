@@ -30,7 +30,6 @@ jobs:
         - stage: doc
           python: 3.6
           script:
-            - pip install ghp-import
             - travis-sphinx -v build --nowarn --source=doc
 
 
