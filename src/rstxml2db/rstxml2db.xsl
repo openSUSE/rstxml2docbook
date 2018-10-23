@@ -353,7 +353,8 @@
     <xsl:apply-templates/>
   </xsl:template>
 
-  <xsl:template match="literal_block[@language='shell' or @language='console']">
+  <xsl:template match="literal_block[@language='shell' or @language='console']|
+                       literal[@classes='sp_cli']">
     <screen>
       <xsl:apply-templates/>
     </screen>
@@ -632,7 +633,7 @@
     </entry>
   </xsl:template>
 
-  <xsl:template match="entry/*[not(self::paragraph)]" mode="table">
+  <xsl:template match="entry/*[not(self::paragraph or self::bullet_list)]" mode="table">
     <para>
       <xsl:apply-templates/>
     </para>
@@ -952,6 +953,11 @@
   <xsl:template match="reference[@refid]">
     <xref linkend="{@refid}"/>
   </xsl:template>
+
+  <xsl:template match="entry/inline">
+    <para><xsl:apply-templates/></para>
+  </xsl:template>
+
 
   <xsl:template match="entry/inline/reference[@refid]">
     <link xl:href="#{@refid}"><xsl:apply-templates/></link>
