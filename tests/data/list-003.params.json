@@ -1,0 +1,4 @@
+[
+    ["//d:itemizedlist/d:listitem/d:para[1]/d:emphasis/text()", ["Strong"]],
+    ["//d:itemizedlist/d:listitem/d:para[2]/d:literal/text()",  ["Literal"]]
+]

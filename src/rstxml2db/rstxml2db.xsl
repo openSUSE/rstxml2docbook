@@ -408,6 +408,18 @@
     </listitem>
   </xsl:template>
 
+  <xsl:template match="list_item/strong">
+    <para>
+      <xsl:call-template name="strong"/>
+    </para>
+  </xsl:template>
+
+ <xsl:template match="list_item/literal">
+    <para>
+      <xsl:call-template name="literal"/>
+    </para>
+  </xsl:template>
+
   <xsl:template match="enumerated_list">
     <procedure>
       <xsl:apply-templates/>
@@ -894,13 +906,13 @@
     </command>
   </xsl:template>
 
-  <xsl:template match="strong">
+  <xsl:template match="strong" name="strong">
     <emphasis role="bold">
       <xsl:apply-templates/>
     </emphasis>
   </xsl:template>
 
-  <xsl:template match="literal|literal_strong">
+  <xsl:template match="literal|literal_strong" name="literal">
     <literal>
       <xsl:apply-templates/>
     </literal>
