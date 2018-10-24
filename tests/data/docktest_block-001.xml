@@ -1,0 +1,19 @@
+<!--
+<!DOCTYPE document PUBLIC
+  "+//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML"
+  "http://docutils.sourceforge.net/docs/ref/docutils.dtd">
+-->
+
+<document source="docktest_block.001.rst">
+ <section ids="bullet.list">
+  <title>Definition List</title>
+  <definition_list>
+     <definition_list_item>
+        <term>Term</term>
+        <definition>
+           <doctest_block xml:space="preserve">Screen</doctest_block>
+        </definition>
+     </definition_list_item>
+  </definition_list>
+ </section>
+</document>
