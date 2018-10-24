@@ -17,11 +17,12 @@
         <tbody>
           <row>
             <entry>
-              <bullet_list><list_item><literal classes="sp_cli">foo --os-username=&lt;username&gt; --os-user-domain-name=&lt;domain&gt;
---os-password=&lt;password&gt; token issue</literal></list_item></bullet_list>
+              <bullet_list>
+                  <list_item><literal classes="sp_cli">foo</literal></list_item>
+              </bullet_list>
             </entry>
             <entry>
-              <inline classes="sp_feature_mandatory">mandatory</inline>
+              <inline>Second</inline>
             </entry>
             <entry/>
             <entry/>
