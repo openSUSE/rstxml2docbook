@@ -565,9 +565,6 @@
       <xsl:if test="$title != '' and $tabletype = 'table'">
         <xsl:copy-of select="$title"/>
       </xsl:if>
-      <xsl:attribute name="cols">
-       <xsl:value-of select="count(tgroup/colspec)"/>
-      </xsl:attribute>
       <xsl:apply-templates mode="table"/>
     </xsl:element>
   </xsl:template>
@@ -622,6 +619,9 @@
 
   <xsl:template match="tgroup" mode="table">
     <tgroup>
+       <xsl:attribute name="cols">
+         <xsl:value-of select="count(colspec)"/>
+      </xsl:attribute>
       <xsl:apply-templates mode="table"/>
     </tgroup>
   </xsl:template>
