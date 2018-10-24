@@ -49,6 +49,8 @@
   <xsl:param name="rootlang" doc:descr="Natural language for root element">en</xsl:param>
   <xsl:param name="productname" doc:descr="The product name, empty by default"/>
   <xsl:param name="productnumber" doc:descr="The product number, empty by default"/>
+  <xsl:param name="rootversion"
+             doc:descr="The value of the version attribute for the root element">5.1</xsl:param>
 
   <!-- Templates ======================================================= -->
   <xsl:template match="*">
@@ -231,7 +233,7 @@
       <xsl:call-template name="get.target4section.id"/>
     </xsl:variable>
 
-    <book xml:lang="{$rootlang}">
+    <book xml:lang="{$rootlang}" version="{$rootversion}">
       <xsl:if test="$idattr != ''">
         <xsl:attribute name="xml:id">
           <xsl:value-of select="$idattr"/>
