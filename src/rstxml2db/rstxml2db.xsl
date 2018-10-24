@@ -354,7 +354,8 @@
   </xsl:template>
 
   <xsl:template match="literal_block[@language='shell' or @language='console']|
-                       literal[@classes='sp_cli']">
+                       literal[@classes='sp_cli']|
+                       doctest_block">
     <screen>
       <xsl:apply-templates/>
     </screen>
