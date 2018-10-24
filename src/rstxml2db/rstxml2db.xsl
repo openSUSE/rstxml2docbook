@@ -355,9 +355,10 @@
     <xsl:apply-templates/>
   </xsl:template>
 
-  <xsl:template match="literal_block[@language='shell' or @language='console']|
-                       literal[@classes='sp_cli']|
-                       doctest_block">
+  <xsl:template match="literal_block
+                       | literal_block[@language='shell' or @language='console']
+                       | literal[@classes='sp_cli']
+                       | doctest_block" name="screen">
     <screen>
       <xsl:apply-templates/>
     </screen>
@@ -370,12 +371,6 @@
   </xsl:template>
 
   <xsl:template match="line_block[line[normalize-space(.)='']]"/>
-
-  <xsl:template match="literal_block">
-    <screen>
-      <xsl:apply-templates/>
-    </screen>
-  </xsl:template>
 
   <xsl:template match="note|tip|warning|caution|important">
     <xsl:variable name="name">
@@ -408,16 +403,23 @@
     </listitem>
   </xsl:template>
 
-  <xsl:template match="list_item/strong">
-    <para>
-      <xsl:call-template name="strong"/>
-    </para>
-  </xsl:template>
-
- <xsl:template match="list_item/literal">
-    <para>
-      <xsl:call-template name="literal"/>
-    </para>
+  <xsl:template match="list_item/*">
+    <xsl:variable name="content">
+        <para>
+            <xsl:choose>
+                <xsl:when test="self::literal">
+                    <xsl:call-template name="literal"/>
+                </xsl:when>
+                <xsl:when test="self::strong">
+                    <xsl:call-template name="strong"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </para>
+    </xsl:variable>
+    <xsl:copy-of select="$content"/>
   </xsl:template>
 
   <xsl:template match="enumerated_list">
