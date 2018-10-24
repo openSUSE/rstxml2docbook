@@ -372,10 +372,11 @@
 
   <xsl:template match="line_block[line[normalize-space(.)='']]"/>
 
-  <xsl:template match="note|tip|warning|caution|important">
+  <xsl:template match="note|tip|warning|caution|important|hint">
     <xsl:variable name="name">
       <xsl:choose>
         <xsl:when test="local-name()='caution'">important</xsl:when>
+        <xsl:when test="local-name()='hint'">tip</xsl:when>
         <xsl:otherwise><xsl:value-of select="local-name(.)"/></xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -403,23 +404,16 @@
     </listitem>
   </xsl:template>
 
-  <xsl:template match="list_item/*">
-    <xsl:variable name="content">
-        <para>
-            <xsl:choose>
-                <xsl:when test="self::literal">
-                    <xsl:call-template name="literal"/>
-                </xsl:when>
-                <xsl:when test="self::strong">
-                    <xsl:call-template name="strong"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:apply-templates/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </para>
-    </xsl:variable>
-    <xsl:copy-of select="$content"/>
+  <xsl:template match="list_item/literal[not(@classes)]">
+    <para><xsl:call-template name="literal"/></para>
+  </xsl:template>
+  <xsl:template match="list_item/strong">
+    <para><xsl:call-template name="strong"/></para>
+  </xsl:template>
+  <xsl:template match="list_item/paragraph">
+    <para>
+      <xsl:apply-templates/>
+    </para>
   </xsl:template>
 
   <xsl:template match="enumerated_list">
