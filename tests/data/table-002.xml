@@ -1,0 +1,33 @@
+<!--<!DOCTYPE document PUBLIC
+  "+//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML"
+  "http://docutils.sourceforge.net/docs/ref/docutils.dtd">-->
+
+<document source="table.002.rst">
+  <target refid="table"/>
+  <section ids="table table" names="test\ tables tables">
+    <title>Test Table</title>
+    <paragraph/>
+
+    <table>
+      <tgroup>
+        <colspec colwidth="1"/>
+        <colspec colwidth="1"/>
+        <colspec colwidth="1"/>
+        <colspec colwidth="1"/>
+        <tbody>
+          <row>
+            <entry>
+              <bullet_list><list_item><literal classes="sp_cli">foo --os-username=&lt;username&gt; --os-user-domain-name=&lt;domain&gt;
+--os-password=&lt;password&gt; token issue</literal></list_item></bullet_list>
+            </entry>
+            <entry>
+              <inline classes="sp_feature_mandatory">mandatory</inline>
+            </entry>
+            <entry/>
+            <entry/>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+</document>
