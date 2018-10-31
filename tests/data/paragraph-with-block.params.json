@@ -1,0 +1,7 @@
+[
+  ["boolean(/*/d:para)", true],
+  ["boolean(/*/d:itemizedlist)", true],
+  ["boolean(/*/*[3][self::d:para])", true],
+  ["boolean(/*/*[4][self::d:itemizedlist])", true],
+  ["boolean(/*/*[5][self::d:para])", true]
+]

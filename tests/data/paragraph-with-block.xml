@@ -1,0 +1,10 @@
+<document source="paragraph-with-block.rst">
+    <section ids="para_with_block " names="paragraph\ with\ block\ elements">
+  <title>Paragraph With Block Elements</title>
+  <paragraph>Dog<bullet_list bullet="*">
+      <list_item>
+       <paragraph>First item</paragraph>
+      </list_item>
+   </bullet_list>Fox</paragraph>
+ </section>
+</document>
