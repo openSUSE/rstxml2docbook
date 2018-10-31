@@ -51,6 +51,7 @@
   <xsl:param name="productnumber" doc:descr="The product number, empty by default"/>
   <xsl:param name="rootversion"
              doc:descr="The value of the version attribute for the root element">5.1</xsl:param>
+  <xsl:param name="ids.separator" doc:descr="The separator between IDs on @ids attribute">_</xsl:param>
 
   <!-- Templates ======================================================= -->
   <xsl:template match="*">
@@ -124,7 +125,8 @@
           <xsl:value-of select="$node/preceding-sibling::*[1][self::target]/@refid"/>
         </xsl:when>
         <xsl:when test="contains($node/@ids, ' ')">
-          <xsl:value-of select="substring-after($node/@ids, ' ')"/>
+          <!--  -->
+         <xsl:value-of select="translate($node/@ids, ' ', $ids.separator)"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="$node/@ids"/>
