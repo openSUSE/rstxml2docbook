@@ -119,6 +119,7 @@ def transform(doc, args):
     :return: XML tree
     :rtype: :class:`lxml.etree._ElementTree`
     """
+
     xml = step_resolve_transform(doc, args)
     xml = step_blockelements_transform(xml, args)
     xml = step_rst2db_transform(xml, args)
