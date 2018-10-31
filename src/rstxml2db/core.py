@@ -42,8 +42,11 @@ XSLTRST2DB = os.path.join(HERE, 'rstxml2db.xsl')
 #: file into one, single RST XML file
 XSLTRESOLVE = os.path.join(HERE, 'resolve.xsl')
 
-#: Stylesheet to spli up the XML file
+#: Stylesheet to split up the XML file
 XSLTSPLIT = os.path.join(HERE, 'split_xml.xsl')
+
+#: Stylesheet to move block elements out of <paragraph>
+XSLTMOVEBLOCKS = os.path.join(HERE, 'move-blocks-outof-para.xsl')
 
 #: Namespace mappings
 NSMAP = dict(xi='http://www.w3.org/2001/XInclude',

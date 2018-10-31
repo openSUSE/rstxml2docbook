@@ -27,7 +27,7 @@ import os
 from .util import quoteparams
 from .struct import addchapter, addlegalnotice
 from ..cleanup import cleanupxml
-from ..core import XSLTRST2DB, XSLTRESOLVE, XSLTSPLIT
+from ..core import XSLTRST2DB, XSLTRESOLVE, XSLTSPLIT, XSLTMOVEBLOCKS
 
 
 log = logging.getLogger(__name__)
@@ -47,8 +47,24 @@ def logging_xslt(resultxslt, logger=log):
         log.log(getattr(logging, level, 'INFO'), "%s", msg)
 
 
+def step_blockelements_transform(tree, args):
+    """Moves block elements inside <paragraphs> outside
+       of <paragraphs>
+
+    :param tree: tree of class :class:`lxml.etree._ElementTree`
+    :param args: argument result from :class:`argparse`
+    :return: XML tree
+    :rtype: :class:`lxml.etree._ElementTree`
+    """
+    xslt = etree.XSLT(etree.parse(XSLTMOVEBLOCKS))
+    log.debug("Starting to cleanup paragraphs")
+    xml = xslt(tree)
+    return xml
+
+
 def step_resolve_transform(tree, args):
     """Resolve any outgoing references in the RST XML document
+
     :param tree: tree of class :class:`lxml.etree._ElementTree`
     :param args: argument result from :class:`argparse`
     :return: XML tree
@@ -72,6 +88,7 @@ def step_resolve_transform(tree, args):
 
 def step_rst2db_transform(tree, args):
     """Transform RST XML into DocBook 5
+
     :param tree: tree of class :class:`lxml.etree._ElementTree`
     :param args: argument result from :class:`argparse`
     :return: XML tree
@@ -102,7 +119,9 @@ def transform(doc, args):
     :return: XML tree
     :rtype: :class:`lxml.etree._ElementTree`
     """
+
     xml = step_resolve_transform(doc, args)
+    xml = step_blockelements_transform(xml, args)
     xml = step_rst2db_transform(xml, args)
     cleanupxml(xml)
 
