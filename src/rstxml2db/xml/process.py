@@ -46,6 +46,7 @@ def logging_xslt(resultxslt, logger=log):
         msg = msg.strip()
         log.log(getattr(logging, level, 'INFO'), "%s", msg)
 
+
 def step_resolve_transform(tree, args):
     """Resolve any outgoing references in the RST XML document
     :param tree: tree of class :class:`lxml.etree._ElementTree`
