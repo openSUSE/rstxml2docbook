@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<!DOCTYPE document SYSTEM "docutils.dtd">-->
+
+<document source="ref-double-ids.rst">
+  <section>
+  <title>Fox and Dog</title>
+
+  <section ids="fox animal" names="Fox">
+   <title>Fox</title>
+   <paragraph>The quick brown fox.</paragraph>
+  </section>
+
+  <section ids="dog animal" names="Dog">
+   <title>Dog</title>
+   <paragraph>I'm the dog para.</paragraph>
+  </section>
+ </section>
+
+</document>
