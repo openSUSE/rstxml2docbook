@@ -27,7 +27,8 @@ import os
 from .util import quoteparams
 from .struct import addchapter, addlegalnotice
 from ..cleanup import cleanupxml
-from ..core import XSLTRST2DB, XSLTRESOLVE, XSLTSPLIT, XSLTMOVEBLOCKS
+from ..core import (XSLTRST2DB, XSLTRESOLVE, XSLTSPLIT,
+                    XSLTMOVEBLOCKS, XSLTINLINES)
 
 
 log = logging.getLogger(__name__)
@@ -86,6 +87,20 @@ def step_resolve_transform(tree, args):
     return xml
 
 
+def step_inlines_into_para_transform(tree, args):
+    """Move misplaced inline elements into <paragraph>
+
+    :param tree: tree of class :class:`lxml.etree._ElementTree`
+    :param args: argument result from :class:`argparse`
+    :return: XML tree
+    :rtype: :class:`lxml.etree._ElementTree`
+    """
+    xslt = etree.XSLT(etree.parse(XSLTINLINES))
+    xml = xslt(tree)
+    log.debug("Starting to cleanup inline elements")
+    return xml
+
+
 def step_rst2db_transform(tree, args):
     """Transform RST XML into DocBook 5
 
@@ -122,6 +137,7 @@ def transform(doc, args):
 
     xml = step_resolve_transform(doc, args)
     xml = step_blockelements_transform(xml, args)
+    xml = step_inlines_into_para_transform(doc, args)
     xml = step_rst2db_transform(xml, args)
     cleanupxml(xml)
 
