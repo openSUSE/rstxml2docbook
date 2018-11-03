@@ -77,7 +77,7 @@ def test_docstrings_args(func):
     assert doc is not None
     if func.__code__.co_argcount:
         for arg in inspect.getfullargspec(func).args:
-            m = re.search(":param\s+\w*\s*%s:" % arg, doc)
+            m = re.search(r":param\s+\w*\s*%s:" % arg, doc)
             assert m, "Func argument %r " \
                 "not explained in docstring " \
                 "of function %r" % (arg, fname)
