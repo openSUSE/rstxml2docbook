@@ -29,8 +29,18 @@ jobs:
           env: TOXENV=py36
         - stage: doc
           python: 3.6
-          script:
-            - travis-sphinx -v build --nowarn --source=doc
+          env: TOXENV=doc_travis,doc_travis_deploy
+          deploy:
+            provider: pages
+            skip-cleanup: true
+            github-token: $GH_TOKEN
+            keep-history: true
+            on:
+               branch: feature/*
+               local-dir: doc/build/html/
+               verbose: true
+          # script:
+          #  - travis-sphinx -v build --nowarn --source=doc
 
 
 # command to install dependencies
@@ -60,4 +70,4 @@ addons:
 
 after_success:
 #    - codecov
-    - travis-sphinx -v deploy
+#    - travis-sphinx -v deploy
