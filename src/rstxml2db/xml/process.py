@@ -59,7 +59,9 @@ def write_result_tree(xml, name):
     :type xml: :class:`lxml.etree._ElementTree`
     :param str name: filename to write the tree to
     """
-    path = os.path.join('/tmp/trees', name)
+    path = '/tmp/trees'
+    os.makedirs(path, exist_ok=True)
+    path = os.path.join(path, name)
     xml.write(path, encoding='utf-8', pretty_print=True)
     log.debug("Result tree to %r", path)
 
@@ -151,11 +153,7 @@ def transform(doc, args):
         xml_split_tree = etree.parse(XSLTSPLIT)
         xml_split_trans = etree.XSLT(xml_split_tree)
         xml_split_trans(xml, **dict(args.params))
-    #   xml.write(
-    #        '/tmp/trees/split-tree.xml',
-    #        encoding='utf-8',
-    #        pretty_print=True,
-    #        )
+        # write_result_tree('split-tree.xml', encoding='utf-8', pretty_print=True)
         logging_xslt(xml_split_trans)
         return None
 
