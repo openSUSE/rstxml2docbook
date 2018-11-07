@@ -40,7 +40,7 @@ def requires(filename):
 
 setupdict = dict(
    name='rstxml2docbook',
-   version='0.4.6',
+   version='0.5.0',
    description='Converts RST XML files back to DocBook XML',
    url='https://github.com/tomschr/rstxml2docbook',
    # Author details

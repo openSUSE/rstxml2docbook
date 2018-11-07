@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Wed Nov 07 15:40:00 UTC 2017 - toms@opensuse.org
+
+Version 0.5.0
+
+Bugfixes:
+ * Problem with <reference> to remote URL (#57, #58)
+ * Make consistent IDs (#74, #75)
+ * Move block elements outside of paragraph (#76, #77, #79)
+ * Wrap misplaced inline elements with paragraph (#80, #81)
+
+Enhancement:
+ * Correct DeprecationWarning (#82, #83)
+
+
+-------------------------------------------------------------------
 Fri Oct 18 09:50:00 UTC 2017 - toms@opensuse.org
 
 Version 0.4.7
