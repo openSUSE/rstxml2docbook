@@ -11,6 +11,8 @@
    <list_item>
     <strong>Strong</strong>
     <literal>Literal</literal>
+    <emphasis>Emphasis</emphasis>
+    <literal classes='sp_cli'>Screen</literal>
    </list_item>
   </bullet_list>
  </section>
