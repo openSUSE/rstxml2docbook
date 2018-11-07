@@ -405,25 +405,6 @@
     </listitem>
   </xsl:template>
 
-  <!--<xsl:template match="list_item/*">
-    <xsl:variable name="content">
-        <para>
-            <xsl:choose>
-                <xsl:when test="self::literal">
-                    <xsl:call-template name="literal"/>
-                </xsl:when>
-                <xsl:when test="self::strong">
-                    <xsl:call-template name="strong"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:apply-templates/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </para>
-    </xsl:variable>
-    <xsl:copy-of select="$content"/>
-  </xsl:template>-->
-
   <xsl:template match="enumerated_list">
     <procedure>
       <xsl:apply-templates/>
