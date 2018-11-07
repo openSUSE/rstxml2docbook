@@ -48,6 +48,18 @@ def logging_xslt(resultxslt, logger=log):
         log.log(getattr(logging, level, 'INFO'), "%s", msg)
 
 
+def write_result_tree(xml, name):
+    """Write result tree
+
+    :param xml: the tree
+    :type xml: :class:`lxml.etree._ElementTree`
+    :param str name: filename to write the tree to
+    """
+    path = os.path.join('/tmp/trees', name)
+    xml.write(path, encoding='utf-8', pretty_print=True)
+    log.debug("Result tree to %r", path)
+
+
 def step_blockelements_transform(tree, args):
     """Moves block elements inside <paragraphs> outside
        of <paragraphs>
