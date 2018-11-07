@@ -1,0 +1,4 @@
+[
+    ["//d:informaltable/d:tgroup/@cols", ["4"]],
+    ["//d:informaltable/d:tgroup/@cols = count(//d:tgroup/d:colspec)", true]
+]

@@ -27,7 +27,12 @@ import os
 from .util import quoteparams
 from .struct import addchapter, addlegalnotice
 from ..cleanup import cleanupxml
-from ..core import XSLTRST2DB, XSLTRESOLVE, XSLTSPLIT
+from ..core import (XSLTRST2DB,
+                    XSLTRESOLVE,
+                    XSLTSPLIT,
+                    XSLTMOVEBLOCKS,
+                    XSLTINLINES
+                    )
 
 
 log = logging.getLogger(__name__)
@@ -47,6 +52,88 @@ def logging_xslt(resultxslt, logger=log):
         log.log(getattr(logging, level, 'INFO'), "%s", msg)
 
 
+def write_result_tree(xml, name):
+    """Write result tree
+
+    :param xml: the tree
+    :type xml: :class:`lxml.etree._ElementTree`
+    :param str name: filename to write the tree to
+    """
+    path = '/tmp/trees'
+    os.makedirs(path, exist_ok=True)
+    path = os.path.join(path, name)
+    xml.write(path, encoding='utf-8', pretty_print=True)
+    log.debug("Result tree to %r", path)
+
+
+def step_resolve_transform(tree, args):
+    """Step 1: Resolve any outgoing references in the RST XML document
+
+    :param tree: tree of class :class:`lxml.etree._ElementTree`
+    :param args: argument result from :class:`argparse`
+    :return: XML tree
+    :rtype: :class:`lxml.etree._ElementTree`
+    """
+    xslt = etree.XSLT(etree.parse(XSLTRESOLVE))
+    log.debug("Starting to resolve multiple RST XML "
+              "into a single RST XML file")
+    xml = xslt(tree)
+    write_result_tree(xml, '01.xml')
+    log.debug("Created single RST XML file")
+    return xml
+
+
+def step_blockelements_transform(tree, args):
+    """Step 2: Moves block elements inside <paragraphs> outside
+       of <paragraphs>
+
+    :param tree: tree of class :class:`lxml.etree._ElementTree`
+    :param args: argument result from :class:`argparse`
+    :return: XML tree
+    :rtype: :class:`lxml.etree._ElementTree`
+    """
+    xslt = etree.XSLT(etree.parse(XSLTMOVEBLOCKS))
+    log.debug("Starting to cleanup paragraphs")
+    xml = xslt(tree)
+    write_result_tree(xml, '02.xml')
+    return xml
+
+
+def step_inlines_into_para_transform(tree, args):
+    """Step 3: Move misplaced inline elements into <paragraph>
+
+    :param tree: tree of class :class:`lxml.etree._ElementTree`
+    :param args: argument result from :class:`argparse`
+    :return: XML tree
+    :rtype: :class:`lxml.etree._ElementTree`
+    """
+    xslt = etree.XSLT(etree.parse(XSLTINLINES))
+    xml = xslt(tree)
+    write_result_tree(xml, '03.xml')
+    log.debug("Cleaned up inline elements without paragraph")
+    return xml
+
+
+def step_rst2db_transform(tree, args):
+    """Step 4: Transform clean RST XML into DocBook 5
+
+    :param tree: tree of class :class:`lxml.etree._ElementTree`
+    :param args: argument result from :class:`argparse`
+    :return: XML tree
+    :rtype: :class:`lxml.etree._ElementTree`
+    """
+    xslt = etree.XSLT(etree.parse(XSLTRST2DB))
+    xml = xslt(tree, **dict(args.params))
+    write_result_tree(xml, '04.xml')
+    log.debug("Transformed RST XML into DocBook 5")
+    logging_xslt(xslt)
+    if args.legalnotice is not None:
+        addlegalnotice(xml, args.legalnotice)
+    if args.conventions is not None:
+        addchapter(xml, args.conventions)
+    return xml
+
+
 def transform(doc, args):
     """Transformation step
 
@@ -55,55 +142,18 @@ def transform(doc, args):
     :return: XML tree
     :rtype: :class:`lxml.etree._ElementTree`
     """
-    rstresolve_xslt = etree.parse(XSLTRESOLVE)
-    rst2db_xslt = etree.parse(XSLTRST2DB)
 
-    # Create XSLT object of both tree structures
-    resolve_trans = etree.XSLT(rstresolve_xslt)
-    rst2db_trans = etree.XSLT(rst2db_xslt)
-
-    log.debug("Starting to resolve multiple RST XML into a single RST XML file")
-    # (1) Resolve multiple RST XML -> single RST XML structure...
-    #
-    rst = resolve_trans(doc)
-    # logging_xslt(resolve_trans)
-    # log.debug("Resolved all external references")
-    # rst.write(
-    #    '/tmp/trees/resolve-tree.xml',
-    #    encoding='utf-8',
-    #    pretty_print=True,
-    #    )
-    # log.debug("Wrote resolved tree to '/tmp/tree.xml'")
-    log.debug("Created single RST XML file")
-
-    # (2) Transform RST XML -> DocBook 5
-    xml = rst2db_trans(rst, **dict(args.params))
-    # xml.write(
-    #    '/tmp/trees/db5-tree.xml',
-    #    encoding='utf-8',
-    #    pretty_print=True,
-    #    )
-    # log.debug("Wrote result tree to '/tmp/result-tree.xml'")
-    log.debug("Transformed RST XML into DocBook 5")
-
-    logging_xslt(rst2db_trans)
-    if args.legalnotice is not None:
-        addlegalnotice(xml, args.legalnotice)
-    if args.conventions is not None:
-        addchapter(xml, args.conventions)
-
-    # Cleanup
+    xml = step_resolve_transform(doc, args)
+    xml = step_blockelements_transform(xml, args)
+    xml = step_inlines_into_para_transform(xml, args)
+    xml = step_rst2db_transform(xml, args)
     cleanupxml(xml)
 
     if not args.nsplit:
         xml_split_tree = etree.parse(XSLTSPLIT)
         xml_split_trans = etree.XSLT(xml_split_tree)
         xml_split_trans(xml, **dict(args.params))
-    #   xml.write(
-    #        '/tmp/trees/split-tree.xml',
-    #        encoding='utf-8',
-    #        pretty_print=True,
-    #        )
+        # write_result_tree('split-tree.xml', encoding='utf-8', pretty_print=True)
         logging_xslt(xml_split_trans)
         return None
 

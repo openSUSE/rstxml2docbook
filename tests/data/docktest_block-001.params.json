@@ -1,0 +1,4 @@
+[
+    ["//d:variablelist/d:varlistentry/d:term/text()", ["Term"]],
+    ["//d:variablelist/d:varlistentry/d:listitem/d:screen/text()", ["Screen"]]
+]

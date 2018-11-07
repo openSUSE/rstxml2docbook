@@ -1,0 +1,34 @@
+<!--<!DOCTYPE document PUBLIC
+  "+//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML"
+  "http://docutils.sourceforge.net/docs/ref/docutils.dtd">-->
+
+<document source="table.002.rst">
+  <target refid="table"/>
+  <section ids="table table" names="test\ tables tables">
+    <title>Test Table</title>
+    <paragraph/>
+
+    <table>
+      <tgroup>
+        <colspec colwidth="1"/>
+        <colspec colwidth="1"/>
+        <colspec colwidth="1"/>
+        <colspec colwidth="1"/>
+        <tbody>
+          <row>
+            <entry>
+              <bullet_list>
+                  <list_item><literal classes="sp_cli">foo</literal></list_item>
+              </bullet_list>
+            </entry>
+            <entry>
+              <inline>Second</inline>
+            </entry>
+            <entry/>
+            <entry/>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+</document>

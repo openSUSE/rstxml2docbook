@@ -49,6 +49,9 @@
   <xsl:param name="rootlang" doc:descr="Natural language for root element">en</xsl:param>
   <xsl:param name="productname" doc:descr="The product name, empty by default"/>
   <xsl:param name="productnumber" doc:descr="The product number, empty by default"/>
+  <xsl:param name="rootversion"
+             doc:descr="The value of the version attribute for the root element">5.1</xsl:param>
+  <xsl:param name="ids.separator" doc:descr="The separator between IDs on @ids attribute">_</xsl:param>
 
   <!-- Templates ======================================================= -->
   <xsl:template match="*">
@@ -122,7 +125,8 @@
           <xsl:value-of select="$node/preceding-sibling::*[1][self::target]/@refid"/>
         </xsl:when>
         <xsl:when test="contains($node/@ids, ' ')">
-          <xsl:value-of select="substring-after($node/@ids, ' ')"/>
+          <!--  -->
+         <xsl:value-of select="translate($node/@ids, ' ', $ids.separator)"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="$node/@ids"/>
@@ -231,7 +235,7 @@
       <xsl:call-template name="get.target4section.id"/>
     </xsl:variable>
 
-    <book xml:lang="{$rootlang}">
+    <book xml:lang="{$rootlang}" version="{$rootversion}">
       <xsl:if test="$idattr != ''">
         <xsl:attribute name="xml:id">
           <xsl:value-of select="$idattr"/>
@@ -353,7 +357,10 @@
     <xsl:apply-templates/>
   </xsl:template>
 
-  <xsl:template match="literal_block[@language='shell' or @language='console']">
+  <xsl:template match="literal_block
+                       | literal_block[@language='shell' or @language='console']
+                       | literal[@classes='sp_cli']
+                       | doctest_block" name="screen">
     <screen>
       <xsl:apply-templates/>
     </screen>
@@ -366,12 +373,6 @@
   </xsl:template>
 
   <xsl:template match="line_block[line[normalize-space(.)='']]"/>
-
-  <xsl:template match="literal_block">
-    <screen>
-      <xsl:apply-templates/>
-    </screen>
-  </xsl:template>
 
   <xsl:template match="note|tip|warning|caution|important">
     <xsl:variable name="name">
@@ -618,6 +619,9 @@
 
   <xsl:template match="tgroup" mode="table">
     <tgroup>
+       <xsl:attribute name="cols">
+         <xsl:value-of select="count(colspec)"/>
+      </xsl:attribute>
       <xsl:apply-templates mode="table"/>
     </tgroup>
   </xsl:template>
@@ -629,7 +633,7 @@
     </entry>
   </xsl:template>
 
-  <xsl:template match="entry/*[not(self::paragraph)]" mode="table">
+  <xsl:template match="entry/*[not(self::paragraph or self::bullet_list)]" mode="table">
     <para>
       <xsl:apply-templates/>
     </para>
@@ -887,13 +891,13 @@
     </command>
   </xsl:template>
 
-  <xsl:template match="strong">
+  <xsl:template match="strong" name="strong">
     <emphasis role="bold">
       <xsl:apply-templates/>
     </emphasis>
   </xsl:template>
 
-  <xsl:template match="literal|literal_strong">
+  <xsl:template match="literal|literal_strong" name="literal">
     <literal>
       <xsl:apply-templates/>
     </literal>
@@ -947,11 +951,15 @@
   </xsl:template>
 
   <xsl:template match="reference[@refid]">
-    <xref linkend="{@refid}"/>
-  </xsl:template>
-
-  <xsl:template match="entry/inline/reference[@refid]">
-    <link xl:href="#{@refid}"><xsl:apply-templates/></link>
+   <xsl:choose>
+    <xsl:when test="count(*) > 0">
+     <link xl:href="#{@refid}"
+      ><xsl:apply-templates/></link>
+    </xsl:when>
+    <xsl:otherwise>
+     <xref linkend="{@refid}"/>
+    </xsl:otherwise>
+   </xsl:choose>
   </xsl:template>
 
   <xsl:template match="title_reference">

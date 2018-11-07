@@ -1,0 +1,28 @@
+<!--<!DOCTYPE document PUBLIC
+  "+//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML"
+  "http://docutils.sourceforge.net/docs/ref/docutils.dtd">-->
+
+<document source="table-without-cols.rst">
+  <target refid="table"/>
+  <section ids="table table" names="test\ tables tables">
+    <title>Test Tables</title>
+    <paragraph>The following structure is a table without the col attribute:</paragraph>
+
+    <table>
+      <tgroup>
+        <colspec colwidth="1"/>
+        <colspec colwidth="1"/>
+        <colspec colwidth="1"/>
+        <colspec colwidth="1"/>
+        <tbody>
+          <row>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+</document>
