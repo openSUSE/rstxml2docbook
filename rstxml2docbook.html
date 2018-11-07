@@ -1,0 +1,287 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  
+  <!-- Licensed under the Apache 2.0 License -->
+  <link rel="stylesheet" type="text/css" href="_static/fonts/open-sans/stylesheet.css" />
+  <!-- Licensed under the SIL Open Font License -->
+  <link rel="stylesheet" type="text/css" href="_static/fonts/source-serif-pro/source-serif-pro.css" />
+  <link rel="stylesheet" type="text/css" href="_static/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="_static/css/bootstrap-theme.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    <title>rstxml2db Manual Page Version 0.5.0 &#8212; rstxml2docbook 0.5.0 documentation</title>
+    <link rel="stylesheet" href="_static/guzzle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference to rstxml2db" href="apidoc/modules.html" />
+    <link rel="prev" title="Welcome to the rstxml2docbook Documentation" href="index.html" />
+  
+   
+
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="apidoc/modules.html" title="API Reference to rstxml2db"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to the rstxml2docbook Documentation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">rstxml2docbook 0.5.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="container-wrapper">
+
+      <div id="mobile-toggle">
+        <a href="#"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></a>
+      </div>
+  <div id="left-column">
+    <div class="sphinxsidebar">
+<div class="sidebar-block">
+  <div class="sidebar-wrapper">
+    <h2>Contents</h2>
+    <div class="sidebar-localtoc">
+      <ul>
+<li><a class="reference internal" href="#">rstxml2db Manual Page Version 0.5.0</a><ul>
+<li><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#options">Options</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#see-also">See also</a></li>
+<li><a class="reference internal" href="#author">Author</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+</div>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to the rstxml2docbook Documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="apidoc/modules.html"
+                        title="next chapter">API Reference to rstxml2db</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/rstxml2docbook.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div class="sidebar-block">
+  <div class="sidebar-wrapper">
+    <div id="main-search">
+      <form class="form-inline" action="search.html" method="GET" role="form">
+        <div class="input-group">
+          <input name="q" type="text" class="form-control" placeholder="Search...">
+        </div>
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+        <div id="right-column">
+          
+          <div role="navigation" aria-label="breadcrumbs navigation">
+            <ol class="breadcrumb">
+              <li><a href="index.html">Docs</a></li>
+              
+              <li>rstxml2db Manual Page Version 0.5.0</li>
+            </ol>
+          </div>
+          
+          <div class="document clearer body">
+            
+  <div class="section" id="rstxml2db-manual-page-version-0-5-0">
+<h1>rstxml2db Manual Page Version 0.5.0<a class="headerlink" href="#rstxml2db-manual-page-version-0-5-0" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate" id="invocation"><div class="highlight"><pre><span></span>$ rstxml2docbook <span class="o">[</span>options<span class="o">]</span> &lt;INDEXFILE&gt;
+$ rstxml2db <span class="o">[</span>options<span class="o">]</span> &lt;INDEXFILE&gt;
+</pre></div>
+</div>
+<p>Run the script either by <strong class="program">rstxml2docbook</strong> or <strong class="program">rstxml2db</strong>, both are the same.</p>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p><strong class="program">rstxml2db</strong> generates DocBook 5 XML files from an <code class="file docutils literal notranslate"><span class="pre">index.xml</span></code>
+file. This <code class="file docutils literal notranslate"><span class="pre">index.xml</span></code> file is generated through the <strong class="program">sphinx-build</strong>
+script with the XML builder (option <code class="docutils literal notranslate"><span class="pre">-b</span> <span class="pre">xml</span></code>). Standard options are:</p>
+<dl class="option">
+<dt id="cmdoption-rstxml2docbook-h">
+<code class="descname">-h</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--help</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--version</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rstxml2docbook-h" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display usage summary or script version.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-rstxml2docbook-v">
+<code class="descname">-v</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--verbose</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rstxml2docbook-v" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase verbosity (can be repeated).</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-rstxml2docbook-arg-indexfile">
+<code class="descname">INDEXFILE</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rstxml2docbook-arg-indexfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>denotes the index file (XML) which refer all other files.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="options">
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<dl class="option">
+<dt id="cmdoption-rstxml2docbook-c">
+<code class="descname">-c</code><code class="descclassname"> &lt;CONVENTIONS&gt;</code><code class="descclassname">, </code><code class="descname">--conventions</code><code class="descclassname"> &lt;CONVENTIONS&gt;</code><a class="headerlink" href="#cmdoption-rstxml2docbook-c" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to filename which contains doc conventions about the
+document (usually <code class="docutils literal notranslate"><span class="pre">&lt;preface&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">&lt;chapter&gt;</span></code>); will
+replace the first chapter.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-rstxml2docbook-k">
+<code class="descname">-k</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--keep-all-ids</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rstxml2docbook-k" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, IDs in a bigfile are removed if they are not
+referenced. This option keeps all IDs.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-rstxml2docbook-l">
+<code class="descname">-l</code><code class="descclassname"> &lt;LEGALNOTICE&gt;</code><code class="descclassname">, </code><code class="descname">--legalnotice</code><code class="descclassname"> &lt;LEGALNOTICE&gt;</code><a class="headerlink" href="#cmdoption-rstxml2docbook-l" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to filename which contains a <cite>legalnotice</cite> element
+(also included into <code class="docutils literal notranslate"><span class="pre">book/bookinfo</span></code>).</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-rstxml2docbook-p">
+<code class="descname">-P</code><code class="descclassname"> &lt;PRODUCTNUMBER&gt;</code><code class="descclassname">, </code><code class="descname">--productnumber</code><code class="descclassname"> &lt;PRODUCTNUMBER&gt;</code><a class="headerlink" href="#cmdoption-rstxml2docbook-p" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number/release etc. of the product (also included into
+<code class="docutils literal notranslate"><span class="pre">book/bookinfo</span></code>).</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-rstxml2docbook-param">
+<code class="descname">-p</code><code class="descclassname"> &lt;PARAM&gt;</code><code class="descclassname">, </code><code class="descname">--param</code><code class="descclassname"> &lt;PARAM&gt;</code><a class="headerlink" href="#cmdoption-rstxml2docbook-param" title="Permalink to this definition">¶</a></dt>
+<dd><p>single XSLT parameter; use the syntax “NAME=VALUE”,
+can be used multiple times.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-rstxml2docbook-o">
+<code class="descname">-o</code><code class="descclassname"> &lt;output&gt;</code><code class="descclassname">, </code><code class="descname">--output</code><code class="descclassname"> &lt;output&gt;</code><a class="headerlink" href="#cmdoption-rstxml2docbook-o" title="Permalink to this definition">¶</a></dt>
+<dd><p>save DocBook XML file to the given path.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Create a DocBook 5 XML file from <code class="file docutils literal notranslate"><span class="pre">index.xml</span></code> and print its output to stdout:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ rstxml2db index.xml
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create a DocBook 5 XML file rom <code class="file docutils literal notranslate"><span class="pre">index.xml</span></code> and save it to <code class="file docutils literal notranslate"><span class="pre">output.xml</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ rstxml2db -o output.xml index.xml
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create a DocBook 5 XML file from <code class="file docutils literal notranslate"><span class="pre">index.xml</span></code> and use <code class="docutils literal notranslate"><span class="pre">FooObfuscator</span></code> as
+productname:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ rstxml2db --productname &#39;FooObfuscator&#39; -o output.xml index.xml
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create a DocBook 5 XML file from <code class="file docutils literal notranslate"><span class="pre">index.xml</span></code> and append legal notice from
+file <code class="file docutils literal notranslate"><span class="pre">legal.xml</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ rstxml2db -o output.xml --legalnotice legal.xml index.xml
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create a DocBook 5 XML file from <code class="file docutils literal notranslate"><span class="pre">index.xml</span></code>, save it to <code class="file docutils literal notranslate"><span class="pre">output.xml</span></code>,
+and use some parameters:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ rstxml2db  -o output.xml --param &quot;a=2&quot; --param &quot;b=5&quot; index.xml
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<p><em class="manpage">sphinx-build</em></p>
+</div>
+<div class="section" id="author">
+<h2>Author<a class="headerlink" href="#author" title="Permalink to this headline">¶</a></h2>
+<p>Thomas Schraitle &lt;toms AT suse.de&gt; for SUSE Linux GmbH</p>
+</div>
+</div>
+
+
+          </div>
+            
+  <div class="footer-relations">
+    
+      <div class="pull-left">
+        <a class="btn btn-default" href="index.html" title="previous chapter (use the left arrow)">Welcome to the rstxml2docbook Documentation</a>
+      </div>
+    
+      <div class="pull-right">
+        <a class="btn btn-default" href="apidoc/modules.html" title="next chapter (use the right arrow)">API Reference to rstxml2db</a>
+      </div>
+    </div>
+    <div class="clearer"></div>
+  
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="apidoc/modules.html" title="API Reference to rstxml2db"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to the rstxml2docbook Documentation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">rstxml2docbook 0.5.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+<script type="text/javascript">
+  $("#mobile-toggle a").click(function () {
+    $("#left-column").toggle();
+  });
+</script>
+<script type="text/javascript" src="_static/js/bootstrap.js"></script>
+  <div class="footer">
+    &copy; Copyright 2016-2018, Thomas Schraitle. Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  </body>
+</html>

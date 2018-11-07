@@ -1,0 +1,516 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  
+  <!-- Licensed under the Apache 2.0 License -->
+  <link rel="stylesheet" type="text/css" href="../_static/fonts/open-sans/stylesheet.css" />
+  <!-- Licensed under the SIL Open Font License -->
+  <link rel="stylesheet" type="text/css" href="../_static/fonts/source-serif-pro/source-serif-pro.css" />
+  <link rel="stylesheet" type="text/css" href="../_static/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="../_static/css/bootstrap-theme.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    <title>rstxml2db package &#8212; rstxml2docbook 0.5.0 documentation</title>
+    <link rel="stylesheet" href="../_static/guzzle.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="rstxml2db.xml package" href="rstxml2db.xml.html" />
+    <link rel="prev" title="API Reference to rstxml2db" href="modules.html" />
+  
+   
+
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="rstxml2db.xml.html" title="rstxml2db.xml package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="API Reference to rstxml2db"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">rstxml2docbook 0.5.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">API Reference to rstxml2db</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="container-wrapper">
+
+      <div id="mobile-toggle">
+        <a href="#"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></a>
+      </div>
+  <div id="left-column">
+    <div class="sphinxsidebar">
+<div class="sidebar-block">
+  <div class="sidebar-wrapper">
+    <h2>Contents</h2>
+    <div class="sidebar-localtoc">
+      <ul>
+<li><a class="reference internal" href="#">rstxml2db package</a><ul>
+<li><a class="reference internal" href="#module-rstxml2db">Module contents</a></li>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-rstxml2db.cleanup">rstxml2db.cleanup module</a></li>
+<li><a class="reference internal" href="#module-rstxml2db.cli">rstxml2db.cli module</a></li>
+<li><a class="reference internal" href="#module-rstxml2db.common">rstxml2db.common module</a></li>
+<li><a class="reference internal" href="#module-rstxml2db.core">rstxml2db.core module</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+</div>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="modules.html"
+                        title="previous chapter">API Reference to rstxml2db</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="rstxml2db.xml.html"
+                        title="next chapter">rstxml2db.xml package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/apidoc/rstxml2db.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div class="sidebar-block">
+  <div class="sidebar-wrapper">
+    <div id="main-search">
+      <form class="form-inline" action="../search.html" method="GET" role="form">
+        <div class="input-group">
+          <input name="q" type="text" class="form-control" placeholder="Search...">
+        </div>
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+        <div id="right-column">
+          
+          <div role="navigation" aria-label="breadcrumbs navigation">
+            <ol class="breadcrumb">
+              <li><a href="../index.html">Docs</a></li>
+              
+                <li><a href="modules.html">API Reference to rstxml2db</a></li>
+              
+              <li>rstxml2db package</li>
+            </ol>
+          </div>
+          
+          <div class="document clearer body">
+            
+  <div class="section" id="rstxml2db-package">
+<h1>rstxml2db package<a class="headerlink" href="#rstxml2db-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-rstxml2db">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-rstxml2db" title="Permalink to this headline">¶</a></h2>
+<p>Converts RST XML (Sphinx/ReST XML) into DocBook XML</p>
+</div>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="rstxml2db.xml.html">rstxml2db.xml package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rstxml2db.xml.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rstxml2db.xml.html#module-rstxml2db.xml.process">rstxml2db.xml.process module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rstxml2db.xml.html#module-rstxml2db.xml.struct">rstxml2db.xml.struct module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rstxml2db.xml.html#module-rstxml2db.xml.util">rstxml2db.xml.util module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rstxml2db.xml.html#module-rstxml2db.xml">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-rstxml2db.cleanup">
+<span id="rstxml2db-cleanup-module"></span><h2>rstxml2db.cleanup module<a class="headerlink" href="#module-rstxml2db.cleanup" title="Permalink to this headline">¶</a></h2>
+<p>Collect several cleanup steps</p>
+<dl class="function">
+<dt id="rstxml2db.cleanup.add_pi_in_screen">
+<code class="descclassname">rstxml2db.cleanup.</code><code class="descname">add_pi_in_screen</code><span class="sig-paren">(</span><em>xml</em>, <em>limit=83</em>, <em>target='dbsuse-fo'</em>, <em>fontsize='8pt'</em><span class="sig-paren">)</span><a class="headerlink" href="#rstxml2db.cleanup.add_pi_in_screen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add processing-instruction for long texts in screens</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This function modifies directly the XML tree</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>xml</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">lxml.etree._ElementTree</span></code>) – XML tree</li>
+<li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><em>int</em></a>) – maximum number of characters allowed</li>
+<li><strong>target</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><em>str</em></a>) – name of processing instruction</li>
+<li><strong>fontsize</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><em>str</em></a>) – font size to use</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="rstxml2db.cleanup.allelementswithid">
+<code class="descclassname">rstxml2db.cleanup.</code><code class="descname">allelementswithid</code><span class="sig-paren">(</span><em>xml</em><span class="sig-paren">)</span><a class="headerlink" href="#rstxml2db.cleanup.allelementswithid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator: yielding all elements with an ‘id’ attribute</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xml</strong> – root tree or element</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Yield:</th><td class="field-body">XML element with <code class="docutils literal notranslate"><span class="pre">id</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Iterator[<code class="xref py py-class docutils literal notranslate"><span class="pre">lxml.etree.Element</span></code>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="rstxml2db.cleanup.alltableelements">
+<code class="descclassname">rstxml2db.cleanup.</code><code class="descname">alltableelements</code><span class="sig-paren">(</span><em>xml</em><span class="sig-paren">)</span><a class="headerlink" href="#rstxml2db.cleanup.alltableelements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator: yield all table or informaltable elements</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xml</strong> – root tree or element node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Yield:</th><td class="field-body">XML node, either <code class="docutils literal notranslate"><span class="pre">table</span></code> or <code class="docutils literal notranslate"><span class="pre">informaltable</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Iterator[<code class="xref py py-class docutils literal notranslate"><span class="pre">lxml.etree.Element</span></code>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="rstxml2db.cleanup.cleanupxml">
+<code class="descclassname">rstxml2db.cleanup.</code><code class="descname">cleanupxml</code><span class="sig-paren">(</span><em>xml</em><span class="sig-paren">)</span><a class="headerlink" href="#rstxml2db.cleanup.cleanupxml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cleanup steps to execute</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This function modifies directly the XML tree</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xml</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">lxml.etree._ElementTree</span></code>) – XML tree</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="rstxml2db.cleanup.finddoubleids">
+<code class="descclassname">rstxml2db.cleanup.</code><code class="descname">finddoubleids</code><span class="sig-paren">(</span><em>allids</em><span class="sig-paren">)</span><a class="headerlink" href="#rstxml2db.cleanup.finddoubleids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find all double IDs</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>allids</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#list" title="(in Python v3.4)"><em>list</em></a>) – list with <code class="xref py py-class docutils literal notranslate"><span class="pre">lxml.etree.Element</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">all nodes which contains more than one IDs; èach entry
+represented as <code class="docutils literal notranslate"><span class="pre">(node,</span> <span class="pre">number)</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#list" title="(in Python v3.4)">list</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="rstxml2db.cleanup.fix_colspec_width">
+<code class="descclassname">rstxml2db.cleanup.</code><code class="descname">fix_colspec_width</code><span class="sig-paren">(</span><em>xml</em><span class="sig-paren">)</span><a class="headerlink" href="#rstxml2db.cleanup.fix_colspec_width" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Fix <code class="docutils literal notranslate"><span class="pre">columspec/&#64;width</span></code> from simple absolute values into the relative</dt>
+<dd>star notation</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xml</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">lxml.etree.Element</span></code>) – root tree or element node</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="rstxml2db.cleanup.remove_double_ids">
+<code class="descclassname">rstxml2db.cleanup.</code><code class="descname">remove_double_ids</code><span class="sig-paren">(</span><em>xml</em>, <em>usedoubleids=True</em><span class="sig-paren">)</span><a class="headerlink" href="#rstxml2db.cleanup.remove_double_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cleanup step to remove all IDs with no corresponding xref</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This function modifies directly the XML tree</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>xml</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">lxml.etree._ElementTree</span></code>) – XML tree</li>
+<li><strong>usedoubleids</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><em>bool</em></a>) – boolean to execute additional check to find
+double ids or not (default True)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-rstxml2db.cli">
+<span id="rstxml2db-cli-module"></span><h2>rstxml2db.cli module<a class="headerlink" href="#module-rstxml2db.cli" title="Permalink to this headline">¶</a></h2>
+<p>Implements CLI parsing</p>
+<dl class="function">
+<dt id="rstxml2db.cli.check_arguments">
+<code class="descclassname">rstxml2db.cli.</code><code class="descname">check_arguments</code><span class="sig-paren">(</span><em>parser</em>, <em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#rstxml2db.cli.check_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks the parsed arguments for consistency</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parser</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParse</span></code>) – the argument parser</li>
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/argparse.html#argparse.Namespace" title="(in Python v3.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">parsed arguments, possibly enriched with additional <code class="docutils literal notranslate"><span class="pre">_productname`</span>
+<span class="pre">or</span> <span class="pre">``_productnumber</span></code> member variables</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3.4/library/argparse.html#argparse.Namespace" title="(in Python v3.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="rstxml2db.cli.main">
+<code class="descclassname">rstxml2db.cli.</code><code class="descname">main</code><span class="sig-paren">(</span><em>cliargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rstxml2db.cli.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Entry point for the application script</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cliargs</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#list" title="(in Python v3.4)"><em>list</em></a>) – Arguments to parse or None (=use <code class="xref py py-class docutils literal notranslate"><span class="pre">sys.argv</span></code>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">error code</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)">int</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="rstxml2db.cli.parsecli">
+<code class="descclassname">rstxml2db.cli.</code><code class="descname">parsecli</code><span class="sig-paren">(</span><em>cliargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rstxml2db.cli.parsecli" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse CLI with <a class="reference external" href="https://docs.python.org/3.4/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></a> and return parsed result</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cliargs</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#list" title="(in Python v3.4)"><em>list</em></a>) – Arguments to parse or None (=use sys.argv)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">parsed CLI result</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.4/library/argparse.html#argparse.Namespace" title="(in Python v3.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="rstxml2db.cli.prepareparams">
+<code class="descclassname">rstxml2db.cli.</code><code class="descname">prepareparams</code><span class="sig-paren">(</span><em>params</em><span class="sig-paren">)</span><a class="headerlink" href="#rstxml2db.cli.prepareparams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the list with <code class="docutils literal notranslate"><span class="pre">NAME=VALUE</span></code> strings into
+tuples of <code class="docutils literal notranslate"><span class="pre">('NAME',</span> <span class="pre">'VALUE')</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>params</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#list" title="(in Python v3.4)"><em>list</em></a>) – a list with <code class="docutils literal notranslate"><span class="pre">NAME=VALUE</span></code> entries</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a new list with <code class="docutils literal notranslate"><span class="pre">('NAME',</span> <span class="pre">'VALUE')</span></code> entries</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#list" title="(in Python v3.4)">list</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="rstxml2db.cli.print_all_xsl_params">
+<code class="descclassname">rstxml2db.cli.</code><code class="descname">print_all_xsl_params</code><span class="sig-paren">(</span><em>parser</em><span class="sig-paren">)</span><a class="headerlink" href="#rstxml2db.cli.print_all_xsl_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints all availalbe XSLT parameters that can be used in -p/–param</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>parser</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParse</span></code>) – the argument parser</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-rstxml2db.common">
+<span id="rstxml2db-common-module"></span><h2>rstxml2db.common module<a class="headerlink" href="#module-rstxml2db.common" title="Permalink to this headline">¶</a></h2>
+<p>Common error codes</p>
+</div>
+<div class="section" id="module-rstxml2db.core">
+<span id="rstxml2db-core-module"></span><h2>rstxml2db.core module<a class="headerlink" href="#module-rstxml2db.core" title="Permalink to this headline">¶</a></h2>
+<p>Core variables, used in other modules.</p>
+<dl class="data">
+<dt id="rstxml2db.core.DEBUG_FORMAT">
+<code class="descclassname">rstxml2db.core.</code><code class="descname">DEBUG_FORMAT</code><em class="property"> = '[%(levelname)s] %(name)s:%(lineno)s %(message)s'</em><a class="headerlink" href="#rstxml2db.core.DEBUG_FORMAT" title="Permalink to this definition">¶</a></dt>
+<dd><p>logging format for debugging purposes</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="rstxml2db.core.DOCTYPE">
+<code class="descclassname">rstxml2db.core.</code><code class="descname">DOCTYPE</code><em class="property"> = '&lt;!DOCTYPE {}\n[\n&lt;!--\n  &lt;!ENTITY % entities SYSTEM &quot;entity-decl.ent&quot;&gt;\n  %entities;\n--&gt;\n]&gt;'</em><a class="headerlink" href="#rstxml2db.core.DOCTYPE" title="Permalink to this definition">¶</a></dt>
+<dd><p>DOCTYPE declaration with placeholders</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="rstxml2db.core.LOGFILECONFIGS">
+<code class="descclassname">rstxml2db.core.</code><code class="descname">LOGFILECONFIGS</code><em class="property"> = ('/home/travis/build/openSUSE/rstxml2docbook/src/rstxml2db/logging.conf', '/home/travis/.config/rstxml2db/logging.conf')</em><a class="headerlink" href="#rstxml2db.core.LOGFILECONFIGS" title="Permalink to this definition">¶</a></dt>
+<dd><p>log config files to search for</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="rstxml2db.core.LOGLEVELS">
+<code class="descclassname">rstxml2db.core.</code><code class="descname">LOGLEVELS</code><em class="property"> = {None: 30, 0: 30, 1: 20, 2: 10}</em><a class="headerlink" href="#rstxml2db.core.LOGLEVELS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map verbosity to log levels</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="rstxml2db.core.LOGNAMES">
+<code class="descclassname">rstxml2db.core.</code><code class="descname">LOGNAMES</code><em class="property"> = {0: 'NOTSET', None: 'NOTSET', 10: 'DEBUG', 20: 'INFO', 30: 'WARNING', 40: 'ERROR', 50: 'CRITICAL'}</em><a class="headerlink" href="#rstxml2db.core.LOGNAMES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map log numbers to log names</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="rstxml2db.core.LOG_CONFIG">
+<code class="descclassname">rstxml2db.core.</code><code class="descname">LOG_CONFIG</code><em class="property"> = {'formatters': {'default': {'datefmt': '%Y-%m-%d %H:%M:%S', 'format': '%(levelname)s:%(name)s:%(message)s'}, 'rstxml2db': {'datefmt': '%Y%m%dT%H:%M:%S', 'format': '[%(levelname)s] %(name)s:%(lineno)s %(message)s'}}, 'handlers': {'console': {'class': 'logging.StreamHandler', 'formatter': 'default', 'level': 'NOTSET'}, 'rstxml2db': {'class': 'logging.StreamHandler', 'formatter': 'rstxml2db', 'level': 'DEBUG'}}, 'loggers': {'rstxml2db': {'handlers': ['rstxml2db'], 'propagate': False}}, 'root': {'level': 'DEBUG'}, 'version': 1}</em><a class="headerlink" href="#rstxml2db.core.LOG_CONFIG" title="Permalink to this definition">¶</a></dt>
+<dd><p>fallback logging configuration</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="rstxml2db.core.NSMAP">
+<code class="descclassname">rstxml2db.core.</code><code class="descname">NSMAP</code><em class="property"> = {'d': 'http://docbook.org/ns/docbook', 'doc': 'urn:x-suse:xslt-doc', 'xi': 'http://www.w3.org/2001/XInclude', 'xl': 'http://www.w3.org/1999/xlink', 'xsl': 'http://www.w3.org/1999/XSL/Transform'}</em><a class="headerlink" href="#rstxml2db.core.NSMAP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Namespace mappings</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="rstxml2db.core.XSLTINLINES">
+<code class="descclassname">rstxml2db.core.</code><code class="descname">XSLTINLINES</code><em class="property"> = '/home/travis/build/openSUSE/rstxml2docbook/src/rstxml2db/move-inlines-into-para.xsl'</em><a class="headerlink" href="#rstxml2db.core.XSLTINLINES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stylesheet to move outplaced inlines into paragraph</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="rstxml2db.core.XSLTMOVEBLOCKS">
+<code class="descclassname">rstxml2db.core.</code><code class="descname">XSLTMOVEBLOCKS</code><em class="property"> = '/home/travis/build/openSUSE/rstxml2docbook/src/rstxml2db/move-blocks-outof-para.xsl'</em><a class="headerlink" href="#rstxml2db.core.XSLTMOVEBLOCKS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stylesheet to move block elements out of &lt;paragraph&gt;</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="rstxml2db.core.XSLTRESOLVE">
+<code class="descclassname">rstxml2db.core.</code><code class="descname">XSLTRESOLVE</code><em class="property"> = '/home/travis/build/openSUSE/rstxml2docbook/src/rstxml2db/resolve.xsl'</em><a class="headerlink" href="#rstxml2db.core.XSLTRESOLVE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stylesheet to resolves RST XML :file:<code class="docutils literal notranslate"><span class="pre">index.xml</span></code>
+file into one, single RST XML file</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="rstxml2db.core.XSLTRST2DB">
+<code class="descclassname">rstxml2db.core.</code><code class="descname">XSLTRST2DB</code><em class="property"> = '/home/travis/build/openSUSE/rstxml2docbook/src/rstxml2db/rstxml2db.xsl'</em><a class="headerlink" href="#rstxml2db.core.XSLTRST2DB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stylesheet to transform RST XML tree into DocBook 5</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="rstxml2db.core.XSLTSPLIT">
+<code class="descclassname">rstxml2db.core.</code><code class="descname">XSLTSPLIT</code><em class="property"> = '/home/travis/build/openSUSE/rstxml2docbook/src/rstxml2db/split_xml.xsl'</em><a class="headerlink" href="#rstxml2db.core.XSLTSPLIT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stylesheet to split up the XML file</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+            
+  <div class="footer-relations">
+    
+      <div class="pull-left">
+        <a class="btn btn-default" href="modules.html" title="previous chapter (use the left arrow)">API Reference to rstxml2db</a>
+      </div>
+    
+      <div class="pull-right">
+        <a class="btn btn-default" href="rstxml2db.xml.html" title="next chapter (use the right arrow)">rstxml2db.xml package</a>
+      </div>
+    </div>
+    <div class="clearer"></div>
+  
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="rstxml2db.xml.html" title="rstxml2db.xml package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="API Reference to rstxml2db"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">rstxml2docbook 0.5.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >API Reference to rstxml2db</a> &#187;</li> 
+      </ul>
+    </div>
+<script type="text/javascript">
+  $("#mobile-toggle a").click(function () {
+    $("#left-column").toggle();
+  });
+</script>
+<script type="text/javascript" src="../_static/js/bootstrap.js"></script>
+  <div class="footer">
+    &copy; Copyright 2016-2018, Thomas Schraitle. Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  </body>
+</html>
