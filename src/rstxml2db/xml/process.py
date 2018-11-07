@@ -149,7 +149,7 @@ def transform(doc, args):
 
     xml = step_resolve_transform(doc, args)
     xml = step_blockelements_transform(xml, args)
-    xml = step_inlines_into_para_transform(doc, args)
+    xml = step_inlines_into_para_transform(xml, args)
     xml = step_rst2db_transform(xml, args)
     cleanupxml(xml)
 
