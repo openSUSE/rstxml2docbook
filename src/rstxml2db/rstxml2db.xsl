@@ -405,7 +405,7 @@
     </listitem>
   </xsl:template>
 
-  <xsl:template match="list_item/*">
+  <!--<xsl:template match="list_item/*">
     <xsl:variable name="content">
         <para>
             <xsl:choose>
@@ -422,7 +422,7 @@
         </para>
     </xsl:variable>
     <xsl:copy-of select="$content"/>
-  </xsl:template>
+  </xsl:template>-->
 
   <xsl:template match="enumerated_list">
     <procedure>
@@ -970,16 +970,15 @@
   </xsl:template>
 
   <xsl:template match="reference[@refid]">
-    <xref linkend="{@refid}"/>
-  </xsl:template>
-
-  <xsl:template match="entry/inline">
-    <para><xsl:apply-templates/></para>
-  </xsl:template>
-
-
-  <xsl:template match="entry/inline/reference[@refid]">
-    <link xl:href="#{@refid}"><xsl:apply-templates/></link>
+   <xsl:choose>
+    <xsl:when test="count(*) > 0">
+     <link xl:href="#{@refid}"
+      ><xsl:apply-templates/></link>
+    </xsl:when>
+    <xsl:otherwise>
+     <xref linkend="{@refid}"/>
+    </xsl:otherwise>
+   </xsl:choose>
   </xsl:template>
 
   <xsl:template match="title_reference">
