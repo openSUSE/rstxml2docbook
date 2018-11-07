@@ -48,6 +48,9 @@ XSLTSPLIT = os.path.join(HERE, 'split_xml.xsl')
 #: Stylesheet to move block elements out of <paragraph>
 XSLTMOVEBLOCKS = os.path.join(HERE, 'move-blocks-outof-para.xsl')
 
+#: Stylesheet to move outplaced inlines into paragraph
+XSLTINLINES = os.path.join(HERE, 'move-inlines-into-para.xsl')
+
 #: Namespace mappings
 NSMAP = dict(xi='http://www.w3.org/2001/XInclude',
              d='http://docbook.org/ns/docbook',
