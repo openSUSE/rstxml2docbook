@@ -39,8 +39,9 @@
 
 
  <!-- Templates ======================================================= -->
-  <xsl:template match="entry/inline | entry/emphasis | entry/strong |
-                       list_item/strong | list_item/literal | list_item/emphasis">
+ <xsl:template match="entry/inline | entry/emphasis | entry/strong |
+                      list_item/strong | list_item/literal[not(@classes)] | list_item/literal[@classes!='sp_cli'] | list_item/emphasis">
+  <xsl:message>DEBUG: Wrap paragraph around <xsl:value-of select="local-name()"/></xsl:message>
   <paragraph>
    <xsl:copy>
     <xsl:copy-of select="@*"/>
