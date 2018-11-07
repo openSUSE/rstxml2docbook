@@ -1,4 +1,6 @@
 [
     ["//d:itemizedlist/d:listitem/d:para[1]/d:emphasis/text()", ["Strong"]],
-    ["//d:itemizedlist/d:listitem/d:para[2]/d:literal/text()",  ["Literal"]]
+    ["//d:itemizedlist/d:listitem/d:para[2]/d:literal/text()",  ["Literal"]],
+    ["//d:itemizedlist/d:listitem/d:para[3]/d:emphasis/text()",  ["Emphasis"]],
+    ["//d:itemizedlist/d:listitem/d:screen/text()",  ["Screen"]]
 ]
