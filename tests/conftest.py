@@ -3,6 +3,8 @@ import pytest
 from argparse import Namespace
 import py
 
+from rstxml2db.core import RESULT_TREE_DIR
+
 DATADIR = py.path.local(__file__).parts()[-2] / "data"
 
 # ------------------------------------------------------
@@ -27,7 +29,9 @@ def args():
                      conventions=None,
                      verbose=0,
                      params=[],
-                     indexfile=None
+                     indexfile=None,
+                     result_tree=False,
+                     result_tree_dir=RESULT_TREE_DIR,
                      )
 
 

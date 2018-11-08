@@ -94,6 +94,9 @@ LOGFILECONFIGS = (os.path.join(os.path.dirname(__file__),
                   os.path.expanduser("~/.config/rstxml2db/logging.conf"),
                   )
 
+#: Temporary directory for result tree files (for --result-tree-dir)
+RESULT_TREE_DIR = "/tmp/rstxml2db-tree"
+
 #: logging format for debugging purposes
 DEBUG_FORMAT = "[%(levelname)s] %(name)s:%(lineno)s %(message)s"
 
