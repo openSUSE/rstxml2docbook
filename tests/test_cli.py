@@ -1,6 +1,7 @@
 #
 import pytest
 from rstxml2db.cli import prepareparams, parsecli, print_all_xsl_params
+from rstxml2db.core import RESULT_TREE_DIR
 
 
 @pytest.mark.parametrize('params, expected', [
@@ -77,6 +78,15 @@ def test_prepareparams(params, expected):
    ),
   (['--param', 'a=2', '--param', 'b=4', 'a.xml'],
    dict(params=[('a', '2'), ('b', '4')])
+   ),
+  (['--result-tree', 'a.xml'],
+   dict(result_tree=True)
+   ),
+  (['--result-tree', 'a.xml'],
+   dict(result_tree=True, result_tree_dir=RESULT_TREE_DIR)
+   ),
+  (['--result-tree', '--result-tree-dir', '/foo', 'a.xml'],
+   dict(result_tree=True, result_tree_dir="/foo")
    ),
 ])
 

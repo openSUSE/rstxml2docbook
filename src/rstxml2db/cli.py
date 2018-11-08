@@ -29,7 +29,7 @@ from lxml import etree
 
 from . import __author__, __version__
 from .common import ERROR_CODES
-from .core import LOG_CONFIG, LOGFILECONFIGS, LOGLEVELS
+from .core import LOG_CONFIG, LOGFILECONFIGS, LOGLEVELS, RESULT_TREE_DIR
 from .xml import process
 
 
@@ -199,6 +199,24 @@ def parsecli(cliargs=None):
                         action='store_true',
                         default=False,
                         help='parameter which enables the splitting of the result XML file.',
+                        )
+
+    parser.add_argument('-R', '--result-tree',
+                        action='store_true',
+                        default=False,
+                        help=('For debugging purposes only. '
+                              'Enables to stores each step in a '
+                              'separate file.'),
+                        )
+
+    parser.add_argument('--result-tree-dir',
+                        metavar='DIRECTORY',
+                        default=RESULT_TREE_DIR,
+                        help=('The directory where all the debugging files '
+                              'are stored (default: %(default)r); '
+                              ' only useful together with the --result-tree '
+                              'option.'
+                              ),
                         )
 
     parser.add_argument('indexfile',

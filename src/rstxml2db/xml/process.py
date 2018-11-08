@@ -52,18 +52,19 @@ def logging_xslt(resultxslt, logger=log):
         log.log(getattr(logging, level, 'INFO'), "%s", msg)
 
 
-def write_result_tree(xml, name):
+def write_result_tree(xml, name, args):
     """Write result tree
 
     :param xml: the tree
     :type xml: :class:`lxml.etree._ElementTree`
     :param str name: filename to write the tree to
     """
-    path = '/tmp/trees'
-    os.makedirs(path, exist_ok=True)
-    path = os.path.join(path, name)
-    xml.write(path, encoding='utf-8', pretty_print=True)
-    log.debug("Result tree to %r", path)
+    if args.result_tree:
+        path = args.result_tree_dir
+        os.makedirs(path, exist_ok=True)
+        path = os.path.join(path, name)
+        xml.write(path, encoding='utf-8', pretty_print=True)
+        log.debug("Result tree to %r", path)
 
 
 def step_resolve_transform(tree, args):
@@ -78,7 +79,7 @@ def step_resolve_transform(tree, args):
     log.debug("Starting to resolve multiple RST XML "
               "into a single RST XML file")
     xml = xslt(tree)
-    write_result_tree(xml, '01.xml')
+    write_result_tree(xml, '01.xml', args)
     log.debug("Created single RST XML file")
     return xml
 
@@ -95,7 +96,7 @@ def step_blockelements_transform(tree, args):
     xslt = etree.XSLT(etree.parse(XSLTMOVEBLOCKS))
     log.debug("Starting to cleanup paragraphs")
     xml = xslt(tree)
-    write_result_tree(xml, '02.xml')
+    write_result_tree(xml, '02.xml', args)
     return xml
 
 
@@ -109,7 +110,7 @@ def step_inlines_into_para_transform(tree, args):
     """
     xslt = etree.XSLT(etree.parse(XSLTINLINES))
     xml = xslt(tree)
-    write_result_tree(xml, '03.xml')
+    write_result_tree(xml, '03.xml', args)
     log.debug("Cleaned up inline elements without paragraph")
     return xml
 
@@ -124,7 +125,7 @@ def step_rst2db_transform(tree, args):
     """
     xslt = etree.XSLT(etree.parse(XSLTRST2DB))
     xml = xslt(tree, **dict(args.params))
-    write_result_tree(xml, '04.xml')
+    write_result_tree(xml, '04.xml', args)
     log.debug("Transformed RST XML into DocBook 5")
     logging_xslt(xslt)
     if args.legalnotice is not None:
@@ -153,7 +154,7 @@ def transform(doc, args):
         xml_split_tree = etree.parse(XSLTSPLIT)
         xml_split_trans = etree.XSLT(xml_split_tree)
         xml_split_trans(xml, **dict(args.params))
-        # write_result_tree('split-tree.xml', encoding='utf-8', pretty_print=True)
+        # write_result_tree(xml, 'split', args)
         logging_xslt(xml_split_trans)
         return None
 
