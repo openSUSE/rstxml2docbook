@@ -252,10 +252,13 @@ def main(cliargs=None):
         args = parsecli(cliargs)
         return process(args)
 
-    except (etree.XMLSyntaxError) as error:
+    except etree.XMLSyntaxError as error:
         log.fatal("%s in file %r", error, args.indexfile)  # exc_info=error, stack_info=True
         return ERROR_CODES.get(repr(type(error)), 255)
-
+    except etree.XSLTApplyError as error:
+        log.fatal(error)
+        log.fatal("Check for possible syntax errors in the respective file")
+        return ERROR_CODES.get(repr(type(error)), 255)
     except (FileNotFoundError, OSError) as error:
         log.fatal(error)
         return ERROR_CODES.get(repr(type(error)), 255)
