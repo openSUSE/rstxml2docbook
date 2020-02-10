@@ -65,6 +65,9 @@
       <xsl:when test=" starts-with($refuri, 'http')">
         <xsl:message>WARNING: Cannot include "<xsl:value-of select="$ref"/>"; ignored</xsl:message>
       </xsl:when>
+     <xsl:when test="contains($refuri, '#')">
+      <xsl:message>INFO: Skipping "<xsl:value-of select="$refuri"/>"; ignored</xsl:message>
+     </xsl:when>
       <xsl:otherwise>
         <xsl:message>INFO: Including "<xsl:value-of select="$ref"/>"...</xsl:message>
         <xsl:apply-templates select="document($ref, .)">
