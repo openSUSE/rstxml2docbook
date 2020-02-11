@@ -235,7 +235,9 @@
       <xsl:call-template name="get.target4section.id"/>
     </xsl:variable>
 
-    <book xml:lang="{$rootlang}" version="{$rootversion}">
+    <book xml:lang="{$rootlang}" version="{$rootversion}"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      xmlns:xl="http://www.w3.org/1999/xlink">
       <xsl:if test="$idattr != ''">
         <xsl:attribute name="xml:id">
           <xsl:value-of select="$idattr"/>
@@ -446,6 +448,35 @@
     <listitem>
       <xsl:apply-templates/>
     </listitem>
+  </xsl:template>
+
+  <xsl:template match="field_list">
+   <variablelist role="field_list">
+    <xsl:apply-templates mode="field"/>
+   </variablelist>
+  </xsl:template>
+
+  <xsl:template match="field" mode="field">
+   <varlistentry>
+    <xsl:apply-templates mode="field"/>
+   </varlistentry>
+  </xsl:template>
+
+  <xsl:template match="field_name" mode="field">
+   <term><xsl:apply-templates mode="field"/></term>
+  </xsl:template>
+
+  <xsl:template match="field_body" mode="field">
+   <listitem>
+    <xsl:apply-templates mode="field"/>
+   </listitem>
+  </xsl:template>
+
+  <xsl:template match="field_body/*" mode="field">
+   <xsl:apply-templates select="."/>
+  </xsl:template>
+  <xsl:template match="field_body/paragraph[paragraph]" mode="field">
+     <xsl:apply-templates/>
   </xsl:template>
 
 
