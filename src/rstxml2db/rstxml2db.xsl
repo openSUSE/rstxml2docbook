@@ -486,15 +486,39 @@
    <xsl:apply-templates select="."/>
   </xsl:template>
 
-  <xsl:template match="field_body/paragraph[paragraph]" mode="field">
-     <xsl:apply-templates/>
+  <xsl:template match="field_body/paragraph" mode="field">
+
+   <xsl:message>INFO: field_body/paragraph: <xsl:for-each select="*">
+    <xsl:value-of select="concat(count(*), ' ', local-name(.), ', ')"/>
+   </xsl:for-each>
+   </xsl:message>
+
+   <xsl:choose>
+    <!-- case 1: first element is a paragraph -->
+    <xsl:when test="*[1][self::paragraph]">
+     <xsl:apply-templates />
+    </xsl:when>
+    <!-- case 2: there is somewhere another paragraph; split the elements -->
+    <xsl:when test="paragraph">
+     <!-- All nodes inside our section: -->
+     <xsl:variable name="node1" select="node()"/>
+     <!-- All nodes -->
+     <xsl:variable name="node2" select="paragraph[1]|
+                                        paragraph[1]/following-sibling::node()"/>
+     <para>
+      <xsl:apply-templates select="$node1[count(.|$node2) != count($node2)]"/>
+     </para>
+     <xsl:apply-templates select="paragraph[1]"/>
+    </xsl:when>
+    <!-- case 3: No paragraph at all -->
+    <xsl:otherwise>
+     <para>
+        <xsl:apply-templates/>
+     </para>
+    </xsl:otherwise>
+   </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="field_body/paragraph[not(paragraph)]" mode="field">
-   <para>
-    <xsl:apply-templates/>
-   </para>
-  </xsl:template>
 
   <!-- =================================================================== -->
   <xsl:template match="section[@names='glossary'][document/section[@names='glossary']]">
