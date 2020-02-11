@@ -24,7 +24,7 @@ import logging
 
 
 __author__ = "Thomas Schraitle & Fabian Baumanis"
-__version__ = "0.5.0"
+__version__ = "0.5.1"
 __name__ = "rstxml2db"
 __url__ = "https://github.com/openSUSE/rstxml2docbook"
 __email__ = "toms (AT) suse DOT de"
