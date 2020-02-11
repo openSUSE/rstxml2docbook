@@ -52,6 +52,9 @@
   <xsl:param name="rootversion"
              doc:descr="The value of the version attribute for the root element">5.1</xsl:param>
   <xsl:param name="ids.separator" doc:descr="The separator between IDs on @ids attribute">_</xsl:param>
+  <xsl:param name="use.xml.model" doc:descr="Adds a xml-model PI at the beginning" select="true()"/>
+  <xsl:param name="add.xml.model.href" doc:descr="The href of xml-model">file:/usr/share/xml/docbook/schema/rng/5.1/docbookxi.rnc</xsl:param>
+  <xsl:param name="add.xml.model.type" doc:descr="The type of xml-model PI">application/relax-ng-compact-syntax</xsl:param>
 
   <!-- Templates ======================================================= -->
   <xsl:template match="*">
@@ -234,6 +237,13 @@
     <xsl:variable name="idattr">
       <xsl:call-template name="get.target4section.id"/>
     </xsl:variable>
+
+    <xsl:if test="$use.xml.model">
+     <xsl:processing-instruction name="xml-model">
+      href="<xsl:value-of select="$add.xml.model.href"/>"
+      type="<xsl:value-of select="$add.xml.model.type"/>"
+     </xsl:processing-instruction>
+    </xsl:if>
 
     <book xml:lang="{$rootlang}" version="{$rootversion}"
       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -475,10 +485,16 @@
   <xsl:template match="field_body/*" mode="field">
    <xsl:apply-templates select="."/>
   </xsl:template>
+
   <xsl:template match="field_body/paragraph[paragraph]" mode="field">
      <xsl:apply-templates/>
   </xsl:template>
 
+  <xsl:template match="field_body/paragraph[not(paragraph)]" mode="field">
+   <para>
+    <xsl:apply-templates/>
+   </para>
+  </xsl:template>
 
   <!-- =================================================================== -->
   <xsl:template match="section[@names='glossary'][document/section[@names='glossary']]">
