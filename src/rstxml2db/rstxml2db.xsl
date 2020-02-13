@@ -1005,7 +1005,7 @@
     </option>
   </xsl:template>
 
-  <xsl:template match="reference[@refuri]">
+  <xsl:template match="reference[@refuri][not(@internal)]">
     <link xl:href="{@refuri}">
       <xsl:if test="@refuri != .">
        <xsl:value-of select="."/>
