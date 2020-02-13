@@ -58,7 +58,8 @@
 
   <!-- Templates ======================================================= -->
   <xsl:template match="*">
-    <!-- <xsl:message>WARN: Unknown element '<xsl:value-of select="local-name()"/>'</xsl:message> -->
+    <!-- <xsl:message>WARN: Unknown element '<xsl:value-of select="local-name()"/>'</xsl:message>
+    -->
   </xsl:template>
 
   <xsl:template name="include.xmlbase">
@@ -268,7 +269,10 @@
           </productnumber>
         </xsl:if>
       </info>
-      <xsl:apply-templates select="*[not(self::title)]"/>
+     <xsl:apply-templates select="sidebar"/>
+     <xsl:apply-templates select="*[not(self::title |
+                                        self::sidebar |
+                                        self::sidebar[following-sibling::section])]"/>
     </book>
   </xsl:template>
 
@@ -295,8 +299,14 @@
   </xsl:template>
 
   <xsl:template match="section">
+    <xsl:param name="aspreface" select="0"/>
     <xsl:variable name="name">
-      <xsl:call-template name="create.structural.name"/>
+     <xsl:choose>
+      <xsl:when test="$aspreface = 1">section</xsl:when>
+      <xsl:otherwise>
+       <xsl:call-template name="create.structural.name"/>
+      </xsl:otherwise>
+     </xsl:choose>
     </xsl:variable>
     <xsl:variable name="idattr">
       <xsl:call-template name="get.target4section.id"/>
@@ -343,6 +353,27 @@
     <xsl:text>&#10;</xsl:text>
   </xsl:template>
 
+  <xsl:template match="section/sidebar">
+   <formalpara role="sidebar">
+    <title><xsl:apply-templates select="title"/></title>
+    <xsl:apply-templates select="paragraph[1]"/>
+   </formalpara>
+   <xsl:apply-templates select="*[not(self::title | self::paragraph[1])]"/>
+  </xsl:template>
+
+  <xsl:template match="sidebar/title">
+   <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="/document/section/sidebar">
+   <preface>
+    <title>Preface</title>
+    <xsl:apply-templates select="*[not(self::title)]"/>
+    <xsl:apply-templates select="following-sibling::section">
+     <xsl:with-param name="aspreface" select="1"/>
+    </xsl:apply-templates>
+   </preface>
+  </xsl:template>
 
   <!-- =================================================================== -->
   <xsl:template match="block_quote">
@@ -487,12 +518,6 @@
   </xsl:template>
 
   <xsl:template match="field_body/paragraph" mode="field">
-
-   <xsl:message>INFO: field_body/paragraph: <xsl:for-each select="*">
-    <xsl:value-of select="concat(count(*), ' ', local-name(.), ', ')"/>
-   </xsl:for-each>
-   </xsl:message>
-
    <xsl:choose>
     <!-- case 1: first element is a paragraph -->
     <xsl:when test="*[1][self::paragraph]">
