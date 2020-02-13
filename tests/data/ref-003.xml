@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--<!DOCTYPE document SYSTEM "docutils.dtd">-->
 
-<document source="ref-004.rst"> >
+<document source="ref-003.rst">
   <section>
   <title>Fox and Dog</title>
 
@@ -17,6 +17,5 @@
       refuri="fox">Fox</reference>.</paragraph>
   </section>
  </section>
-
 
 </document>
