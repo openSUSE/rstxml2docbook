@@ -269,10 +269,10 @@
           </productnumber>
         </xsl:if>
       </info>
+     <!-- Convert <sidebar> into DocBook's <preface> -->
      <xsl:apply-templates select="sidebar"/>
-     <xsl:apply-templates select="*[not(self::title |
-                                        self::sidebar |
-                                        self::sidebar[following-sibling::section])]"/>
+     <!-- Skip <note>s, <sidebar>s and <section>s -->
+     <xsl:apply-templates select="document"/>
     </book>
   </xsl:template>
 
@@ -369,6 +369,7 @@
    <xsl:message>INFO: Create preface</xsl:message>
    <preface>
     <title>Preface</title>
+    <xsl:apply-templates select="../note"/>
     <xsl:apply-templates select="*[not(self::title)]"/>
     <xsl:apply-templates select="following-sibling::section">
      <xsl:with-param name="aspreface" select="1"/>
