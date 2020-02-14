@@ -366,6 +366,7 @@
   </xsl:template>
 
   <xsl:template match="/document/section/sidebar">
+   <xsl:message>INFO: Create preface</xsl:message>
    <preface>
     <title>Preface</title>
     <xsl:apply-templates select="*[not(self::title)]"/>
