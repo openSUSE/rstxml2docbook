@@ -106,13 +106,13 @@ def add_pi_in_screen(xml, limit=83, target='dbsuse-fo', fontsize='8pt'):
     """
     tree = xml.getroottree() if hasattr(xml, 'getroottree') else xml
     for screen in tree.iter('screen'):
-            if screen.text is not None and any([len(i) > limit
-                                                for i in screen.text.split("\n")]):
-                pi = etree.ProcessingInstruction(target,
-                                                 'font-size="{}"'.format(fontsize))
-                pi.tail = screen.text
-                screen.text = ''
-                screen.insert(0, pi)
+        if screen.text is not None and \
+           any([len(i) > limit for i in screen.text.split("\n")]):
+            pi = etree.ProcessingInstruction(target,
+                                             'font-size="{}"'.format(fontsize))
+            pi.tail = screen.text
+            screen.text = ''
+            screen.insert(0, pi)
 
 
 def remove_double_ids(xml, usedoubleids=True):
