@@ -16,7 +16,7 @@
 
    Author:
      Thomas Schraitle <toms AT opensuse.org>
-     Copyright 2016 SUSE Linux GmbH
+     Copyright 2016-2026 SUSE Linux GmbH
 
 -->
 
@@ -27,7 +27,7 @@
   
   <!-- ================================================================== -->
   <xsl:param name="xml.ext">.xml</xsl:param>
-  <xsl:param name="root.role">big</xsl:param>
+  <xsl:param name="root.role">main</xsl:param>
   
   <!-- ================================================================== -->
   <xsl:template match="node() | @*">
@@ -38,7 +38,7 @@
 
   <!-- ================================================================== -->
   <xsl:template match="/document">
-    <xsl:param name="xmlbase"></xsl:param>
+    <xsl:param name="xmlbase" />
     <document role="{$root.role}" xml:base="{$xmlbase}">
       <xsl:copy-of select="@*"/>
       <xsl:apply-templates>
