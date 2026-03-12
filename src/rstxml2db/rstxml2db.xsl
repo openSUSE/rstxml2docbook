@@ -5,10 +5,10 @@
 
    Parameters:
      * productname
-       The name of the product; added inside <bookinfo>
+       The name of the product; added inside <info>
      * produtnumber
        The number or any other identification of a product; added inside
-       <bookinfo>
+       <info>
      * xml.ext
        References to XML files; this parameter contains the extension
        (usually '.xml') which is appended for the reference/@refuri part.
@@ -24,12 +24,13 @@
 
    Author:
      Thomas Schraitle <toms AT opensuse.org>
-     Copyright 2016-2018 SUSE Linux GmbH
+     Copyright 2016-2026 SUSE Linux GmbH
 
 -->
 <xsl:stylesheet version="1.0"
   xmlns="http://docbook.org/ns/docbook"
   xmlns:d="http://docbook.org/ns/docbook"
+  xmlns:its="http://www.w3.org/2005/11/its"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:exsl="http://exslt.org/common"
   xmlns:doc="urn:x-suse:xslt-doc"
@@ -58,8 +59,7 @@
 
   <!-- Templates ======================================================= -->
   <xsl:template match="*">
-    <!-- <xsl:message>WARN: Unknown element '<xsl:value-of select="local-name()"/>'</xsl:message>
-    -->
+     <xsl:message>WARN: Unknown element '<xsl:value-of select="local-name()"/>'</xsl:message>
   </xsl:template>
 
   <xsl:template name="include.xmlbase">
@@ -234,10 +234,72 @@
     <xsl:apply-templates/>
   </xsl:template>
 
-  <xsl:template match="/document[@role='big']/section">
+  <!-- =================================================================== -->
+  <!-- meta  -->
+  <xsl:template match="document/field_list" mode="meta">
+    <xsl:apply-templates select="field[field_name[. = 'meta']]" mode="meta"/>
+  </xsl:template>
+
+  <xsl:template match="field[field_name[. = 'meta']]" mode="meta">
+    <xsl:message>INFO: Found <xsl:value-of select="count(field_body/field_list/field)"/> meta keys</xsl:message>
+    <xsl:apply-templates select="field_body/field_list/field" mode="meta" />
+  </xsl:template>
+
+  <xsl:template match="field" mode="meta">
+    <xsl:variable name="name" select="field_name"/>
+    <xsl:variable name="translation">
+      <xsl:choose>
+        <xsl:when test="$name = 'title' or $name = 'description'">yes</xsl:when>
+        <xsl:otherwise>no</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <xsl:message>INFO: Processing meta <xsl:value-of select="$name"/></xsl:message>
+    <meta name="{normalize-space($name)}" its:translate="{$translation}">
+      <xsl:value-of select="field_body/paragraph"/>
+    </meta>
+  </xsl:template>
+
+  <xsl:template match="field[field_name[. = 'task']]" mode="meta">
+    <xsl:message>INFO: Processing meta <xsl:value-of select="field_name"/></xsl:message>
+    <meta name="{field_name}" its:translate="no">
+      <xsl:call-template name="tokenize-task">
+        <xsl:with-param name="text" select="field_body/paragraph" />
+      </xsl:call-template>
+    </meta>
+  </xsl:template>
+
+  <xsl:template name="tokenize-task">
+    <xsl:param name="text"/>
+    <xsl:variable name="delimiter" select="','"/>
+
+    <xsl:choose>
+      <xsl:when test="contains($text, $delimiter)">
+        <phrase>
+          <xsl:value-of select="normalize-space(substring-before($text, $delimiter))"/>
+        </phrase>
+        <xsl:call-template name="tokenize-task">
+          <xsl:with-param name="text" select="substring-after($text, $delimiter)"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <phrase>
+          <xsl:value-of select="normalize-space($text)"/>
+        </phrase>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- =================================================================== -->
+  <!-- main -->
+  <xsl:template match="/document/field_list" />
+
+  <xsl:template match="/document[@role='main']/section">
     <xsl:variable name="idattr">
       <xsl:call-template name="get.target4section.id"/>
     </xsl:variable>
+
+    <xsl:message>INFO: Section detected</xsl:message>
 
     <xsl:if test="$use.xml.model">
      <xsl:processing-instruction name="xml-model">
@@ -247,6 +309,7 @@
     </xsl:if>
 
     <book xml:lang="{$rootlang}" version="{$rootversion}"
+      xmlns:its="http://www.w3.org/2005/11/its"
       xmlns:xi="http://www.w3.org/2001/XInclude"
       xmlns:xl="http://www.w3.org/1999/xlink">
       <xsl:if test="$idattr != ''">
@@ -257,6 +320,7 @@
       <xsl:call-template name="include.xmlbase"/>
       <xsl:apply-templates select="title"/>
       <info>
+        <xsl:apply-templates select="../field_list" mode="meta" />
         <xsl:apply-templates select="section[@names='abstract']" mode="info"/>
         <xsl:if test="$productname != ''">
           <productname>
@@ -276,7 +340,7 @@
     </book>
   </xsl:template>
 
-  <xsl:template match="/document[@role='big']/section/document/section">
+  <xsl:template match="/document[@role='main']/section/document/section">
     <xsl:variable name="idattr">
       <xsl:call-template name="get.target4section.id"/>
     </xsl:variable>
