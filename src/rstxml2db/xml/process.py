@@ -135,6 +135,22 @@ def step_rst2db_transform(tree, args):
     return xml
 
 
+def make_recursive_directories(xml, args):
+    """Create directory structure for split files based on xml:base"""
+    if getattr(args, 'outputdir', None) is None:
+        outputdir = 'out'
+    else:
+        outputdir = args.outputdir
+
+    bases = xml.xpath('//@xml:base')
+    for base in bases:
+        target_path = os.path.join(outputdir, base)
+        target_dir = os.path.dirname(target_path)
+        if target_dir and not os.path.exists(target_dir):
+            log.info("Creating directory %s", target_dir)
+            os.makedirs(target_dir, exist_ok=True)
+
+
 def transform(doc, args):
     """Transformation step
 
@@ -151,6 +167,7 @@ def transform(doc, args):
     cleanupxml(xml)
 
     if not args.nsplit:
+        make_recursive_directories(xml, args)
         xml_split_tree = etree.parse(XSLTSPLIT)
         xml_split_trans = etree.XSLT(xml_split_tree)
         xml_split_trans(xml, **dict(args.params))

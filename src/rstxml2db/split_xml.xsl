@@ -57,36 +57,25 @@
   <!-- =================================================================== -->
 <xsl:template name="get_dirname">
     <xsl:param name="path_to_split"/>
-    <xsl:param name="sep">-</xsl:param>
-    <xsl:choose>
-        <xsl:when test="contains($path_to_split, '/')">
-            <xsl:value-of select="concat(substring-before($path_to_split, '/'), $sep)"/>
-        </xsl:when>
-        <xsl:otherwise>
-            <xsl:value-of select="$path_to_split"/>
-        </xsl:otherwise>
-    </xsl:choose>
+    <xsl:value-of select="$path_to_split"/>
 </xsl:template>
 
 <xsl:template name="get_xml_base">
     <xsl:param name="node" select="."/>
-    <xsl:param name="path" select="''"/>
-    <xsl:variable name="xmlbase" select="$node/@xml:base"/>
-    <xsl:variable name="dir">
-        <xsl:call-template name="get_dirname">
-            <xsl:with-param name="path_to_split" select="$xmlbase"/>
-        </xsl:call-template>
-    </xsl:variable>
-    <xsl:variable name="temp_path" select="concat($dir,$path)"/>
-    <xsl:if test="$node/..">
-        <xsl:call-template name="get_xml_base">
-            <xsl:with-param name="node" select="$node/.."/>
-            <xsl:with-param name="path" select="$temp_path"/>
-        </xsl:call-template>
-    </xsl:if>
-    <xsl:if test="$node/@xml:base">
-        <xsl:value-of select="$dir"/>
-    </xsl:if>
+    <!-- Search for xml:base recursively in parents -->
+    <xsl:choose>
+        <xsl:when test="$node/@xml:base">
+            <xsl:value-of select="$node/@xml:base"/>
+        </xsl:when>
+        <xsl:when test="$node/..">
+             <xsl:call-template name="get_xml_base">
+                <xsl:with-param name="node" select="$node/.."/>
+            </xsl:call-template>
+        </xsl:when>
+        <xsl:otherwise>
+          <!-- No xml:base found, returning empty string -->
+        </xsl:otherwise>
+    </xsl:choose>
 </xsl:template>
 
 <xsl:template match="/*|*[@xml:base]">
