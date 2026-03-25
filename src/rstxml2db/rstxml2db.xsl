@@ -505,6 +505,17 @@
     </xsl:element>
   </xsl:template>
 
+  <xsl:template match="admonition">
+    <note>
+      <xsl:apply-templates select="title" />
+      <xsl:apply-templates select="*[not(self::title)]"/>
+    </note>
+  </xsl:template>
+
+  <xsl:template match="admonition/title">
+    <title><xsl:apply-templates/></title>
+  </xsl:template>
+
   <xsl:template match="paragraph">
     <para>
       <xsl:apply-templates/>
