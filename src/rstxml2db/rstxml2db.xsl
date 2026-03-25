@@ -848,6 +848,13 @@
    <option><xsl:apply-templates/></option>
   </xsl:template>
 
+  <xsl:template match="option_argument">
+   <xsl:if test="@delimiter">
+    <xsl:value-of select="@delimiter"/>
+   </xsl:if>
+   <replaceable><xsl:apply-templates/></replaceable>
+  </xsl:template>
+
   <xsl:template match="description">
    <listitem>
     <xsl:apply-templates/>
