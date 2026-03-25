@@ -51,10 +51,11 @@
   <xsl:param name="productname" doc:descr="The product name, empty by default"/>
   <xsl:param name="productnumber" doc:descr="The product number, empty by default"/>
   <xsl:param name="rootversion"
-             doc:descr="The value of the version attribute for the root element">5.1</xsl:param>
+             doc:descr="The value of the version attribute for the root element">5.2</xsl:param>
   <xsl:param name="ids.separator" doc:descr="The separator between IDs on @ids attribute">_</xsl:param>
   <xsl:param name="use.xml.model" doc:descr="Adds a xml-model PI at the beginning" select="true()"/>
-  <xsl:param name="add.xml.model.href" doc:descr="The href of xml-model">file:/usr/share/xml/docbook/schema/rng/5.1/docbookxi.rnc</xsl:param>
+  <xsl:param name="add.xml.model.href" doc:descr="The href of xml-model"
+    >file:/usr/share/xml/docbook/schema/rng/<xsl:value-of select="$rootversion"/>/docbookxi.rnc</xsl:param>
   <xsl:param name="add.xml.model.type" doc:descr="The type of xml-model PI">application/relax-ng-compact-syntax</xsl:param>
 
   <!-- Templates ======================================================= -->
