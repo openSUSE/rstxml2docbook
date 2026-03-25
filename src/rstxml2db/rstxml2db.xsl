@@ -336,7 +336,15 @@
      <!-- Convert <sidebar> into DocBook's <preface> -->
      <xsl:apply-templates select="sidebar"/>
      <!-- Skip <note>s, <sidebar>s and <section>s -->
-     <xsl:apply-templates select="document"/>
+
+      <xsl:choose>
+        <xsl:when test="./section/document">
+          <xsl:apply-templates select="./section/document" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="document"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </book>
   </xsl:template>
 
